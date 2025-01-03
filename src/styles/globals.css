@@ -1,0 +1,123 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Helvetica Neue";
+  src: url("./fonts/HelveticaNeue400.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Helvetica Neue";
+  src: url("./fonts/HelveticaNeue500.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+}
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+.h-screen {
+  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
+}
+
+.max-h-screen {
+  max-height: 100vh;
+  max-height: calc(var(--vh, 1vh) * 100);
+}
+
+body {
+  font-family: "Helvetica Neue";
+  color: #333333 !important;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@layer base {
+  .flex-center {
+    @apply flex items-center justify-center;
+  }
+
+  .app-width {
+    @apply w-full max-w-[1440px] mx-auto p-3 px-4 md:px-5 lg:px-6 xl:px-12;
+  }
+}
+
+.hero {
+  max-height: calc(100vh - 100px);
+  min-height: 620px;
+}
+
+@media screen and (min-width: 768px) {
+  .hero {
+    min-height: 600px;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .hero {
+    min-height: 680px;
+  }
+}
+
+@media screen and (min-width: 1300px) {
+  .hero {
+    min-height: 680px;
+  }
+}
+
+.h-sub {
+  height: calc(100% - 64px);
+}
+
+textarea {
+  resize: none;
+}
+
+.dash-main {
+  height: calc(100% - 68px);
+}
+
+button {
+  outline: none;
+  border: none;
+}
+
+input {
+  outline: none;
+}
+
+.Toastify__toast-container {
+  width: auto !important;
+}
+
+.Toastify__toast {
+  /* font-family: "Inter" !important; */
+  box-shadow: none !important;
+  background: transparent !important;
+  padding: 0px !important;
+  right: -5px;
+}
+
+.Toastify__toast-body {
+  background: transparent;
+  padding: 0;
+}

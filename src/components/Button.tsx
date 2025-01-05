@@ -22,17 +22,17 @@ const Button = ({
       type={type}
       className={`${
         btnType === "main"
-          ? "text-white bg-accent-500"
-          : "text-accent-500 bg-[#FFEEEB]"
-      } focus:ring-4 focus:ring-blue300 font-semibold rounded-[6px] ${
+          ? "text-white bg-primary-600"
+          : "text-primary-500 bg-[#FFEEEB]"
+      } focus:ring-4 rounded-lg ${
         size === "sm"
-          ? `h-[42px]`
+          ? `h-[36px]`
           : size === "md"
-          ? `h-[48px]`
+          ? `h-[46px]`
           : size === "lg"
-          ? `h-[50px] md:h-[56px]`
+          ? `h-[50px] md:h-[55px]`
           : ""
-      } flex items-center justify-center text-base md:text-lg px-5 whitespace-nowrap ${className}`}
+      } flex items-center justify-center px-10 whitespace-nowrap ${className}`}
       onClick={onClick}
     >
       {isLoading ? (

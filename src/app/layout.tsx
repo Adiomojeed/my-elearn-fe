@@ -26,7 +26,7 @@ export default function RootLayout({
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
       />
       <Styling />
-      <body className="text-dark-900">
+      <body className="text-grey-500">
         <ParentProvider>{children}</ParentProvider>
       </body>
     </html>

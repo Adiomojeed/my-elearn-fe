@@ -18,13 +18,13 @@ export function middleware(request: NextRequest) {
   const token = request.cookies.get(tokenConfig.key.token)?.value ?? "";
 
 
-  if (!isPublicPath && token.length <= 0) {
-    return NextResponse.redirect(new URL("/sign-in", request.url));
-  }
+  // if (!isPublicPath && token.length <= 0) {
+  //   return NextResponse.redirect(new URL("/sign-in", request.url));
+  // }
 
-  if (isPublicPath && token.length > 0) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
-  }
+  // if (isPublicPath && token.length > 0) {
+  //   return NextResponse.redirect(new URL("/dashboard", request.url));
+  // }
 
   return NextResponse.next();
 }

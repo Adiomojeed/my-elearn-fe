@@ -22,14 +22,14 @@ const Input = ({
   return (
     <div className="">
       {label && (
-        <label htmlFor={id} className="block mb-2 text-sm md:text-base text-dark-500">
+        <label htmlFor={id} className="block mb-3 text-sm text-grey-500">
           {label}
         </label>
       )}
       <input
         type={type}
         id={id}
-        className={`bg-white border border-gray-300 text-dark-900 focus:outline-none focus:ring-primary focus:border-blue-500  text-sm rounded-[6px] block w-full h-[50px] md:h-[56px] p-4 ${className}`}
+        className={`bg-white border border-grey-50 text-grey-500 focus:outline-none focus:ring-primary focus:border-primary-500 placeholder:text-grey-200 text-sm rounded-lg block w-full h-[50px] md:h-[56px] p-4 ${className}`}
         placeholder={placeholder}
         required={required}
         value={value}

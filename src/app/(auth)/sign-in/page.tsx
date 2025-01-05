@@ -20,13 +20,16 @@ const Page = () => {
 
   return (
     <>
-      <p className="lg:text-lg">Welcome back</p>
-      <h6 className="text-xl md:text-2xl font-semibold mt-1">
-        Sign into your account
-      </h6>
+      <h1 className="text-[34px] leading-[1.3em] lg:text-[42px] lg:leading-[55px] font-medium">
+        Login
+      </h1>
+      <p className="text-grey-300 mt-3">
+        Enter your credentials to access your account
+      </p>
+
       <form
         onSubmit={handleSubmit}
-        className="mt-4 md:mt-5 flex flex-col gap-2 md:gap-4"
+        className="mt-8 lg:mt-[52px] flex flex-col gap-2 md:gap-4 lg:gap-5"
       >
         <Input
           label="Email Address"
@@ -52,28 +55,16 @@ const Page = () => {
               Email or password incorrect
             </p>
           )}
-          <Link
-            href="/"
-            className="text-sm md:text-base font-semibold text-accent-500 block mt-2"
-          >
-            Forgot password?
-          </Link>
         </div>
-        <Button
-          isLoading={isPending}
-          size="lg"
-          type="submit"
-          className="font-normal px-6 gap-3"
-        >
-          Sign in
-          <Image src="/arrow-right.svg" width={18} height={14.4} alt="" />
+        <small className="text-right">
+          Forgot Password?
+          <Link href="/" className="text-primary-600 ml-1">
+            Reset
+          </Link>
+        </small>
+        <Button isLoading={isPending} size="lg" type="submit">
+          Login
         </Button>
-        <p className="text-sm md:text-base text-center">
-          I don’t have an account?{" "}
-          <Link href="/sign-up" className="text-accent-500 underline">
-            Create an account
-          </Link>{" "}
-        </p>
       </form>
     </>
   );

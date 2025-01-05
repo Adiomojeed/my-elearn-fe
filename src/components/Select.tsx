@@ -20,7 +20,7 @@ const Select = ({
 }) => {
   return (
     <div>
-      <label htmlFor={id} className="block mb-2">
+      <label htmlFor={id} className="block mb-3 text-sm text-grey-500">
         {label}
       </label>
       <select
@@ -29,7 +29,7 @@ const Select = ({
         value={value}
         onChange={onChange}
         // onBlur={onChange}
-        className={`bg-white border border-gray-300 text-dark-500 focus:outline-none focus:ring-primary focus:border-blue-500  text-sm rounded-[6px] block w-full h-[56px] p-4 ${className}`}
+        className={`bg-white border border-grey-50 text-grey-500 focus:outline-none focus:ring-primary focus:border-primary-500 placeholder:text-grey-200 text-sm rounded-lg block w-full h-[50px] md:h-[56px] p-4 ${className}`}
       >
         {children}
       </select>

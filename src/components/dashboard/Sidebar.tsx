@@ -3,11 +3,16 @@
 "use client";
 
 import Link from "next/link";
-import React, { createElement } from "react";
+import { createElement } from "react";
 
 import { useSelectedLayoutSegment } from "next/navigation";
 import Dashboard from "../icons/Dashboard";
 import Announcements from "../icons/Announcements";
+import Courses from "../icons/Courses";
+import Assignments from "../icons/Assignments";
+import Quizzes from "../icons/Quizzes";
+import Folder from "../icons/Folder";
+import Settings from "../icons/Settings";
 
 const links = [
   {
@@ -25,31 +30,31 @@ const links = [
   {
     href: "/courses",
     label: "My Courses",
-    icon: Announcements,
+    icon: Courses,
     targetSegment: "courses",
   },
   {
     href: "/assignments",
     label: "Assignments",
-    icon: Announcements,
+    icon: Assignments,
     targetSegment: "assignments",
   },
   {
     href: "/quizzes",
     label: "Quizzes",
-    icon: Announcements,
+    icon: Quizzes,
     targetSegment: "quizzes",
   },
   {
     href: "/folders",
     label: "My Folder",
-    icon: Announcements,
+    icon: Folder,
     targetSegment: "folders",
   },
   {
     href: "/settings",
     label: "Settings",
-    icon: Announcements,
+    icon: Settings,
     targetSegment: "settings",
   },
 ];
@@ -64,7 +69,7 @@ const Sidebar = ({
   const activeSegment = useSelectedLayoutSegment();
   return (
     <aside
-      className={`absolute bg-white top-0 z-[100] h-full min-w-[304px] py-8 lg:py-10 px-5 max-w-[304px] transition-[left] duration-[750ms] md:static ${
+      className={`absolute flex flex-col bg-white top-0 z-[100] h-full w-full py-8 lg:py-10 px-5 max-w-[304px] md:max-w-[250px] lg:max-w-[304px] transition-[left] duration-[750ms] md:static ${
         isOpen ? "left-0" : "-left-[304px] md:left-0"
       }`}
     >
@@ -92,16 +97,22 @@ const Sidebar = ({
             <p className="mt-1">{i.label}</p>
           </Link>
         ))}
-        {/* <div
+      </div>
+      <div className="mt-auto lg:px-3 pt-5 pb-3 border-t border-[#F2F2F2] flex gap-3">
+        <img src="/avatar.png" className="w-12 h-12" alt="" />
+        <div>
+          <h6 className="lg:text-lg leading-[26px]">Adio Mojeed</h6>
+          <small className="text-grey-200 leading-[26px]">LRN2024-001</small>
+        </div>
+        <button
+          className="ml-auto"
           onClick={() => {
             onClose();
             // logoutUser();
           }}
-          className={`flex h-11 cursor-pointer items-center gap-3 rounded-lg px-4 text-sm opacity-60 hover:bg-[#ffffff4d] hover:opacity-100`}
         >
-          <LogoutCurve size="20" color="#ffffffcc" />
-          Logout
-        </div> */}
+          <img src="/logout.svg" alt="" />
+        </button>
       </div>
     </aside>
   );

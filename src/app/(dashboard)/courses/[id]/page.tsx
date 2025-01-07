@@ -7,7 +7,7 @@ import Resources from "@/components/dashboard/courses/Resources";
 import { act, useState } from "react";
 
 const Page = () => {
-  const [active, setActive] = useState("course");
+  const [active, setActive] = useState("announcements");
   const tabs = [
     { name: "Course", path: "course" },
     { name: "Announcements", path: "announcements" },
@@ -31,7 +31,7 @@ const Page = () => {
         {tabs.map((i, idx) => (
           <button
             key={idx}
-            className={`small px-4 pb-3 font-medium ${
+            className={`text-sm px-2 md:px-4 pb-2 md:pb-3 font-medium ${
               i.path === active
                 ? "text-primary-600 border-primary-600"
                 : "text-grey-200 border-black border-opacity-5"

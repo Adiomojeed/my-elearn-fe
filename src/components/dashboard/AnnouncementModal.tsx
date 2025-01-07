@@ -1,6 +1,6 @@
 import Button from "../Button";
 
-const text = `
+export const text = `
 <i><p>
 Hello Students, <br />
 We are excited to announce a Live Career Advice Session on October 25th at 11:00 AM (WAT), exclusively for users! Join us as industry experts share insights on preparing for the job market, building a strong resume, and acing interviews. This is a great opportunity to ask questions and get personalized advice on your career path.

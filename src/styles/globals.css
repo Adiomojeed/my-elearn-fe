@@ -68,6 +68,10 @@ body {
   .wysiwyg-render a {
     @apply text-primary-500;
   }
+
+  .btn-outline {
+    @apply text-primary-600 !border !border-solid border-primary-600 hover:bg-primary-600 hover:text-white focus:ring-4 focus:ring-primary-500 focus:ring-opacity-50 rounded-lg h-[36px] text-sm flex items-center justify-center px-10 whitespace-nowrap cursor-pointer;
+  }
 }
 
 .hero {
@@ -154,4 +158,8 @@ input {
 .accordion__content {
   overflow: hidden;
   transition: max-height 0.5s ease;
+}
+
+.first-uppercase::first-letter {
+  text-transform: uppercase;
 }

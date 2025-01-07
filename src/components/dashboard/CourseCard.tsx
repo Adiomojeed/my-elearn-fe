@@ -9,7 +9,7 @@ export type CourseProps = {
   lessons: string;
 };
 
-const Course = ({ course }: { course?: CourseProps }) => {
+const CourseCard = ({ course }: { course?: CourseProps }) => {
   const router = useRouter();
   return (
     <div className="rounded-lg border border-[#F3F3F3]">
@@ -34,4 +34,4 @@ const Course = ({ course }: { course?: CourseProps }) => {
   );
 };
 
-export default Course;
+export default CourseCard;

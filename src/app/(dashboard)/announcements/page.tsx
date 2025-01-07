@@ -1,4 +1,4 @@
-import Announcement from "@/components/dashboard/Announcement";
+import AnnouncementCard from "@/components/dashboard/AnnouncementCard";
 
 const Page = () => {
   return (
@@ -7,7 +7,7 @@ const Page = () => {
         <h6 className="md:text-lg font-medium">Announcements</h6>
         <div className="mt-4 lg:mt-[18px] flex flex-col gap-4">
           {Array.from({ length: 5 }).map((_, idx) => (
-            <Announcement key={idx} />
+            <AnnouncementCard key={idx} />
           ))}
         </div>
       </div>
@@ -17,7 +17,7 @@ const Page = () => {
         </p>
         <div className="mt-4 flex flex-col gap-4 divide-y px-1 divide-[#F3F3F3]">
           {Array.from({ length: 3 }).map((_, idx) => (
-            <Announcement key={idx} pinned />
+            <AnnouncementCard key={idx} pinned />
           ))}
         </div>
       </div>

@@ -16,10 +16,10 @@ const CourseAccordion = () => {
         <>
           {Array.from({ length: 5 }).map((_, idx) => (
             <div key={idx} className="p-4 lg:p-6 flex items-center gap-4">
-              <img src="/pdf.svg" alt="" />
+              <img src="/pdf.svg" alt="pdf icon" />
               <small>Module 1 - Lesson 1</small>
               <div className="ml-auto">
-                {/* <img src="/completed.svg" alt="" /> */}
+                {/* <img src="/completed.svg" alt="completed icon" /> */}
                 <Button
                   btnType="outline"
                   size="sm"

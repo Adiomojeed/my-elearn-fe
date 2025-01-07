@@ -1,5 +1,4 @@
 import Accordion from "@/components/Accordion";
-import Button from "@/components/Button";
 import { text } from "../AnnouncementModal";
 
 const AnnouncementAccordion = () => {
@@ -8,16 +7,16 @@ const AnnouncementAccordion = () => {
       className="bg-white rounded border border-[#F3F3F3]"
       title={
         <div>
-          <p className="lg:text-lg leading-[22px]">
+          <p className="text-sm md:text-base lg:text-lg leading-[22px] font-medium">
             Live Career Advice Session: Preparing for the Job Market
           </p>
           <div className="flex items-center gap-4 mt-2">
             <small className="text-grey-300 leading-[20px] flex items-center gap-1">
-              <img src="/calendar.svg" alt="" />{" "}
+              <img src="/calendar.svg" alt="calendar icon" />{" "}
               <span className="mt-1">15 Oct 2024</span>
             </small>
             <small className="text-grey-300 leading-[20px] flex items-center gap-1">
-              <img src="/clock.svg" alt="" />{" "}
+              <img src="/clock.svg" alt="clock icon" />{" "}
               <span className="mt-1">10:10 PM</span>
             </small>
           </div>

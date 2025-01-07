@@ -8,10 +8,12 @@ const TextArea = ({
   required = false,
   value,
   onChange,
+  labelClassName,
 }: {
   label?: string;
   placeholder?: string;
   className?: string;
+  labelClassName?: string;
   id?: string;
   required?: boolean;
   value?: string;
@@ -20,7 +22,10 @@ const TextArea = ({
   return (
     <div className="">
       {label && (
-        <label htmlFor={id} className="block mb-3 text-sm text-grey-500">
+        <label
+          htmlFor={id}
+          className={`block mb-3 text-sm text-grey-500 ${labelClassName}`}
+        >
           {label}
         </label>
       )}

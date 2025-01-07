@@ -1,5 +1,5 @@
-import Announcement from "@/components/dashboard/Announcement";
-import Course from "@/components/dashboard/Course";
+import AnnouncementCard from "@/components/dashboard/AnnouncementCard";
+import CourseCard from "@/components/dashboard/CourseCard";
 import Stats, { StatsProps } from "@/components/dashboard/Stats";
 import Link from "next/link";
 import React, { useMemo } from "react";
@@ -30,7 +30,7 @@ const Page = () => {
           </div>
           <div className="mt-4 lg:mt-[16px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-4 xl:gap-6">
             {Array.from({ length: 3 }).map((_, idx) => (
-              <Course key={idx} />
+              <CourseCard key={idx} />
             ))}
           </div>
         </div>
@@ -43,7 +43,7 @@ const Page = () => {
           </div>
           <div className="mt-4 lg:mt-[16px] grid grid-cols-1 gap-5">
             {Array.from({ length: 3 }).map((_, idx) => (
-              <Announcement key={idx} />
+              <AnnouncementCard key={idx} />
             ))}
           </div>
         </div>

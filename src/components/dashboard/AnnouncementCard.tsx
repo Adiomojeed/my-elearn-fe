@@ -11,7 +11,7 @@ export type AnnouncementProps = {
   isPinned: boolean;
 };
 
-const Announcement = ({
+const AnnouncementCard = ({
   announcement,
   pinned,
 }: {
@@ -68,4 +68,4 @@ We are thrilled to announce the release of a new module in the Advanced Data Ana
   );
 };
 
-export default Announcement;
+export default AnnouncementCard;

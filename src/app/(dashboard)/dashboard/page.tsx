@@ -48,7 +48,7 @@ const Page = () => {
           </div>
         </div>
       </div>
-      <div className=" bg-white w-full">
+      <div className="hidden xl:block bg-white w-full overflow-auto">
         <div className="flex justify-between px-5 py-4 border-b border-[#F3F3F3]">
           <p className="font-medium">Recent Docs</p>
           <Link href="/folders" className="text-sm text-primary-600">

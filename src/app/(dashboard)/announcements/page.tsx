@@ -11,7 +11,7 @@ const Page = () => {
           ))}
         </div>
       </div>
-      <div className=" bg-white w-full">
+      <div className="hidden xl:block bg-white w-full overflow-auto">
         <p className="font-medium px-5 py-4 border-b border-[#F3F3F3]">
           Pinned Announcements
         </p>

@@ -26,7 +26,7 @@ const Button = ({
           : btnType === "light"
           ? "text-primary-500 bg-[#FFEEEB]"
           : "text-primary-600 !border !border-solid border-primary-600 hover:bg-primary-600 hover:text-white"
-      } focus:ring-4 rounded-lg ${
+      } focus:ring-4 focus:ring-primary-500 focus:ring-opacity-50 rounded-lg ${
         size === "sm"
           ? `h-[36px] text-sm`
           : size === "md"

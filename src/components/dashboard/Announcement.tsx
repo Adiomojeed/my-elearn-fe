@@ -1,4 +1,8 @@
+"use client";
+
+import useDisclosure from "@/hooks/useDisclosure";
 import Button from "../Button";
+import AnnouncementModal from "./AnnouncementModal";
 
 export type AnnouncementProps = {
   name: string;
@@ -15,12 +19,20 @@ const Announcement = ({
   pinned?: boolean;
 }) => {
   const isPinned = pinned ?? announcement?.isPinned;
+  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <div
       className={`${
         !pinned ? "border border-[#F3F3F3] p-4 lg:px-6 lg:py-9" : "p-4"
       } bg-white rounded-lg `}
     >
+      {isOpen && (
+        <div
+          onClick={onClose}
+          className="absolute left-0 top-0 z-[101] h-screen w-screen bg-black bg-opacity-10"
+        ></div>
+      )}
+      <AnnouncementModal isOpen={isOpen} onClose={onClose} />
       <div className="flex gap-[10px]">
         <img src="/avatar-l.svg" className="w-9 h-9" alt="avatar" />
         <div>
@@ -48,7 +60,7 @@ const Announcement = ({
 We are thrilled to announce the release of a new module in the Advanced Data Analysis course! The 'Data Visualization and Interpretation' module is now available. Dive deep into practical techniques for visualizing complex datasets and interpreting trends using tools like Tableau, Power BI, and Python.`}
       </p>
       <div className="flex justify-end mt-3">
-        <Button btnType="outline" size="sm" className="px-5">
+        <Button onClick={onOpen} btnType="outline" size="sm" className="px-5">
           View
         </Button>
       </div>

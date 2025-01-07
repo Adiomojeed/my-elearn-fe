@@ -2,7 +2,6 @@
 
 "use client";
 
-import Link from "next/link";
 import { useState, type ReactNode, useEffect } from "react";
 
 // import { useGetUserData } from "~/apis/user";
@@ -30,7 +29,7 @@ const DashboardLayout = ({
       {isOpen && (
         <div
           onClick={onClose}
-          className="absolute left-0 top-0 z-[50] h-screen w-screen bg-[#054F31] bg-opacity-30"
+          className="absolute left-0 top-0 z-[50] h-screen w-screen bg-black bg-opacity-20"
         ></div>
       )}
       <Sidebar isOpen={isOpen} onClose={onClose} />

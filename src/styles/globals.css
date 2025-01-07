@@ -134,3 +134,24 @@ input {
   background: transparent;
   padding: 0;
 }
+
+.accordion__section {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid #bdbdbd;
+}
+
+.accordion__icon {
+  margin-left: auto;
+  transition: transform 0.5s ease;
+}
+
+.rotate {
+  transform: rotate(90deg);
+  transition: transform 0.25s ease;
+}
+
+.accordion__content {
+  overflow: hidden;
+  transition: max-height 0.5s ease;
+}

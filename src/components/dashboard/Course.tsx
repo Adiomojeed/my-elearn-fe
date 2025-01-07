@@ -1,3 +1,8 @@
+"use client";
+
+import { useRouter } from "next/navigation";
+import Button from "../Button";
+
 export type CourseProps = {
   name: string;
   course: string;
@@ -5,6 +10,7 @@ export type CourseProps = {
 };
 
 const Course = ({ course }: { course?: CourseProps }) => {
+  const router = useRouter();
   return (
     <div className="rounded-lg border border-[#F3F3F3]">
       <img
@@ -16,6 +22,13 @@ const Course = ({ course }: { course?: CourseProps }) => {
         <small className="text-grey-200">Dr. James Ayangu</small>
         <p className="font-medium">CSC 401 - Internet Technology</p>
         <small className="text-grey-300">10 Lessons</small>
+        <Button
+          onClick={() => router.push(`/courses/1`)}
+          btnType="outline"
+          className="mt-2"
+        >
+          View
+        </Button>
       </div>
     </div>
   );

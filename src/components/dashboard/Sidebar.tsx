@@ -69,7 +69,7 @@ const Sidebar = ({
   const activeSegment = useSelectedLayoutSegment();
   return (
     <aside
-      className={`absolute flex flex-col bg-white top-0 z-[100] h-full w-full py-8 lg:py-10 px-5 max-w-[304px] md:max-w-[250px] lg:max-w-[304px] transition-[left] duration-[750ms] md:static ${
+      className={`absolute flex flex-col bg-white top-0 z-[100] h-full w-full py-8 lg:py-10 px-5 max-w-[304px] md:max-w-[250px] lg:max-w-[280px] xl:max-w-[304px] transition-[left] duration-[750ms] md:static ${
         isOpen ? "left-0" : "-left-[304px] md:left-0"
       }`}
     >
@@ -77,7 +77,7 @@ const Sidebar = ({
         x
       </button>
       <Link className="border-b block border-[#F2F2F2] pb-5" href={"/"}>
-        <img src="/logo.svg" alt="" />
+        <img src="/logo.svg" alt="logo" />
       </Link>
       <div className="mt-3 flex flex-col gap-3">
         {links.map((i, idx) => (
@@ -98,8 +98,8 @@ const Sidebar = ({
           </Link>
         ))}
       </div>
-      <div className="mt-auto lg:px-3 pt-5 pb-3 border-t border-[#F2F2F2] flex gap-3">
-        <img src="/avatar.png" className="w-12 h-12" alt="" />
+      <div className="mt-auto xl:px-3 pt-5 pb-3 border-t border-[#F2F2F2] flex gap-3">
+        <img src="/avatar.svg" className="w-12 h-12" alt="avatar" />
         <div>
           <h6 className="lg:text-lg leading-[26px]">Adio Mojeed</h6>
           <small className="text-grey-200 leading-[26px]">LRN2024-001</small>
@@ -111,7 +111,7 @@ const Sidebar = ({
             // logoutUser();
           }}
         >
-          <img src="/logout.svg" alt="" />
+          <img src="/logout.svg" alt="logout icon" />
         </button>
       </div>
     </aside>

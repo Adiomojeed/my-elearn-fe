@@ -81,6 +81,10 @@ body {
   .hero {
     min-height: 680px;
   }
+
+  .dashboard-content {
+    height: calc(100% - 86px);
+  }
 }
 
 .h-sub {

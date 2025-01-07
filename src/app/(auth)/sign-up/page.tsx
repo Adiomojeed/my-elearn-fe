@@ -134,7 +134,7 @@ const Page = () => {
           className="font-normal px-6 gap-3"
         >
           Create account
-          <Image src="/arrow-right.svg" width={18} height={14.4} alt="" />
+          <Image src="/arrow-right.svg" width={18} height={14.4} alt="arrow-right icon" />
         </Button>
         <p className="text-sm md:text-base text-center">
           Already have an account?{" "}

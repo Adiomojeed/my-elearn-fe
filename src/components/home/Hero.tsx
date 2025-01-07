@@ -56,7 +56,7 @@ const Hero = () => {
 
   return (
     <>
-      <section id="home" className="flex-center flex-col relative py-[60px]">
+      <section id="home" className="flex-center flex-col relative py-[60px] bg-[url('/mask.png')] bg-no-repeat bg-top">
         <div className="w-full md:max-w[90%] lg:max-w-[625px] p-5 lg:px-0 z-[1] flex flex-col gap-6">
           <h1 className="text-[34px] leading-[1.3em] lg:text-[42px] lg:leading-[55px] font-medium text-center">
             Your Gateway to Seamless{" "}
@@ -73,7 +73,7 @@ const Hero = () => {
           </div>
         </div>
         <div className="flex-center">
-          <img src="mock.png" alt="" />
+          <img src="mock.png" alt="mock dashboard" />
         </div>
       </section>
     </>

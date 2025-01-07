@@ -12,7 +12,7 @@ const Layout = ({
   return (
     <div className="h-screen w-screen grid md:grid-cols-2">
       <div className="hidden md:flex flex-center bg-[url('/auth-bg.png')] bg-no-repeat bg-cover">
-        <img src="/logo-white.svg" alt="" />
+        <img src="/logo-white.svg" alt="logo" />
       </div>
       <div className="bg-white flex items-center">
         <div className="w-full max-w-[710px] xl:px-[110px] p-5 md:px-8 py-3 md:py-5 pb-8 lg:pb-12">
@@ -20,7 +20,7 @@ const Layout = ({
             onClick={() => router.back()}
             className="flex text-sm lg:text-base items-center gap-2 lg:gap-4 mb-8 lg:mb-[52px]"
           >
-            <img src="/arrow-back.svg" alt="" />
+            <img src="/arrow-back.svg" alt="arrow back icon" />
             Back to Homepage
           </button>
 

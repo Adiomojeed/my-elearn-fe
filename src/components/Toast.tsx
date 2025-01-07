@@ -45,7 +45,7 @@ const ToastUI: React.FC<ToastProps> = ({ message, type }) => {
     // [ToastType.warning]: <Warning />,
     // [ToastType.error]: <Error />,
     [ToastType.success]: (
-      <Image src="/success.svg" width={14.4} height={14.4} alt="" />
+      <Image src="/success.svg" width={14.4} height={14.4} alt="toast icon" />
     ),
     [ToastType.default]: "",
   };

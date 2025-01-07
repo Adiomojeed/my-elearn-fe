@@ -88,7 +88,7 @@ const About = () => {
                       src={i.icon ?? "/hseq.svg"}
                       width={43}
                       height={43}
-                      alt=""
+                      alt="feature icon"
                     />
                   </div>
                   <h5 className="text-2xl text-black font-bold mt-auto">

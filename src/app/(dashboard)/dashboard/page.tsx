@@ -14,7 +14,7 @@ const Page = () => {
     []
   );
   return (
-    <div className="flex h-full">
+    <section className="flex h-full">
       <div className="w-full xl:min-w-[75%] xl:max-w-[780px] xl:pr-6 flex flex-col gap-6 lg:overflow-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 xl:gap-6 bg-[#F9F9F9] lg:sticky top-0 pb-6">
           {stats.map((i: StatsProps, idx) => (
@@ -48,8 +48,15 @@ const Page = () => {
           </div>
         </div>
       </div>
-      <div className="hidden xl:flex bg-white w-full">a</div>
-    </div>
+      <div className=" bg-white w-full">
+        <div className="flex justify-between px-5 py-4 border-b border-[#F3F3F3]">
+          <p className="font-medium">Recent Docs</p>
+          <Link href="/folders" className="text-sm text-primary-600">
+            View all
+          </Link>
+        </div>
+      </div>
+    </section>
   );
 };
 

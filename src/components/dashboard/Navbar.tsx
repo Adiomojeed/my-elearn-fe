@@ -1,7 +1,5 @@
 /** @format */
 
-import Image from "next/image";
-import Link from "next/link";
 import { useAppSelector } from "@/store/useAppSelector";
 
 const Navbar = ({ onOpen }: { onOpen: () => void }) => {
@@ -17,10 +15,9 @@ const Navbar = ({ onOpen }: { onOpen: () => void }) => {
           src={
             // user?.PD_ProfileImage
             //   ? `${user?.PD_ProfileImage}?${new Date().getTime()}`
-            //   : 
-              "/avatar.svg"
+            //   :
+            "/avatar.svg"
           }
-      
           className="ml-auto rounded-full"
         />
         <button className="ml-2 md:hidden" onClick={onOpen}>

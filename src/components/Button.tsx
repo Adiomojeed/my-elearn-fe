@@ -14,7 +14,7 @@ const Button = ({
   type?: "submit" | "button";
   onClick?: (e: any) => void;
   size?: "md" | "lg" | "sm";
-  btnType?: "main" | "light";
+  btnType?: "main" | "light" | "outline";
   isLoading?: boolean;
 }) => {
   return (
@@ -23,10 +23,12 @@ const Button = ({
       className={`${
         btnType === "main"
           ? "text-white bg-primary-600"
-          : "text-primary-500 bg-[#FFEEEB]"
+          : btnType === "light"
+          ? "text-primary-500 bg-[#FFEEEB]"
+          : "text-primary-600 !border !border-solid border-primary-600 hover:bg-primary-600 hover:text-white"
       } focus:ring-4 rounded-lg ${
         size === "sm"
-          ? `h-[36px]`
+          ? `h-[36px] text-sm`
           : size === "md"
           ? `h-[46px]`
           : size === "lg"

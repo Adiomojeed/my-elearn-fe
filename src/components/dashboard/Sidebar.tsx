@@ -17,7 +17,7 @@ import Settings from "../icons/Settings";
 const links = [
   {
     href: "/dashboard",
-    label: "Profile",
+    label: "Dashboard",
     icon: Dashboard,
     targetSegment: "dashboard",
   },

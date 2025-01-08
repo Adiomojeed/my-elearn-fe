@@ -1,7 +1,15 @@
+"use client";
+
 import Button from "@/components/Button";
 import Input from "@/components/Input";
+import { useAppSelector } from "@/store/useAppSelector";
 
 const Page = () => {
+  const {
+    auth: { user },
+  } = useAppSelector((s) => s);
+
+  const role = user?.role;
   return (
     <section className="flex flex-col h-full">
       <h6 className="md:text-lg font-medium">Settings</h6>
@@ -15,7 +23,7 @@ const Page = () => {
           </div>
           <div className="lg:w-3/5 mt-4 md:mt-0">
             <img
-              src="/avatar.svg"
+              src={role === "student" ? "/avatar.svg" : "/avatar-l.svg"}
               className="w-[120px] h-[120px]"
               alt="avatar icon"
             />

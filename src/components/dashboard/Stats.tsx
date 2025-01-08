@@ -1,7 +1,7 @@
 export type StatsProps = {
   icon: string;
   title: string;
-  value: string;
+  value: string | number;
 };
 
 const Stats = ({ stat }: { stat: StatsProps }) => {

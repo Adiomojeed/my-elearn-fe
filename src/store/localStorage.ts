@@ -3,12 +3,12 @@
 // Loads persisted state from local storage
 const loadState = () => {
   try {
-    const serializedState = localStorage.getItem("persist:hc");
+    const serializedState = localStorage.getItem("persist:el");
     if (serializedState === null) {
       return undefined;
     }
 
-    return JSON.parse(JSON.parse(serializedState).hc);
+    return JSON.parse(JSON.parse(serializedState).el);
   } catch (err) {
     return undefined;
   }
@@ -18,7 +18,7 @@ const loadState = () => {
 const saveState = (state: any) => {
   try {
     const serializedState = JSON.stringify(state);
-    localStorage.setItem("persist:hc", JSON.stringify({ hc: serializedState }));
+    localStorage.setItem("persist:el", JSON.stringify({ el: serializedState }));
   } catch (err) {
     //
   }

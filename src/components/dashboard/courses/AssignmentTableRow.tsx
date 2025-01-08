@@ -12,7 +12,11 @@ export type AssignmentTableRowProps = {
   status: string;
 };
 
-const AssignmentTableRow = ({ assignment }: AssignmentTableRowProps) => {
+const AssignmentTableRow = ({
+  assignment,
+}: {
+  assignment?: AssignmentTableRowProps;
+}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const status = "pending";
   return (

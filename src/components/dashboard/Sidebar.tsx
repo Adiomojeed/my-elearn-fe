@@ -46,10 +46,10 @@ const links = [
     targetSegment: "quizzes",
   },
   {
-    href: "/folders",
-    label: "My Folder",
+    href: "/resources",
+    label: "My Resources",
     icon: Folder,
-    targetSegment: "folders",
+    targetSegment: "resources",
   },
   {
     href: "/settings",

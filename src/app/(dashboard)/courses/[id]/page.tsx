@@ -7,7 +7,7 @@ import Resources from "@/components/dashboard/courses/Resources";
 import { act, useState } from "react";
 
 const Page = () => {
-  const [active, setActive] = useState("assignments");
+  const [active, setActive] = useState("course");
   const tabs = [
     { name: "Course", path: "course" },
     { name: "Announcements", path: "announcements" },

@@ -1,5 +1,6 @@
 import Button from "../Button";
 import TextArea from "../TextArea";
+import ResourceCard from "./ResourceCard";
 
 const AssignmentModal = ({
   isOpen,
@@ -45,16 +46,9 @@ const AssignmentModal = ({
           file to unreal engine asset library and submit your link in the
           comment section
         </p>
-        <p className="text-sm mt-6 font-medium">File/Resources (1)</p>
-        <div className="mt-3 p-3 bg-white rounded border border-[#F3F3F3] flex items-center gap-4 w-max">
-          <img src="/pdf.svg" alt="pdf icon" />
-          <div className="min-w-[150px]">
-            <p className="text-sm font-medium line-clamp-1">filename.pdf</p>
-            <small className="text-xs text-grey-200">1.5MB</small>
-          </div>
-          <button className="ml-auto">
-            <img src="/download.svg" alt="download icon" />
-          </button>
+        <p className="text-sm mt-6 font-medium mb-3">File/Resources (1)</p>
+        <div className="w-max">
+          <ResourceCard />
         </div>
         <div className="mt-8 pt-8 border-t border-[#F3F3F3] mb-6">
           <p className="text-sm font-medium">Attach your file</p>
@@ -76,7 +70,9 @@ const AssignmentModal = ({
 
         <TextArea label="Comment" labelClassName="font-medium text-grey-500" />
 
-        <Button className="mt-6 px-6 text-sm" size="md">Submit</Button>
+        <Button className="mt-6 px-6 text-sm" size="md">
+          Submit
+        </Button>
       </div>
     </div>
   );

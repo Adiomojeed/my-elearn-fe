@@ -1,3 +1,5 @@
+"use client";
+
 import CourseCard, { CourseProps } from "@/components/dashboard/CourseCard";
 
 const Page = () => {

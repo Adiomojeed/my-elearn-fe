@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import Button from "../Button";
+import { useAppSelector } from "@/store/useAppSelector";
 
 export type CourseProps = {
   name: string;
@@ -11,6 +12,11 @@ export type CourseProps = {
 
 const CourseCard = ({ course }: { course?: CourseProps }) => {
   const router = useRouter();
+  const {
+    auth: { user },
+  } = useAppSelector((s) => s);
+
+  const role = user?.role;
   return (
     <div className="rounded-lg border border-[#F3F3F3]">
       <img
@@ -19,7 +25,9 @@ const CourseCard = ({ course }: { course?: CourseProps }) => {
         className="h-[140px] w-full rounded-t-lg"
       />
       <div className="bg-white rounded-b-lg px-[14px] py-[18px] flex flex-col gap-2">
-        <small className="text-grey-200">Dr. James Ayangu</small>
+        {role === "student" && (
+          <small className="text-grey-200">Dr. James Ayangu</small>
+        )}
         <p className="font-medium">CSC 401 - Internet Technology</p>
         <small className="text-grey-300">10 Lessons</small>
         <Button

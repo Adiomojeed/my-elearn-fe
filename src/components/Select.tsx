@@ -29,7 +29,7 @@ const Select = ({
         value={value}
         onChange={onChange}
         // onBlur={onChange}
-        className={`bg-white border border-grey-50 text-grey-500 focus:outline-none focus:ring-primary focus:border-primary-500 placeholder:text-grey-200 text-sm rounded-lg block w-full h-[50px] md:h-[56px] p-4 ${className}`}
+        className={`bg-white border border-grey-50 text-grey-500 focus:outline-none focus:ring-primary focus:border-primary-500 placeholder:text-grey-200 text-sm rounded-lg focus:ring-[3px] focus:ring-primary-500 focus:ring-opacity-30 block w-full h-[50px] md:h-[56px] p-4 ${className}`}
       >
         {children}
       </select>

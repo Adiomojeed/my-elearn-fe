@@ -1,7 +1,7 @@
 "use client";
 import { useAppSelector } from "@/store/useAppSelector";
 import Button from "../Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Input from "../Input";
 import TextArea from "../TextArea";
 
@@ -27,15 +27,21 @@ Dr. Amarachi Orji
 const AnnouncementModal = ({
   isOpen,
   onClose,
+  isNew,
 }: {
   isOpen: boolean;
   onClose: () => void;
+  isNew?: boolean;
 }) => {
   const {
     auth: { user },
   } = useAppSelector((s) => s);
   const role = user?.role;
   const [isEdit, setIsEdit] = useState<boolean>(false);
+  useEffect(() => {
+    // @ts-ignore
+    setIsEdit(isNew);
+  }, [isNew]);
   return (
     <>
       {isOpen && (
@@ -63,7 +69,9 @@ const AnnouncementModal = ({
           <small className="text-grey-300 line-clamp-1">
             Annoucements /{" "}
             <span className="text-primary-500">
-              Live Career Advice Session: Preparing for the Job Market
+              {isNew
+                ? "New Post"
+                : "Live Career Advice Session: Preparing for the Job Market"}
             </span>
           </small>
         </div>
@@ -80,14 +88,16 @@ const AnnouncementModal = ({
                 className="min-h-[400px]"
               />
               <div className="flex gap-4 items-center">
-                <Button
-                  onClick={() => setIsEdit(false)}
-                  btnType="outline"
-                  className="px-6 text-sm"
-                  size="md"
-                >
-                  Cancel
-                </Button>
+                {!isNew && (
+                  <Button
+                    onClick={() => setIsEdit(false)}
+                    btnType="outline"
+                    className="px-6 text-sm"
+                    size="md"
+                  >
+                    Cancel
+                  </Button>
+                )}
                 <Button type="submit" className="px-6 text-sm" size="md">
                   Submit
                 </Button>

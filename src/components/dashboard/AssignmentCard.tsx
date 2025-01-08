@@ -17,12 +17,6 @@ const AssignmentCard = ({
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <div className="bg-white border border-[#F3F3F3] p-4 rounded-lg flex flex-col gap-3">
-      {isOpen && (
-        <div
-          onClick={onClose}
-          className="absolute left-0 top-0 z-[101] h-screen w-screen bg-black bg-opacity-10"
-        ></div>
-      )}
       <AssignmentModal isOpen={isOpen} onClose={onClose} />
       <p
         className={`text-xs px-2 py-1 rounded-[10px] w-min first-uppercase ${

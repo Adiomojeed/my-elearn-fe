@@ -74,7 +74,7 @@ const Sidebar = ({
       }`}
     >
       <button className="absolute right-4 top-4 md:hidden" onClick={onClose}>
-        x
+        <img src="/close.svg" className="w-6" alt="close icon" />
       </button>
       <Link className="border-b block border-[#F2F2F2] pb-5" href={"/"}>
         <img src="/logo.svg" alt="logo" />

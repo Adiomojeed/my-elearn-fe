@@ -72,6 +72,19 @@ body {
   .btn-outline {
     @apply text-primary-600 !border !border-solid border-primary-600 hover:bg-primary-600 hover:text-white focus:ring-4 focus:ring-primary-500 focus:ring-opacity-50 rounded-lg h-[36px] text-sm flex items-center justify-center px-10 whitespace-nowrap cursor-pointer;
   }
+
+  tr th {
+    @apply p-3 lg:py-3 lg:px-4 text-left text-sm bg-[#F3F3F3] border-r border-[#fff] whitespace-nowrap;
+  }
+
+  tr td {
+    @apply p-3 lg:px-4 lg:py-6 text-grey-400 text-sm border-r border-[#F3F3F3];
+  }
+
+  tr th:last-child,
+  tr td:last-child {
+    @apply border-r-0;
+  }
 }
 
 .hero {

@@ -21,8 +21,7 @@ const Navbar = ({ onOpen }: { onOpen: () => void }) => {
           className="ml-auto rounded-full"
         />
         <button className="ml-2 md:hidden" onClick={onOpen}>
-          hm
-          {/* <HambergerMenu size="24" color="#000000" /> */}
+          <img src="/hamburger.svg" className="w-7" alt="hamburger icon" />
         </button>
       </div>
     </nav>

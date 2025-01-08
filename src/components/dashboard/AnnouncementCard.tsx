@@ -26,12 +26,7 @@ const AnnouncementCard = ({
         !pinned ? "border border-[#F3F3F3] p-4 lg:px-6 lg:py-9" : "p-4"
       } bg-white rounded-lg `}
     >
-      {isOpen && (
-        <div
-          onClick={onClose}
-          className="absolute left-0 top-0 z-[101] h-screen w-screen bg-black bg-opacity-10"
-        ></div>
-      )}
+   
       <AnnouncementModal isOpen={isOpen} onClose={onClose} />
       <div className="flex gap-[10px]">
         <img src="/avatar-l.svg" className="w-9 h-9" alt="avatar" />

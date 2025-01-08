@@ -27,55 +27,65 @@ const AnnouncementModal = ({
   onClose: () => void;
 }) => {
   return (
-    <div
-      className={`absolute z-[101] h-full top-0 ${
-        isOpen ? "right-0" : "-right-[100%] md:-right-[500px] lg:-right-[720px]"
-      } bg-[#F9FAFB] w-full md:max-w-[500px] lg:max-w-[720px] transition-[right] easein duration-[750ms]`}
-    >
-      <div className="bg-white h-20 lg:h-[108px] border-b border-[#F3F3F3] flex items-center px-5 gap-3 sticky top-0">
-        <Button
+    <>
+      {isOpen && (
+        <div
           onClick={onClose}
-          size="sm"
-          btnType="outline"
-          className="px-3 !border-[#F3F3F3]"
-        >
-          <img src="/arrow-back.svg" alt="arrow-back icon" />
-        </Button>
-        <small className="text-grey-300 line-clamp-1">
-          Annoucements /{" "}
-          <span className="text-primary-500">
-            Live Career Advice Session: Preparing for the Job Market
-          </span>
-        </small>
-      </div>
-      <div className="p-4 md:p-5">
-        <div className="border border-[#F3F3F3] p-5 rounded-lg bg-white">
-          <p className="lg:text-lg leading-[22px] font-medium">
-            Live Career Advice Session: Preparing for the Job Market
-          </p>
-          <div className="flex items-center gap-4 mt-2">
-            <small className="text-grey-300 leading-[20px] flex items-center gap-1">
-              <img src="/user.svg" alt="user icon" />{" "}
-              <span className="mt-1">Dr. Amarachi Orji</span>
-            </small>
-            <small className="text-grey-300 leading-[20px] flex items-center gap-1">
-              <img src="/calendar.svg" alt="calendar icon" />{" "}
-              <span className="mt-1">15 Oct 2024</span>
-            </small>
-            <small className="text-grey-300 leading-[20px] flex items-center gap-1">
-              <img src="/clock.svg" alt="clock icon" />{" "}
-              <span className="mt-1">10:10 PM</span>
-            </small>
-          </div>
-          <div className="mt-6 ml-3 pl-5 border-l-2 border-[#F3F3F3]">
-            <p
-              className="text-sm md:text-basetext-grey-400 wysiwyg-render"
-              dangerouslySetInnerHTML={{ __html: text }}
-            />
+          className="absolute left-0 top-0 z-[101] h-screen w-screen bg-black bg-opacity-10"
+        ></div>
+      )}
+      <div
+        className={`absolute z-[101] h-full top-0 ${
+          isOpen
+            ? "right-0"
+            : "-right-[100%] md:-right-[500px] lg:-right-[720px]"
+        } bg-[#F9FAFB] w-full md:max-w-[500px] lg:max-w-[720px] transition-[right] easein duration-[750ms]`}
+      >
+        <div className="bg-white h-20 lg:h-[108px] border-b border-[#F3F3F3] flex items-center px-5 gap-3 sticky top-0">
+          <Button
+            onClick={onClose}
+            size="sm"
+            btnType="outline"
+            className="px-3 !border-[#F3F3F3]"
+          >
+            <img src="/arrow-back.svg" alt="arrow-back icon" />
+          </Button>
+          <small className="text-grey-300 line-clamp-1">
+            Annoucements /{" "}
+            <span className="text-primary-500">
+              Live Career Advice Session: Preparing for the Job Market
+            </span>
+          </small>
+        </div>
+        <div className="p-4 md:p-5">
+          <div className="border border-[#F3F3F3] p-5 rounded-lg bg-white">
+            <p className="lg:text-lg leading-[22px] font-medium">
+              Live Career Advice Session: Preparing for the Job Market
+            </p>
+            <div className="flex items-center gap-4 mt-2">
+              <small className="text-grey-300 leading-[20px] flex items-center gap-1">
+                <img src="/user.svg" alt="user icon" />{" "}
+                <span className="mt-1">Dr. Amarachi Orji</span>
+              </small>
+              <small className="text-grey-300 leading-[20px] flex items-center gap-1">
+                <img src="/calendar.svg" alt="calendar icon" />{" "}
+                <span className="mt-1">15 Oct 2024</span>
+              </small>
+              <small className="text-grey-300 leading-[20px] flex items-center gap-1">
+                <img src="/clock.svg" alt="clock icon" />{" "}
+                <span className="mt-1">10:10 PM</span>
+              </small>
+            </div>
+            <div className="mt-6 ml-3 pl-5 border-l-2 border-[#F3F3F3]">
+              <p
+                className="text-sm md:text-basetext-grey-400 wysiwyg-render"
+                dangerouslySetInnerHTML={{ __html: text }}
+              />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

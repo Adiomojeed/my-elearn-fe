@@ -1,9 +1,11 @@
 "use client";
 
+import AdminCourse from "@/components/dashboard/courses/AdminCourse";
 import Announcements from "@/components/dashboard/courses/Announcements";
 import Assignments from "@/components/dashboard/courses/Assignments";
 import Courses from "@/components/dashboard/courses/Courses";
 import Resources from "@/components/dashboard/courses/Resources";
+import { useAppSelector } from "@/store/useAppSelector";
 import { act, useState } from "react";
 
 const Page = () => {
@@ -15,9 +17,19 @@ const Page = () => {
     { name: "Resources", path: "resources" },
   ];
 
+  const {
+    auth: { user },
+  } = useAppSelector((s) => s);
+
+  const role = user?.role;
+
   const ActiveTab = () =>
     active === "course" ? (
-      <Courses />
+      role === "student" ? (
+        <Courses />
+      ) : (
+        <AdminCourse />
+      )
     ) : active === "announcements" ? (
       <Announcements />
     ) : active === "assignments" ? (

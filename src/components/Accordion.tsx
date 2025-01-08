@@ -7,6 +7,7 @@ interface AccordionProps {
   title: React.ReactNode;
   content: React.ReactNode;
   className?: string;
+  titleClassName?: string;
 }
 
 const Accordion: React.FC<AccordionProps> = (props) => {
@@ -23,7 +24,7 @@ const Accordion: React.FC<AccordionProps> = (props) => {
   return (
     <div className={`accordion__section ${props.className}`}>
       <div
-        className={`p-4 lg:p-6 flex items-center cursor-pointer ${active}`}
+        className={`p-4 lg:p-6 flex items-center cursor-pointer ${active} ${props.titleClassName}`}
         onClick={toggleAccordion}
       >
         {props.title}

@@ -20,29 +20,41 @@ const AssignmentDetails = ({
   const role = user?.role;
   return (
     <div className="mt-4 lg:mt-8">
-      <div className="bg-white border mb-5 border-[#F3F3F3] p-3 lg:p-4 flex items-center gap-2 justify-between">
-        <p className="font-medium">First Assignment</p>
-        <div className="flex gap-3">
-          <Button
-            onClick={onOpen}
-            type="submit"
-            className="px-4 text-sm"
-            size="sm"
-            btnType="outline"
-          >
-            Edit
-          </Button>
-          <Button
-            onClick={goBack}
-            type="submit"
-            className="px-4 text-sm bg-[#E8382C]"
-            size="sm"
-          >
-            Back
-          </Button>
+      <div className="bg-white border mb-5 border-[#F3F3F3] p-3 lg:p-4 ">
+        <div className="flex items-center gap-2 justify-between">
+          <p className="font-medium">First Assignment</p>
+          <div className="flex gap-3">
+            <Button
+              onClick={onOpen}
+              type="submit"
+              className="px-4 text-sm"
+              size="sm"
+              btnType="outline"
+            >
+              Edit
+            </Button>
+            <Button
+              onClick={goBack}
+              type="submit"
+              className="px-4 text-sm bg-[#E8382C]"
+              size="sm"
+            >
+              Back
+            </Button>
+          </div>
+          <AddAssignmentModal isOpen={isOpen} onClose={onClose} isEdit />
         </div>
-        <AddAssignmentModal isOpen={isOpen} onClose={onClose} isEdit />
+
+        <p className="text-sm mt-4 text-grey-400">
+          From the document attached, Create your own game asset and upload your
+          file to unreal engine asset library and submit your link in the
+          comment section. Lorem ipsum dolor sit amet, consectetur adipisicing
+          elit. Sunt nam cum sit praesentium ipsa cupiditate tempore optio
+          expedita dignissimos quis perferendis nisi, doloribus ab id, veritatis
+          libero unde deserunt eum!
+        </p>
       </div>
+
       <p className="mt-4 lg:mt-6 font-medium">Student Submission</p>
       <table className="mt-3 bg-white w-full">
         <thead>

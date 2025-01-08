@@ -85,7 +85,7 @@ const AddAssignmentModal = ({
             />
 
             <Button type="submit" className="px-6 text-sm w-max" size="md">
-              Publish
+              {isEdit ? "Save" : "Publish"}
             </Button>
           </form>
         </div>

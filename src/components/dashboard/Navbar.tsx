@@ -16,7 +16,7 @@ const Navbar = ({ onOpen }: { onOpen: () => void }) => {
         <img
           alt="avatar"
           src={role === "student" ? "/avatar.svg" : "/avatar-l.svg"}
-          className="ml-auto w-12 h-12"
+          className="ml-auto w-9 md:w-12 h-12"
         />
         <button className="ml-2 md:hidden" onClick={onOpen}>
           <img src="/hamburger.svg" className="w-7" alt="hamburger icon" />

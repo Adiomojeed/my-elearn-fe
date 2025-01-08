@@ -1,9 +1,9 @@
 import Button from "@/components/Button";
 import AssignmentCard, { AssignmentCardProps } from "../AssignmentCard";
 import useDisclosure from "@/hooks/useDisclosure";
-import AnnouncementModal from "../AnnouncementModal";
+import AnnouncementModal from "../../modals/AnnouncementModal";
 import { useAppSelector } from "@/store/useAppSelector";
-import AddAssignmentModal from "./AddAssignmentModal";
+import AddAssignmentModal from "../../modals/AddAssignmentModal";
 import { useState } from "react";
 import AssignmentDetails from "./AssignmentDetails";
 
@@ -59,7 +59,7 @@ const Assignments = () => {
     },
   ];
 
-  const [isDetails, setIsDetails] = useState<AssignmentCardProps | null>(null);
+  const [isDetails, setIsDetails] = useState<AssignmentCardProps | null>();
   return !isDetails ? (
     <div className="mt-4 lg:mt-8">
       {role !== "student" && (

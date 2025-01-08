@@ -1,6 +1,6 @@
 import Button from "../Button";
 import TextArea from "../TextArea";
-import ResourceCard from "./ResourceCard";
+import ResourceCard from "../dashboard/ResourceCard";
 
 const AssignmentModal = ({
   isOpen,

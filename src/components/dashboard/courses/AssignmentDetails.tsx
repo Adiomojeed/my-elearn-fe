@@ -2,11 +2,12 @@ import Button from "@/components/Button";
 import useDisclosure from "@/hooks/useDisclosure";
 import { useAppSelector } from "@/store/useAppSelector";
 import { AssignmentCardProps } from "../AssignmentCard";
-import AddAssignmentModal from "./AddAssignmentModal";
+import AddAssignmentModal from "../../modals/AddAssignmentModal";
+import AssignmentDetailsTableRow from "./AssignementDetailsTableRow";
 
 const AssignmentDetails = ({
   assignment,
-  goBack
+  goBack,
 }: {
   assignment: AssignmentCardProps;
   goBack: () => void;
@@ -42,8 +43,24 @@ const AssignmentDetails = ({
         </div>
         <AddAssignmentModal isOpen={isOpen} onClose={onClose} isEdit />
       </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6"></div>
+      <p className="mt-4 lg:mt-6 font-medium">Student Submission</p>
+      <table className="mt-3 bg-white w-full">
+        <thead>
+          <tr>
+            <th>Student ID</th>
+            <th>Student name</th>
+            <th className="hidden lg:table-cell">Submission</th>
+            <th className="hidden lg:table-cell">Status</th>
+            <th>Grade</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {Array.from({ length: 5 }).map((i, idx) => (
+            <AssignmentDetailsTableRow key={idx} />
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };

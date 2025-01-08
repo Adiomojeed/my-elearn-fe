@@ -34,7 +34,7 @@ const DashboardLayout = ({
       )}
       <Sidebar isOpen={isOpen} onClose={onClose} />
       {isClient ? (
-        <section className="flex h-full w-full flex-col overflow-scroll bg-[#F9F9F9]">
+        <section className="flex h-full w-full flex-col overflow-x-scroll bg-[#F9F9F9]">
           <Navbar onOpen={onOpen} />
           <div className="mx-auto w-full max-w-[1136px] px-4 py-6 md:px-6 hfull dashboard-content">
             {children}

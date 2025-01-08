@@ -30,6 +30,9 @@ const config: Config = {
         accent: {
           50: "#FFEEEB",
           500: "#FF5733"
+        },
+        red: {
+          700: "#B52C22"
         }
       },
       boxShadow: {

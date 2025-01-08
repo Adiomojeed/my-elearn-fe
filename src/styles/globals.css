@@ -74,11 +74,11 @@ body {
   }
 
   tr th {
-    @apply p-3 lg:py-3 lg:px-4 text-left text-sm bg-[#F3F3F3] border-r border-[#fff] whitespace-nowrap;
+    @apply p-3 lg:py-3 lg:px-4 text-left text-sm bg-[#F3F3F3] border-r border-[#fff] whitespace-nowrap overflow-clip text-ellipsis;
   }
 
   tr td {
-    @apply p-3 lg:px-4 lg:py-6 text-grey-400 text-sm border-r border-[#F3F3F3];
+    @apply p-3 lg:px-4 lg:py-6 text-grey-400 text-sm border-r border-[#F3F3F3] whitespace-nowrap overflow-clip text-ellipsis;
   }
 
   tr th:last-child,

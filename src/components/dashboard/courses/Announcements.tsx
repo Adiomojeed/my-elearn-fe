@@ -5,7 +5,7 @@ import AnnouncementAccordion from "./AnnouncementAccordion";
 import AnnouncementCard from "../AnnouncementCard";
 import Button from "@/components/Button";
 import useDisclosure from "@/hooks/useDisclosure";
-import AnnouncementModal from "../AnnouncementModal";
+import AnnouncementModal from "../../modals/AnnouncementModal";
 
 const Announcements = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -30,7 +30,7 @@ const Announcements = () => {
               className="px-4 text-sm"
               size="md"
             >
-              Post Announcements
+              Post <span className="hidden md:block">Announcements</span>
             </Button>
             <AnnouncementModal isOpen={isOpen} onClose={onClose} isNew />
           </div>

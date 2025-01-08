@@ -1,6 +1,6 @@
 import useDisclosure from "@/hooks/useDisclosure";
 import Button from "../Button";
-import AssignmentModal from "./AssignmentModal";
+import AssignmentModal from "../modals/AssignmentModal";
 import { useAppSelector } from "@/store/useAppSelector";
 
 export type AssignmentCardProps = {

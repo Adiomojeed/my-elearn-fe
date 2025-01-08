@@ -1,5 +1,5 @@
 import Accordion from "@/components/Accordion";
-import { text } from "../AnnouncementModal";
+import { text } from "../../modals/AnnouncementModal";
 
 const AnnouncementAccordion = () => {
   return (

@@ -2,7 +2,7 @@
 
 import useDisclosure from "@/hooks/useDisclosure";
 import Button from "../Button";
-import AnnouncementModal from "./AnnouncementModal";
+import AnnouncementModal from "../modals/AnnouncementModal";
 import { useAppSelector } from "@/store/useAppSelector";
 
 export type AnnouncementProps = {

@@ -4,7 +4,6 @@ import { NextResponse, type NextRequest } from "next/server";
 import { tokenConfig } from "@/api/request";
 
 export function middleware(request: NextRequest) {
-  console.log("ttt")
   const path = request.nextUrl.pathname;
   const publicPath = [
     "/",
@@ -19,6 +18,7 @@ export function middleware(request: NextRequest) {
 
   const token = request.cookies.get(tokenConfig.key.token)?.value ?? "";
   const role = request.cookies.get(tokenConfig.key.role)?.value ?? "";
+
 
   if (!isPublicPath && token.length <= 0) {
     return NextResponse.redirect(new URL("/sign-in", request.url));
@@ -35,6 +35,7 @@ export function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     "/sign-in",
+    "/new-password",
     // "/sign-up",
     // "/verify-email",
     // "/forgot-password",

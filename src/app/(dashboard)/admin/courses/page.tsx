@@ -7,7 +7,7 @@ import CourseTableRow from "@/components/dashboard/admin/CourseTableRow";
 import UsersTableRow from "@/components/dashboard/admin/UsersTableRow";
 import Stats, { StatsProps } from "@/components/dashboard/Stats";
 import CreateCourseModel from "@/components/modals/CreateCourseModal";
-import CreateUserModel from "@/components/modals/CreateUserModel";
+import CreateUserModal from "@/components/modals/CreateUserModal";
 import useDisclosure from "@/hooks/useDisclosure";
 import { useMemo, useState } from "react";
 

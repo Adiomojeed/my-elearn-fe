@@ -26,7 +26,7 @@ const Input = ({
   return (
     <div className="">
       {label && (
-        <label htmlFor={id} className="block mb-3 text-sm text-grey-500">
+        <label htmlFor={id} className="block mb-3 text-sm text-grey-500 first-uppercase">
           {label}
         </label>
       )}

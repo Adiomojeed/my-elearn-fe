@@ -5,7 +5,7 @@ import { UserData } from "@/api/auth";
 import Button from "@/components/Button";
 import UsersTableRow from "@/components/dashboard/admin/UsersTableRow";
 import Stats, { StatsProps } from "@/components/dashboard/Stats";
-import CreateUserModel from "@/components/modals/CreateUserModel";
+import CreateUserModal from "@/components/modals/CreateUserModal";
 import useDisclosure from "@/hooks/useDisclosure";
 import { useMemo, useState } from "react";
 
@@ -55,7 +55,7 @@ const Page = () => {
         >
           Create User
         </Button>
-        <CreateUserModel isOpen={isOpen} onClose={onClose} />
+        <CreateUserModal isOpen={isOpen} onClose={onClose} />
       </div>
 
       <table className="mt-3 bg-white w-full">

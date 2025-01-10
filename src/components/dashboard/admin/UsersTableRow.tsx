@@ -3,7 +3,7 @@
 import Button from "@/components/Button";
 import useDisclosure from "@/hooks/useDisclosure";
 import { UserData } from "@/api/auth";
-import CreateUserModel from "@/components/modals/CreateUserModel";
+import CreateUserModal from "@/components/modals/CreateUserModal";
 
 const UsersTableRow = ({ user }: { user?: UserData }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -23,7 +23,7 @@ const UsersTableRow = ({ user }: { user?: UserData }) => {
           </Button>
         </td>
       </tr>
-      <CreateUserModel isEdit isOpen={isOpen} onClose={onClose} user={user} />
+      <CreateUserModal isEdit isOpen={isOpen} onClose={onClose} user={user} />
     </>
   );
 };

@@ -3,7 +3,7 @@
 import Button from "@/components/Button";
 import useDisclosure from "@/hooks/useDisclosure";
 import { UserData } from "@/api/auth";
-import CreateUserModel from "@/components/modals/CreateUserModel";
+import CreateUserModal from "@/components/modals/CreateUserModal";
 import CreateCourseModel from "@/components/modals/CreateCourseModal";
 
 const CourseTableRow = ({ user }: { user?: UserData }) => {

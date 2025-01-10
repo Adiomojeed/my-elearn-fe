@@ -1,8 +1,10 @@
 "use client";
 
+import { useUpdatePassword, useUpdateUser } from "@/api/user";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import { useAppSelector } from "@/store/useAppSelector";
+import { SyntheticEvent, useEffect, useState } from "react";
 
 const Page = () => {
   const {
@@ -10,6 +12,54 @@ const Page = () => {
   } = useAppSelector((s) => s);
 
   const role = user?.role;
+  const [state, setState] = useState({
+    account_id: "",
+    email: "",
+    firstname: "",
+    lastname: "",
+    role: "",
+  });
+
+  const [old_password, setPassword] = useState("");
+  const [new_password, setNPassword] = useState("");
+
+  useEffect(() => {
+    setState({
+      account_id: user?.account_id ?? "",
+      email: user?.email ?? "",
+      firstname: user?.firstname ?? "",
+      lastname: user?.lastname ?? "",
+      role: user?.role ?? "",
+    });
+  }, [user]);
+
+  const handleChange = (e: any) => {
+    setState((prev: any) => ({ ...prev, [e.target.id]: e.target.value }));
+  };
+
+  const { mutate: updateUser, isPending } = useUpdateUser();
+  const { mutate: updatePassword, isPending: isChangePassword } =
+    useUpdatePassword();
+
+  const handleSubmit = (e: SyntheticEvent) => {
+    e.preventDefault();
+    // @ts-ignore
+    updateUser(state);
+  };
+
+  const handleChangePassword = (e: SyntheticEvent) => {
+    e.preventDefault();
+    updatePassword(
+      { old_password, new_password },
+      {
+        onSuccess: () => {
+          setPassword("");
+          setNPassword("");
+        },
+      }
+    );
+  };
+
   return (
     <section className="flex flex-col h-full">
       <h6 className="md:text-lg font-medium">Settings</h6>
@@ -36,14 +86,37 @@ const Page = () => {
               Update your personal details here
             </small>
           </div>
-          <form className="lg:w-3/5 flex flex-col gap-5 mt-4 lg:mt-0">
+          <form
+            onSubmit={handleSubmit}
+            className="lg:w-3/5 flex flex-col gap-5 mt-4 lg:mt-0"
+          >
             <div className="grid grid-cols-2 gap-4">
-              <Input label="First Name" />
-              <Input label="Last Name" />
+              <Input
+                label="First Name"
+                value={state.firstname}
+                id="firstname"
+                onChange={(e) => handleChange(e)}
+                required
+              />
+              <Input
+                label="Last Name"
+                value={state.lastname}
+                id="lastname"
+                onChange={(e) => handleChange(e)}
+                required
+              />
             </div>
-            <Input label="Student Registration Number" />
-            <Input label="Email address" type="email" />
-            <Button type="submit" className="w-max">
+            <Input
+              label={`${role} Number`}
+              value={state.account_id}
+              disabled={!!user}
+            />
+            <Input
+              label="Email address"
+              value={state.email}
+              disabled={!!user}
+            />
+            <Button isLoading={isPending} type="submit" className="w-max">
               Save Changes
             </Button>
           </form>
@@ -53,10 +126,29 @@ const Page = () => {
             <p className="font-medium">Manage Password</p>
             <small className="mt-1 text-grey-200">Keep your account safe</small>
           </div>
-          <form className="lg:w-3/5 flex flex-col gap-5 mt-4 lg:mt-0">
-            <Input label="Password" type="password" />
-            <Input label="Confirm Password" type="password" />
-            <Button type="submit" className="w-max">
+          <form
+            onSubmit={handleChangePassword}
+            className="lg:w-3/5 flex flex-col gap-5 mt-4 lg:mt-0"
+          >
+            <Input
+              label="Old Password"
+              type="password"
+              value={old_password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <Input
+              label="New Password"
+              type="password"
+              value={new_password}
+              onChange={(e) => setNPassword(e.target.value)}
+              required
+            />
+            <Button
+              isLoading={isChangePassword}
+              type="submit"
+              className="w-max"
+            >
               Save Changes
             </Button>
           </form>

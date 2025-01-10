@@ -8,7 +8,7 @@ import { logoutUser } from "./auth";
 export const tokenConfig = {
   key: {
     token: "accessToken",
-    role: "role"
+    role: "role",
   },
 };
 

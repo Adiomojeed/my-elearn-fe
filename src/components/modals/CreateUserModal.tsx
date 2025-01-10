@@ -8,7 +8,7 @@ import Input from "@/components/Input";
 import Select, { Select2 } from "../Select";
 import { useCreateUser, UserData } from "@/api/auth";
 
-const CreateUserModel = ({
+const CreateUserModal = ({
   isOpen,
   onClose,
   isEdit,
@@ -172,4 +172,4 @@ const CreateUserModel = ({
   );
 };
 
-export default CreateUserModel;
+export default CreateUserModal;

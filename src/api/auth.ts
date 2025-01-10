@@ -19,7 +19,7 @@ export type UserData = AuthData & {
   role: "student" | "educator" | "admin",
   isDefaultPassword?: boolean,
   courses: {}[],
-  _id?: string
+  _id?: string,
 };
 
 const dispatch = store.dispatch;
@@ -53,7 +53,7 @@ export const useLoginUser = () =>
 export const useRegisterUser = () =>
   useMutation({
     mutationFn: (values: AuthData) =>
-      Request.post(`/auth/createUser`, values),
+      Request.post(`/auth/create-user`, values),
     onSuccess: async (data: any) => {
       customToast("New user created successfully", ToastType.success);
     },
@@ -65,7 +65,7 @@ export const useRegisterUser = () =>
 export const useCreateUser = () =>
   useMutation({
     mutationFn: (values: AuthData) =>
-      Request.post(`/auth/createUser`, values),
+      Request.post(`/auth/create-user`, values),
     onSuccess: async (data: any) => {
       customToast("New user created successfully", ToastType.success);
     },
@@ -75,8 +75,7 @@ export const useCreateUser = () =>
   });
 
 export const logoutUser = () => {
-  deleteCookie(config.key.token);
-  deleteCookie(config.key.role);
+  deleteCookie();
 
   localStorage.removeItem(config.key.token);
   // window.location.href = "/sign-in";

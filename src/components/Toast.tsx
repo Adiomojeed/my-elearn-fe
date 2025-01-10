@@ -34,8 +34,8 @@ export enum ToastType {
 
 const ToastUI: React.FC<ToastProps> = ({ message, type }) => {
   const color: any = {
-    [ToastType.success]: "text-[#12B76A]",
-    [ToastType.error]: "text-[#D92D20]",
+    [ToastType.success]: "text-primary-600",
+    [ToastType.error]: "text-red-400",
   };
   const stateIcon: any = {
     // [ToastType.error]: <CloseSquare size="42" color="#D92D20" variant="Bold" />,
@@ -61,22 +61,22 @@ const ToastUI: React.FC<ToastProps> = ({ message, type }) => {
   return (
     <div
       className={`flex w-full items-center rounded-[10px] px-4 py-2 text-black shadow-sm md:w-[400px] border ${
-        type === "success"
-          ? "border-[#23A094] bg-[#D3F3F0]"
-          : "bg-red-200 borded-red-500"
+        type === "success" ? "border-primary-600" : "border-red-400"
       }`}
     >
       <div className="flex items-center gap-[10px] pr-[15px]">
-        {stateIcon[type]}
+        {/* {stateIcon[type]} */}
 
         <div>
-          {/* <h6 className={`font-bold ${color[type]}`}>{headlineText[type]}</h6> */}
-          <p className="text-sm">{message}</p>
+          <h6 className={`font-bold text-sm ${color[type]}`}>
+            {headlineText[type]}
+          </h6>
+          <p className="text-sm text-grey-500 mt-1">{message}</p>
         </div>
       </div>
 
       <button aria-label="close-toaster" className="ml-auto">
-        x
+        <img src="/close.svg" className="w-4" alt="" />
       </button>
     </div>
   );

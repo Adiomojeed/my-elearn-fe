@@ -15,7 +15,7 @@ const Page = () => {
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
-    loginUser({ email, password });
+    loginUser({ account_id: email, password });
   };
 
   return (
@@ -32,10 +32,9 @@ const Page = () => {
         className="mt-8 lg:mt-[52px] flex flex-col gap-2 md:gap-4 lg:gap-5"
       >
         <Input
-          label="Email Address"
-          type="email"
+          label="Student/Staff ID"
           id="email"
-          placeholder="Johndoe@gmail.com"
+          placeholder="STUDENT-123"
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}

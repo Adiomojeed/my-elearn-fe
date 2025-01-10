@@ -32,14 +32,16 @@ const DashboardLayout = ({
           className="absolute left-0 top-0 z-[50] h-screen w-screen bg-black bg-opacity-20"
         ></div>
       )}
-      <Sidebar isOpen={isOpen} onClose={onClose} />
       {isClient ? (
-        <section className="flex h-full w-full flex-col overflow-x-scroll bg-[#F9F9F9]">
-          <Navbar onOpen={onOpen} />
-          <div className="mx-auto w-full max-w-[1136px] px-4 py-6 md:px-6 hfull dashboard-content">
-            {children}
-          </div>
-        </section>
+        <>
+          <Sidebar isOpen={isOpen} onClose={onClose} />
+          <section className="flex h-full w-full flex-col overflow-x-scroll bg-[#F9F9F9]">
+            <Navbar onOpen={onOpen} />
+            <div className="mx-auto w-full max-w-[1136px] px-4 py-6 md:px-6 hfull dashboard-content overflow-x-hidden">
+              {children}
+            </div>
+          </section>
+        </>
       ) : (
         <div className="flex-center h-full w-full">
           {/* <Spinner

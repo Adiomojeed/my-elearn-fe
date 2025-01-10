@@ -3,9 +3,9 @@
 "use client";
 
 import Link from "next/link";
-import { createElement, useEffect, useMemo } from "react";
+import { createElement, useMemo } from "react";
 
-import { useSelectedLayoutSegment } from "next/navigation";
+import { useSelectedLayoutSegments } from "next/navigation";
 import Dashboard from "../icons/Dashboard";
 import Announcements from "../icons/Announcements";
 import Courses from "../icons/Courses";
@@ -14,8 +14,7 @@ import Quizzes from "../icons/Quizzes";
 import Folder from "../icons/Folder";
 import Settings from "../icons/Settings";
 import { useAppSelector } from "@/store/useAppSelector";
-import { useAppDispatch } from "@/store/useAppDispatch";
-import { AUTH_USER } from "@/store/reducers/types";
+import { logoutUser } from "@/api/auth";
 
 const Sidebar = ({
   isOpen,
@@ -24,11 +23,8 @@ const Sidebar = ({
   isOpen: boolean;
   onClose: () => void;
 }) => {
-  const activeSegment = useSelectedLayoutSegment();
-  const dispatch = useAppDispatch();
-  useEffect(() => {
-    // dispatch({ type: AUTH_USER, payload: { role: "educator" } });
-  }, []);
+  const activeSegments = useSelectedLayoutSegments();
+  const activeSegment = activeSegments.join("/");
 
   const {
     auth: { user },
@@ -37,53 +33,55 @@ const Sidebar = ({
   const role = user?.role;
 
   const links = useMemo(
-    () => [
-      {
-        href: "/dashboard",
-        label: role === "educator" ? "Overview" : "Dashboard",
-        icon: Dashboard,
-        targetSegment: "dashboard",
-      },
-      {
-        href: "/announcements",
-        label: "Announcements",
-        icon: Announcements,
-        targetSegment: "announcements",
-        isStudent: true,
-      },
-      {
-        href: "/courses",
-        label: role === "educator" ? "Course Management" : "My Courses",
-        icon: Courses,
-        targetSegment: "courses",
-      },
-      {
-        href: "/assignments",
-        label: "Assignments",
-        icon: Assignments,
-        targetSegment: "assignments",
-        isStudent: true,
-      },
-      {
-        href: "/quizzes",
-        label: "Quizzes",
-        icon: Quizzes,
-        targetSegment: "quizzes",
-      },
-      {
-        href: "/resources",
-        label: "My Resources",
-        icon: Folder,
-        targetSegment: "resources",
-        isStudent: true,
-      },
-      {
-        href: "/settings",
-        label: "Settings",
-        icon: Settings,
-        targetSegment: "settings",
-      },
-    ],
+    () =>
+      role === "admin"
+        ? [
+            {
+              label: "Users",
+              icon: Dashboard,
+              targetSegment: "admin/users",
+            },
+          ]
+        : [
+            {
+              label: role === "educator" ? "Overview" : "Dashboard",
+              icon: Dashboard,
+              targetSegment: "dashboard",
+            },
+            {
+              label: "Announcements",
+              icon: Announcements,
+              targetSegment: "announcements",
+              isStudent: true,
+            },
+            {
+              label: role === "educator" ? "Course Management" : "My Courses",
+              icon: Courses,
+              targetSegment: "courses",
+            },
+            {
+              label: "Assignments",
+              icon: Assignments,
+              targetSegment: "assignments",
+              isStudent: true,
+            },
+            {
+              label: "Quizzes",
+              icon: Quizzes,
+              targetSegment: "quizzes",
+            },
+            {
+              label: "My Resources",
+              icon: Folder,
+              targetSegment: "resources",
+              isStudent: true,
+            },
+            {
+              label: "Settings",
+              icon: Settings,
+              targetSegment: "settings",
+            },
+          ],
     []
   );
   return (
@@ -104,7 +102,7 @@ const Sidebar = ({
           .map((i, idx) => (
             <Link
               key={idx}
-              href={i.href}
+              href={`/${i.targetSegment}`}
               className={`flex h-11 items-center gap-3 rounded px-3 text-sm hover:bg-[#E6F9EE] hover:text-grey-500 ${
                 activeSegment === i.targetSegment
                   ? "bg-[#E6F9EE]"
@@ -133,7 +131,7 @@ const Sidebar = ({
           className="ml-auto"
           onClick={() => {
             onClose();
-            // logoutUser();
+            logoutUser();
           }}
         >
           <img src="/logout.svg" alt="logout icon" />

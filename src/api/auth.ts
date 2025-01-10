@@ -8,28 +8,31 @@ import { createCookie, deleteCookie } from "./cookiesActions";
 import customToast, { ToastType } from "@/components/Toast";
 
 export type AuthData = {
-  firstname?: string,
-  lastname?: string,
-  account_id?: string,
+  account_id: string,
+  password: string,
+};
+
+export type UserData = AuthData & {
+  firstname: string,
+  lastname: string,
   email: string,
-  password: string
   role: "student" | "educator" | "admin",
   isDefaultPassword: boolean,
   _id: string
 };
-
-export type UserData = AuthData & {};
 
 const dispatch = store.dispatch;
 
 
 export const useLoginUser = () =>
   useMutation({
+    // @ts-ignore
     mutationFn: (values: AuthData) =>
-      Request.post(`/login`, values),
-    onSuccess: async (data: any) => {
+      Request.post(`/auth/login`, values),
+    onSuccess: async (data: { user: UserData, token: string }) => {
       localStorage.setItem(config.key.token, `Bearer ${data.token as string}`);
       createCookie(config.key.token, `Bearer ${data.token as string}`);
+      createCookie(config.key.role, data.user.role)
 
       dispatch({
         type: AUTH_USER,
@@ -41,8 +44,8 @@ export const useLoginUser = () =>
         window.location.reload();
       }, 1000);
     },
-    onError: (err) => {
-      // customToast((err as any)?.title, ToastType.error);
+    onError: (err: string) => {
+      customToast(err, ToastType.error);
     },
   });
 
@@ -71,6 +74,7 @@ export const useRegisterUser = () =>
 
 export const logoutUser = () => {
   deleteCookie(config.key.token);
+  deleteCookie(config.key.role);
 
   localStorage.removeItem(config.key.token);
   // window.location.href = "/sign-in";

@@ -18,8 +18,8 @@ const ModuleCard = () => {
         <div className="p-3 md:p-4 lg:px-12 flex flex-col divide-y divide-[#F3F3F3] gap-3 lg:gap-3">
           {Array.from({ length: 3 }).map((i, idx) => (
             <div key={idx} className="pt-3 md:pt-4 first:pt-0">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 ">
-                <Input placeholder="Lesson title" size="md" className="grid" />
+              <div className="flex md:grid grid-cols-1 lg:grid-cols-2 gap-3 ">
+                <Input placeholder="Lesson title" size="md" className="" />
                 <div className="flex ml-auto gap-3">
                   <Button btnType="outline" className="px-4 text-xs" size="sm">
                     Hide
@@ -54,7 +54,7 @@ const ModuleCard = () => {
           ))}
           <Button
             type="submit"
-            className="px-4 text-sm mt-3 ml-auto w-max"
+            className="px-4 text-sm mt3 ml-auto w-max"
             size="md"
           >
             Add new lesson

@@ -1,4 +1,5 @@
-import { units } from "@/utils/unitConversions";
+import { MultiSelect, Option } from "react-multi-select-component";
+
 import React, { useEffect, useState } from "react";
 
 const Select = ({
@@ -37,73 +38,48 @@ const Select = ({
   );
 };
 
-export type selectValues = { input: string; unit: units };
-
 const Select2 = ({
   label,
   id,
+  required = false,
+
   className,
   value,
   onChange,
-  required,
-  type = "text",
-  containerClassName,
+  options,
 }: {
-  type?: string;
   label?: string;
-  value: selectValues;
   className?: string;
-  containerClassName?: string;
-  id?: string;
+  id: string;
   required?: boolean;
-  onChange?: (e: { input: string; unit: units }) => void;
+
+  value: Option[];
+  options: Option[];
+  onChange?: (e: any) => void;
 }) => {
-  const [inputValue, setValue] = useState<selectValues>(value);
-
-  useEffect(() => {
-    value && setValue(value);
-  }, [value]);
-
-  useEffect(() => {
-    // @ts-ignore
-    onChange(inputValue);
-  }, [inputValue]);
+  
   return (
-    <div className={containerClassName}>
-      <label htmlFor={id} className="block mb-2">
+    <div>
+      <label htmlFor={id} className="block mb-3 text-sm text-grey-500">
         {label}
       </label>
-      <div className="flex">
-        <input
-          value={inputValue.input}
-          onChange={(e) =>
-            setValue({ input: e.target.value, unit: inputValue.unit })
-          }
-          id={id}
-          type={type}
-          required={required}
-          className="text-[18px] text-dark-500 border border-gray-300 !border-r-0 p-3 rounded-l-[6px] !rounded-r-none w-[60%]"
-        />
-
-        <select
-          // id={id}
-          // required
-          value={inputValue.unit}
-          className={`bg-white border border-gray-300 text-dark-700 focus:outline-none focus:ring-primary focus:border-blue-500 text-xl font-semibold rounded-r-[6px] block w-[40%] h-[56px] px-4 ${className}`}
-          onChange={(e) =>
-            setValue({ input: inputValue.input, unit: e.target.value as units })
-          }
-          onBlur={(e) =>
-            setValue({ input: inputValue.input, unit: e.target.value as units })
-          }
-        >
-          <option value="m">m</option>
-          <option value="cm">cm</option>
-          <option value="mm">mm</option>
-          <option value="in">in</option>
-          <option value="ft">ft</option>
-        </select>
-      </div>
+      {/* <select
+        id={id}
+        required={required}
+        value={value}
+        onChange={onChange}
+        // onBlur={onChange}
+        className={`bg-white border border-grey-50 text-grey-500 focus:outline-none focus:ring-primary focus:border-primary-500 placeholder:text-grey-200 text-sm rounded-lg focus:ring-[3px] focus:ring-primary-500 focus:ring-opacity-30 block w-full h-[50px] md:h-[56px] p-4 ${className}`}
+      >
+        {children}
+      </select> */}
+      <MultiSelect
+        options={options}
+        value={value}
+        onChange={onChange}
+        labelledBy={id}
+        // className={`bg-white border border-grey-50 text-grey-500 focus:outline-none focus:ring-primary focus:border-primary-500 placeholder:text-grey-200 text-sm rounded-lg focus:ring-[3px] focus:ring-primary-500 focus:ring-opacity-30 blockw-full h-[50px] md:h-[56px] p4 ${className}`}
+      />
     </div>
   );
 };

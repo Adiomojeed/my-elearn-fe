@@ -8,6 +8,7 @@ import { logoutUser } from "./auth";
 export const tokenConfig = {
   key: {
     token: "accessToken",
+    role: "role"
   },
 };
 
@@ -43,7 +44,7 @@ Request?.interceptors?.request?.use(requestConfiguration, (error) => {
 
 const handleError = (error: any) => {
   if (Number(error.status) === 401) {
-    logoutUser()
+    // logoutUser()
   }
 
   // customToast(error?.response?.data?.message, ToastType.error);

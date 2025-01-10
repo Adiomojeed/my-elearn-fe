@@ -62,6 +62,32 @@ export const useRegisterUser = () =>
     },
   });
 
+export const useForgotPassword = () =>
+  useMutation({
+    mutationFn: (email: string) =>
+      Request.post(`/auth/forgot-password`, { email }),
+    onSuccess: async (data: any) => {
+      customToast("Password reset mail sent successfully", ToastType.success);
+      window.location.href = "/sign-in";
+    },
+    onError: (err: string) => {
+      customToast(err, ToastType.error);
+    },
+  });
+
+export const useResetPassword = () =>
+  useMutation({
+    mutationFn: (values: { password: string, token: string }) =>
+      Request.post(`/auth/reset-password`, values),
+    onSuccess: async (data: any) => {
+      customToast("Password changed successfully, you can now login", ToastType.success);
+      window.location.href = "/sign-in";
+    },
+    onError: (err: string) => {
+      customToast(err, ToastType.error);
+    },
+  });
+
 export const useCreateUser = () =>
   useMutation({
     mutationFn: (values: AuthData) =>

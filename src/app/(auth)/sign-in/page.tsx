@@ -57,7 +57,7 @@ const Page = () => {
         </div>
         <small className="text-right">
           Forgot Password?
-          <Link href="/" className="text-primary-600 ml-1">
+          <Link href="/forgot-password" className="text-primary-600 ml-1">
             Reset
           </Link>
         </small>

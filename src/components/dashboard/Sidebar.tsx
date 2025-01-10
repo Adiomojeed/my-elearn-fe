@@ -33,8 +33,8 @@ const Sidebar = ({
   const role = user?.role;
 
   const links = useMemo(
-    () =>
-      role === "admin"
+    () => [
+      ...(role === "admin"
         ? [
             {
               label: "Users",
@@ -81,12 +81,13 @@ const Sidebar = ({
               targetSegment: "resources",
               isStudent: true,
             },
-            {
-              label: "Settings",
-              icon: Settings,
-              targetSegment: "settings",
-            },
-          ],
+          ]),
+      {
+        label: "Settings",
+        icon: Settings,
+        targetSegment: "settings",
+      },
+    ],
     []
   );
   return (

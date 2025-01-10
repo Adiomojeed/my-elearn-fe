@@ -16,7 +16,7 @@ const UsersTableRow = ({ user }: { user?: UserData }) => {
         </td>
         <td className="hidden lg:table-cell">{user?.email}</td>
         <td className="hidden lg:table-cell">{user?.courses.length}</td>
-        <td>{user?.role}</td>
+        <td className="first-uppercase">{user?.role}</td>
         <td>
           <Button onClick={onOpen} btnType="outline" size="sm" className="px-4">
             View

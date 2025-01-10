@@ -8,7 +8,7 @@ import Input from "@/components/Input";
 import Select, { Select2 } from "../Select";
 import { useCreateUser, UserData } from "@/api/auth";
 
-const CreateUserModel = ({
+const CreateCourseModel = ({
   isOpen,
   onClose,
   isEdit,
@@ -91,9 +91,9 @@ const CreateUserModel = ({
             <img src="/arrow-back.svg" alt="arrow-back icon" />
           </Button>
           <small className="text-grey-300 line-clamp-1">
-            User /{" "}
+            Course /{" "}
             <span className="text-primary-500">
-              {isEdit ? "Edit User" : "Create User"}
+              {isEdit ? "Edit Course" : "Create Course"}
             </span>
           </small>
         </div>
@@ -172,4 +172,4 @@ const CreateUserModel = ({
   );
 };
 
-export default CreateUserModel;
+export default CreateCourseModel;

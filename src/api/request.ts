@@ -53,7 +53,7 @@ const handleError = (error: any) => {
 
 Request?.interceptors?.response?.use(
   async (response) => {
-    return response.data;
+    return response.data.data;
   },
   async (error) => {
     await handleError(error);

@@ -41,6 +41,11 @@ const Sidebar = ({
               icon: Dashboard,
               targetSegment: "admin/users",
             },
+            {
+              label: "Courses",
+              icon: Courses,
+              targetSegment: "admin/courses",
+            },
           ]
         : [
             {
@@ -124,8 +129,12 @@ const Sidebar = ({
           alt="avatar"
         />
         <div>
-          <h6 className="lg:text-lg leading-[26px]">Adio Mojeed</h6>
-          <small className="text-grey-200 leading-[26px]">LRN2024-001</small>
+          <h6 className="lg:text-lg leading-[26px]">
+            {user?.firstname} {user?.lastname}
+          </h6>
+          <small className="text-grey-200 leading-[26px] uppercase">
+            {user?.account_id}
+          </small>
         </div>
         <button
           className="ml-auto"

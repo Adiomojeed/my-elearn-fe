@@ -91,6 +91,16 @@ body {
   tr td:last-child {
     @apply border-r-0;
   }
+
+  .user-row td {
+    @apply py-2;
+  }
+
+  input:disabled,
+  select:disabled,
+  textarea:disabled {
+    @apply bg-[#F3F3F3];
+  }
 }
 
 .hero {

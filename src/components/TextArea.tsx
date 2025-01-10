@@ -9,6 +9,7 @@ const TextArea = ({
   value,
   onChange,
   labelClassName,
+  disabled,
 }: {
   label?: string;
   placeholder?: string;
@@ -18,6 +19,7 @@ const TextArea = ({
   required?: boolean;
   value?: string;
   onChange?: (e: any) => void;
+  disabled?: boolean;
 }) => {
   return (
     <div className="">
@@ -36,6 +38,7 @@ const TextArea = ({
         required={required}
         value={value}
         onChange={onChange}
+        disabled={disabled}
       ></textarea>
     </div>
   );

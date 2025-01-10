@@ -3,8 +3,10 @@
 import { useGetUsers } from "@/api/admin";
 import { UserData } from "@/api/auth";
 import Button from "@/components/Button";
+import CourseTableRow from "@/components/dashboard/admin/CourseTableRow";
 import UsersTableRow from "@/components/dashboard/admin/UsersTableRow";
 import Stats, { StatsProps } from "@/components/dashboard/Stats";
+import CreateCourseModel from "@/components/modals/CreateCourseModal";
 import CreateUserModel from "@/components/modals/CreateUserModel";
 import useDisclosure from "@/hooks/useDisclosure";
 import { useMemo, useState } from "react";
@@ -19,19 +21,19 @@ const Page = () => {
   const stats = useMemo(
     () => [
       {
-        title: "Total Users",
+        title: "Total Courses",
         value: (data as any)?.totalUsers ?? 0,
-        icon: "/attendance.svg",
+        icon: "/enrolled.svg",
       },
       {
-        title: "Students",
+        title: "Active",
         value: (data as any)?.counts?.students ?? 0,
-        icon: "/attendance.svg",
+        icon: "/enrolled.svg",
       },
       {
-        title: "Educators",
+        title: "Inactive",
         value: (data as any)?.counts?.educators ?? 0,
-        icon: "/attendance.svg",
+        icon: "/enrolled.svg",
       },
     ],
     [users]
@@ -40,7 +42,7 @@ const Page = () => {
     <section className="flex flex-col h-full">
       <div className="bg-white border mb-5 border-[#F3F3F3] p-3 lg:p-4 flex flex-col lg:flex-row lg:items-center gap-2 justify-between">
         <div>
-          <p className="font-medium">Users</p>
+          <p className="font-medium">Courses</p>
           <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-2">
             {stats.map((i: StatsProps, idx) => (
               <Stats key={idx} stat={i} />
@@ -53,9 +55,9 @@ const Page = () => {
           className="px-4 text-sm"
           size="md"
         >
-          Create User
+          Create Course
         </Button>
-        <CreateUserModel isOpen={isOpen} onClose={onClose} />
+        <CreateCourseModel isOpen={isOpen} onClose={onClose} />
       </div>
 
       <table className="mt-3 bg-white w-full">
@@ -71,7 +73,7 @@ const Page = () => {
         </thead>
         <tbody>
           {users?.map((i, idx: number) => (
-            <UsersTableRow key={idx} user={i} />
+            <CourseTableRow key={idx} user={i} />
           ))}
         </tbody>
       </table>

@@ -10,6 +10,7 @@ const Select = ({
   className,
   value,
   onChange,
+  disabled,
 }: {
   label?: string;
   className?: string;
@@ -18,6 +19,7 @@ const Select = ({
   children: any;
   value?: string;
   onChange?: (e: any) => void;
+  disabled?: boolean;
 }) => {
   return (
     <div>
@@ -29,6 +31,7 @@ const Select = ({
         required={required}
         value={value}
         onChange={onChange}
+        disabled={disabled}
         // onBlur={onChange}
         className={`bg-white border border-grey-50 text-grey-500 focus:outline-none focus:ring-primary focus:border-primary-500 placeholder:text-grey-200 text-sm rounded-lg focus:ring-[3px] focus:ring-primary-500 focus:ring-opacity-30 block w-full h-[50px] md:h-[56px] p-4 ${className}`}
       >
@@ -57,7 +60,6 @@ const Select2 = ({
   options: Option[];
   onChange?: (e: any) => void;
 }) => {
-  
   return (
     <div>
       <label htmlFor={id} className="block mb-3 text-sm text-grey-500">

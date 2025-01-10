@@ -10,6 +10,7 @@ const Input = ({
   onChange,
   className,
   size = "base",
+  disabled
 }: {
   label?: string;
   placeholder?: string;
@@ -20,6 +21,7 @@ const Input = ({
   onChange?: (e: any) => void;
   className?: string;
   size?: "md" | "base";
+  disabled?: boolean;
 }) => {
   return (
     <div className="">
@@ -32,12 +34,15 @@ const Input = ({
         type={type}
         id={id}
         className={`bg-white border border-grey-50 text-grey-500 focus:outline-none focus:ring-primary focus:border-primary-500 placeholder:text-grey-200 text-sm rounded-lg focus:ring-[3px] focus:ring-primary-500 focus:ring-opacity-30 block w-full ${
-          size === "base" ? "h-[50px] md:h-[56px]" : "h-[38px] text-sm font-normal"
+          size === "base"
+            ? "h-[50px] md:h-[56px]"
+            : "h-[38px] text-sm font-normal"
         }  p-4 ${className}`}
         placeholder={placeholder}
         required={required}
         value={value}
         onChange={onChange}
+        disabled={disabled}
       />
     </div>
   );

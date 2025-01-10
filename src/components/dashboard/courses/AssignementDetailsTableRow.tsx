@@ -2,7 +2,6 @@
 
 import Button from "@/components/Button";
 import useDisclosure from "@/hooks/useDisclosure";
-import AssignmentModal from "../../modals/AssignmentModal";
 import SubmissionModal from "@/components/modals/SubmissionModal";
 
 export type AssignmentDetailsTableRowProps = {

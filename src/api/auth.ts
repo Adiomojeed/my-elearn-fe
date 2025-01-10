@@ -17,8 +17,9 @@ export type UserData = AuthData & {
   lastname: string,
   email: string,
   role: "student" | "educator" | "admin",
-  isDefaultPassword: boolean,
-  _id: string
+  isDefaultPassword?: boolean,
+  courses: {}[],
+  _id?: string
 };
 
 const dispatch = store.dispatch;
@@ -52,23 +53,24 @@ export const useLoginUser = () =>
 export const useRegisterUser = () =>
   useMutation({
     mutationFn: (values: AuthData) =>
-      Request.post(`/signup`, values),
+      Request.post(`/auth/createUser`, values),
     onSuccess: async (data: any) => {
-      localStorage.setItem(config.key.token, `Bearer ${data.token as string}`);
-      createCookie(config.key.token, `Bearer ${data.tokenConfig as string}`);
-
-      dispatch({
-        type: AUTH_USER,
-        payload: data.user,
-      });
-      customToast("User created successfully", ToastType.success);
-
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
+      customToast("New user created successfully", ToastType.success);
     },
-    onError: (err) => {
-      // customToast((err as any)?.title, ToastType.error);
+    onError: (err: string) => {
+      customToast(err, ToastType.error);
+    },
+  });
+
+export const useCreateUser = () =>
+  useMutation({
+    mutationFn: (values: AuthData) =>
+      Request.post(`/auth/createUser`, values),
+    onSuccess: async (data: any) => {
+      customToast("New user created successfully", ToastType.success);
+    },
+    onError: (err: string) => {
+      customToast(err, ToastType.error);
     },
   });
 

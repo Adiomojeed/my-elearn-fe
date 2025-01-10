@@ -60,7 +60,7 @@ const ToastUI: React.FC<ToastProps> = ({ message, type }) => {
 
   return (
     <div
-      className={`flex w-full items-center rounded-[10px] px-4 py-2 text-black shadow-sm md:w-[400px] border ${
+      className={`bg-white flex w-full items-center rounded-[10px] px-4 py-2 text-black shadow-sm md:w-[400px] border ${
         type === "success" ? "border-primary-600" : "border-red-400"
       }`}
     >

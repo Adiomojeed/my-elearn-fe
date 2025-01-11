@@ -1,12 +1,19 @@
+import { ModuleData } from "@/api/course";
 import Accordion from "@/components/Accordion";
 import Button from "@/components/Button";
 
-const CourseAccordion = () => {
+const CourseAccordion = ({
+  id,
+  module,
+}: {
+  id: number;
+  module: ModuleData;
+}) => {
   return (
     <Accordion
       title={
         <p className="text-sm lg:text-base font-medium flex items-center gap-1 lg:gap-2">
-          Module 1: Introduction to Game Development
+          Module {id}: {module?.title}
           <small className="text-xs text-primary-700 bg-[#E6F9EE] px-2 py-1 rounded-[10px]">
             Completed
           </small>
@@ -14,7 +21,7 @@ const CourseAccordion = () => {
       }
       content={
         <>
-          {Array.from({ length: 5 }).map((_, idx) => (
+          {module?.lessons?.map((_, idx) => (
             <div key={idx} className="p-4 lg:p-6 flex items-center gap-4">
               <img src="/pdf.svg" alt="pdf icon" />
               <small>Module 1 - Lesson 1</small>

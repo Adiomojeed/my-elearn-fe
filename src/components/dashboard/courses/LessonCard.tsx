@@ -21,7 +21,6 @@ const LessonCard = ({
   const queryClient = useQueryClient();
   const { id } = useParams();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [isEdit, setIsEdit] = useState<boolean>(false);
   const { mutate: editLesson, isPending: editing } = useEditLesson();
   const { mutate: deleteLesson, isPending: deleting } = useDeleteLesson();
   return (
@@ -51,8 +50,10 @@ const LessonCard = ({
             btnType="outline"
             className="px-4 text-xs"
             size="sm"
+            isLoading={editing}
           >
             {lesson?.isVisible ? "Hide" : "Unhide"}
+            <span className="hidden md:inline">&nbsp;from students</span>
           </Button>
           <button
             onClick={() => {

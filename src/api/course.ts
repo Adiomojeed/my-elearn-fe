@@ -29,7 +29,7 @@ export type LessonData = {
 
 export type ModuleData = {
   _id?: string;
-  title: string,
+  title?: string,
   isVisible?: boolean,
   lessons?: LessonData[]
 }
@@ -80,6 +80,30 @@ export const useCreateModule = () =>
       Request.post(`/courses/${values.courseId}/modules`, values.module),
     onSuccess: async (data: any) => {
       customToast("Module created successfully", ToastType.success);
+    },
+    onError: (err: string) => {
+      customToast(err, ToastType.error);
+    },
+  });
+
+export const useEditModule = () =>
+  useMutation({
+    mutationFn: (values: { module: ModuleData, courseId: string, moduleId: string }) =>
+      Request.put(`/courses/${values.courseId}/modules/${values.moduleId}`, values.module),
+    onSuccess: async (data: any) => {
+      customToast("Module edited successfully", ToastType.success);
+    },
+    onError: (err: string) => {
+      customToast(err, ToastType.error);
+    },
+  });
+
+export const useDeleteModule = () =>
+  useMutation({
+    mutationFn: (values: { courseId: string, moduleId: string }) =>
+      Request.delete(`/courses/${values.courseId}/modules/${values.moduleId}`),
+    onSuccess: async (data: any) => {
+      customToast("Module deleted successfully", ToastType.success);
     },
     onError: (err: string) => {
       customToast(err, ToastType.error);

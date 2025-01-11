@@ -1,9 +1,11 @@
 import Accordion from "@/components/Accordion";
 import CourseAccordion from "./CourseAccordion";
 import { CourseData } from "@/api/course";
+import { countLessons } from "@/utils/counters";
 
 const Courses = ({ course }: { course: CourseData }) => {
   const educator = course?.educators?.[0];
+
   return (
     <div className="mt-4 bg-white flex flex-col divide-y divide-[#F3F3F3]">
       <div className="p-4 lg:py-5 lg:px-6 flex flex-col lg:flex-row lg:items-center justify-between">
@@ -16,11 +18,12 @@ const Courses = ({ course }: { course: CourseData }) => {
           </p>
         </div>
         <p className="text-sm lg:text-base text-grey-500 mt-1 lg:mt-0">
-          <span className="text-primary-500">5</span> of 20 Completed
+          <span className="text-primary-500">5</span> of {countLessons(course)}{" "}
+          Completed
         </p>
       </div>
-      {Array.from({ length: 5 }).map((_, idx) => (
-        <CourseAccordion key={idx} />
+      {course?.modules.map((_, idx) => (
+        <CourseAccordion key={idx} module={_} id={idx + 1} />
       ))}
     </div>
   );

@@ -1,69 +1,60 @@
 "use client";
 
-import randomstring from "randomstring";
-import { useAppSelector } from "@/store/useAppSelector";
 import { SyntheticEvent, useEffect, useState } from "react";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
-import Select, { Select2 } from "../Select";
-import { useCreateUser, UserData } from "@/api/auth";
+import { CourseData } from "@/api/course";
+import TextArea from "../TextArea";
+import { useCreateCourse } from "@/api/admin";
 
-const CreateCourseModel = ({
+const CreateCourseModal = ({
   isOpen,
   onClose,
-  isEdit,
-  user,
+
+  course,
 }: {
   isOpen: boolean;
   onClose: () => void;
-  isEdit?: boolean;
-  user?: UserData;
+  course?: CourseData | null;
 }) => {
+  const isEdit = !!course;
   const [state, setState] = useState({
-    account_id: "",
-    email: "",
-    firstname: "",
-    lastname: "",
-    role: "",
+    code: "",
+    title: "",
+    description: "",
+    status: false,
   });
 
   useEffect(() => {
     setState({
-      account_id: user?.account_id ?? "",
-      email: user?.email ?? "",
-      firstname: user?.firstname ?? "",
-      lastname: user?.lastname ?? "",
-      role: user?.role ?? "",
+      code: course?.code ?? "",
+      title: course?.title ?? "",
+      description: course?.description ?? "",
+      status: course?.isActive ?? false,
     });
-  }, [user]);
+  }, [course]);
 
   const handleChange = (e: any) => {
     setState((prev) => ({ ...prev, [e.target.id]: e.target.value }));
   };
 
-  const { mutate: createUser, isPending } = useCreateUser();
+  const { mutate: createCourse, isPending } = useCreateCourse();
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
-    const password = randomstring.generate({
-      length: 12,
-      charset: "alphanumeric",
+
+    const { status, ...rest } = state;
+    createCourse(rest, {
+      onSuccess: () => {
+        onClose();
+        setState({
+          code: "",
+          title: "",
+          description: "",
+          status: false,
+        });
+      },
     });
-    createUser(
-      { ...state, password },
-      {
-        onSuccess: () => {
-          onClose();
-          setState({
-            account_id: "",
-            email: "",
-            firstname: "",
-            lastname: "",
-            role: "",
-          });
-        },
-      }
-    );
   };
 
   return (
@@ -99,45 +90,31 @@ const CreateCourseModel = ({
         </div>
         <div className="p-4 md:p-5">
           <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-            <div className="grid grid-cols-2 gap-4">
-              <Input
-                label="First Name"
-                value={state.firstname}
-                id="firstname"
-                onChange={(e) => handleChange(e)}
-                required
-              />
-              <Input
-                label="Last Name"
-                value={state.lastname}
-                id="lastname"
-                onChange={(e) => handleChange(e)}
-                required
-              />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <Input
-                label="Account ID"
-                value={state.account_id}
-                id="account_id"
-                onChange={(e) => handleChange(e)}
-                required
-                disabled={!!user}
-              />
-              <Select
-                label="Account Role"
-                value={state.role}
-                id="role"
-                onChange={(e) => handleChange(e)}
-                required
-                disabled={!!user}
-              >
-                <option value="student">Student</option>
-                <option value="educator">Educator</option>
-                <option value="admin">Adminstrator</option>
-              </Select>
-            </div>
             <Input
+              label="Course Code"
+              value={state.code}
+              id="code"
+              onChange={(e) => handleChange(e)}
+              required
+              disabled={!!course}
+            />
+
+            <Input
+              label="Course Name"
+              value={state.title}
+              id="title"
+              onChange={(e) => handleChange(e)}
+              required
+            />
+            <TextArea
+              label="Description"
+              value={state.description}
+              id="description"
+              onChange={(e) => handleChange(e)}
+              required
+            />
+
+            {/* <Input
               label="Email Address"
               type="email"
               value={state.email}
@@ -145,7 +122,7 @@ const CreateCourseModel = ({
               onChange={(e) => handleChange(e)}
               required
               disabled={!!user}
-            />
+            /> */}
             {/* <Select2
               label="Courses"
               value={[]}
@@ -172,4 +149,4 @@ const CreateCourseModel = ({
   );
 };
 
-export default CreateCourseModel;
+export default CreateCourseModal;

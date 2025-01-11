@@ -1,42 +1,41 @@
 "use client";
 
-import { useGetUsers } from "@/api/admin";
-import { UserData } from "@/api/auth";
+import { useGetCourses } from "@/api/admin";
+import { CourseData } from "@/api/course";
 import Button from "@/components/Button";
 import CourseTableRow from "@/components/dashboard/admin/CourseTableRow";
-import UsersTableRow from "@/components/dashboard/admin/UsersTableRow";
 import Stats, { StatsProps } from "@/components/dashboard/Stats";
-import CreateCourseModel from "@/components/modals/CreateCourseModal";
-import CreateUserModal from "@/components/modals/CreateUserModal";
+import CreateCourseModal from "@/components/modals/CreateCourseModal";
 import useDisclosure from "@/hooks/useDisclosure";
 import { useMemo, useState } from "react";
 
 const Page = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [content, setContent] = useState<CourseData | null>(null);
   const limit = 20;
   const [page, setPage] = useState<number>(1);
-  const { data, isLoading } = useGetUsers({ limit, page });
-  const users = (data as any)?.users as UserData[];
+  const { data, isLoading } = useGetCourses({ limit, page });
+  const courses = (data as any)?.courses as CourseData[];
 
   const stats = useMemo(
     () => [
       {
         title: "Total Courses",
-        value: (data as any)?.totalUsers ?? 0,
+        value: (data as any)?.totalCourses ?? 0,
         icon: "/enrolled.svg",
       },
       {
         title: "Active",
-        value: (data as any)?.counts?.students ?? 0,
+        value: (data as any)?.counts?.active ?? 0,
         icon: "/enrolled.svg",
       },
       {
         title: "Inactive",
-        value: (data as any)?.counts?.educators ?? 0,
+        value: (data as any)?.counts?.inactive ?? 0,
         icon: "/enrolled.svg",
       },
     ],
-    [users]
+    [courses]
   );
   return (
     <section className="flex flex-col h-full">
@@ -57,26 +56,41 @@ const Page = () => {
         >
           Create Course
         </Button>
-        <CreateCourseModel isOpen={isOpen} onClose={onClose} />
       </div>
 
       <table className="mt-3 bg-white w-full">
         <thead>
           <tr>
             <th>ID</th>
-            <th>Student Name</th>
-            <th className="hidden lg:table-cell">Email</th>
-            <th className="hidden lg:table-cell">Courses</th>
-            <th>Role</th>
+            <th>Course Code</th>
+            <th>Course Name</th>
+            <th className="hidden lg:table-cell">Educator(s)</th>
+            <th className="hidden lg:table-cell">Number of Students</th>
+            <th className="hidden lg:table-cell">Status</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
-          {users?.map((i, idx: number) => (
-            <CourseTableRow key={idx} user={i} />
+          {courses?.map((i, idx: number) => (
+            <CourseTableRow
+              key={idx}
+              course={i}
+              onOpen={(e) => {
+                setContent(e);
+                onOpen();
+              }}
+            />
           ))}
         </tbody>
       </table>
+      <CreateCourseModal
+        isOpen={isOpen}
+        onClose={() => {
+          setContent(null);
+          onClose();
+        }}
+        course={content}
+      />
     </section>
   );
 };

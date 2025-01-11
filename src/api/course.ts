@@ -7,6 +7,20 @@ import { EDIT_USER } from "@/store/reducers/types";
 
 const dispatch = store.dispatch;
 
+export type CreateCourseData = {
+  code: string,
+  title: string,
+  description: string
+};
+
+export type CourseData = CreateCourseData & {
+  _id?: string,
+  isActive?: boolean,
+  educators?: {}[],
+  students?: {}[],
+  modules: {}[]
+};
+
 export const useUpdateUser = () =>
   useMutation({
     mutationFn: (values: UserData) =>

@@ -7,18 +7,18 @@ import Button from "@/components/Button";
 import Input from "@/components/Input";
 import Select, { Select2 } from "../Select";
 import { useCreateUser, UserData } from "@/api/auth";
+import { createPortal } from "react-dom";
 
 const CreateUserModal = ({
   isOpen,
   onClose,
-  isEdit,
   user,
 }: {
   isOpen: boolean;
   onClose: () => void;
-  isEdit?: boolean;
-  user?: UserData;
+  user?: UserData | null;
 }) => {
+  const isEdit = !!user;
   const [state, setState] = useState({
     account_id: "",
     email: "",
@@ -66,7 +66,7 @@ const CreateUserModal = ({
     );
   };
 
-  return (
+  return createPortal(
     <>
       {isOpen && (
         <div
@@ -147,15 +147,15 @@ const CreateUserModal = ({
               disabled={!!user}
             />
             {/* <Select2
-              label="Courses"
-              value={[]}
-              options={[
-                { label: "1", value: "1" },
-                { label: "2", value: "2" },
-              ]}
-              onChange={() => {}}
-              id="courses"
-            /> */}
+            label="Courses"
+            value={[]}
+            options={[
+              { label: "1", value: "1" },
+              { label: "2", value: "2" },
+            ]}
+            onChange={() => {}}
+            id="courses"
+          /> */}
 
             <Button
               isLoading={isPending}
@@ -168,7 +168,8 @@ const CreateUserModal = ({
           </form>
         </div>
       </div>
-    </>
+    </>,
+    document.body
   );
 };
 

@@ -11,6 +11,7 @@ import { useMemo, useState } from "react";
 
 const Page = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [content, setContent] = useState<UserData | null>(null);
   const limit = 20;
   const [page, setPage] = useState<number>(1);
   const { data, isLoading } = useGetUsers({ limit, page });
@@ -55,26 +56,40 @@ const Page = () => {
         >
           Create User
         </Button>
-        <CreateUserModal isOpen={isOpen} onClose={onClose} />
       </div>
 
       <table className="mt-3 bg-white w-full">
         <thead>
           <tr>
             <th>ID</th>
-            <th>Student Name</th>
+            <th>Full Name</th>
+            <th>Role</th>
             <th className="hidden lg:table-cell">Email</th>
             <th className="hidden lg:table-cell">Courses</th>
-            <th>Role</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
           {users?.map((i, idx: number) => (
-            <UsersTableRow key={idx} user={i} />
+            <UsersTableRow
+              key={idx}
+              user={i}
+              onOpen={(e) => {
+                setContent(e);
+                onOpen();
+              }}
+            />
           ))}
         </tbody>
       </table>
+      <CreateUserModal
+        isOpen={isOpen}
+        onClose={() => {
+          setContent(null);
+          onClose();
+        }}
+        user={content}
+      />
     </section>
   );
 };

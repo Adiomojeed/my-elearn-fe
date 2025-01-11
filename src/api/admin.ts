@@ -1,5 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Request, tokenConfig as config } from "./request";
+import { CreateCourseData } from "./course";
+import customToast, { ToastType } from "@/components/Toast";
 
 
 export const useGetUsers = ({ page, limit }: { page: number, limit: number }) =>
@@ -7,6 +9,26 @@ export const useGetUsers = ({ page, limit }: { page: number, limit: number }) =>
     queryKey: ["getUsers",],
     queryFn: () => {
       return Request.get(`/admin/users?page=${page}&limit=${limit}`).then(res => res)
+    },
+  });
+
+export const useGetCourses = ({ page, limit }: { page: number, limit: number }) =>
+  useQuery({
+    queryKey: ["getCourses",],
+    queryFn: () => {
+      return Request.get(`/admin/courses?page=${page}&limit=${limit}`).then(res => res)
+    },
+  });
+
+export const useCreateCourse = () =>
+  useMutation({
+    mutationFn: (values: CreateCourseData) =>
+      Request.post(`/admin/create-course`, values),
+    onSuccess: async (data: any) => {
+      customToast("Course created successfully", ToastType.success);
+    },
+    onError: (err: string) => {
+      customToast(err, ToastType.error);
     },
   });
 

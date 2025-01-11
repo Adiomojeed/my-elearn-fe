@@ -1,30 +1,51 @@
 "use client";
 
 import Button from "@/components/Button";
-import useDisclosure from "@/hooks/useDisclosure";
-import { UserData } from "@/api/auth";
-import CreateUserModal from "@/components/modals/CreateUserModal";
-import CreateCourseModel from "@/components/modals/CreateCourseModal";
+import { CourseData } from "@/api/course";
 
-const CourseTableRow = ({ user }: { user?: UserData }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+const CourseTableRow = ({
+  course,
+  onOpen,
+}: {
+  course?: CourseData;
+  onOpen: (e: CourseData) => void;
+}) => {
+  const status = course?.isActive;
   return (
     <>
       <tr className="user-row">
-        <td className="max-w-[80px] md:max-w-[initial]">{user?.account_id}</td>
-        <td className="max-w-[140px] md:max-w-[initial]">
-          {user?.firstname} {user?.lastname}
+        <td className="max-w-[80px] md:max-w-[initial]">{course?._id}</td>
+        <td className="max-w-[140px] md:max-w-[initial]">{course?.code}</td>
+        <td className="max-w-[140px] md:max-w-[initial]">{course?.title}</td>
+        <td className="hidden lg:table-cell">
+          {course?.educators?.map((i, idx) => (
+            <p>hdjs</p>
+          ))}
         </td>
-        <td className="hidden lg:table-cell">{user?.email}</td>
-        <td className="hidden lg:table-cell">{user?.courses.length}</td>
-        <td>{user?.role}</td>
+        <td className="hidden lg:table-cell">{course?.students?.length}</td>
+
         <td>
-          <Button onClick={onOpen} btnType="outline" size="sm" className="px-4">
+          <p
+            className={`text-xs px-2 py-1 rounded-[10px] w-min first-uppercase ${
+              status
+                ? "text-[#00893F] bg-[#E6F9EE]"
+                : "text-[#E8382C] bg-[#FFECEA]"
+            }`}
+          >
+            {status ? "Active" : "Inactive"}
+          </p>
+        </td>
+        <td>
+          <Button
+            onClick={() => course && onOpen(course)}
+            btnType="outline"
+            size="sm"
+            className="px-4"
+          >
             View
           </Button>
         </td>
       </tr>
-      <CreateCourseModel isEdit isOpen={isOpen} onClose={onClose} user={user} />
     </>
   );
 };

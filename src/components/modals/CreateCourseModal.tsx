@@ -6,6 +6,7 @@ import Input from "@/components/Input";
 import { CourseData } from "@/api/course";
 import TextArea from "../TextArea";
 import { useCreateCourse } from "@/api/admin";
+import { useQueryClient } from "@tanstack/react-query";
 
 const CreateCourseModal = ({
   isOpen,
@@ -17,6 +18,7 @@ const CreateCourseModal = ({
   onClose: () => void;
   course?: CourseData | null;
 }) => {
+  const queryClient = useQueryClient();
   const isEdit = !!course;
   const [state, setState] = useState({
     code: "",
@@ -47,6 +49,7 @@ const CreateCourseModal = ({
     createCourse(rest, {
       onSuccess: () => {
         onClose();
+        queryClient.invalidateQueries({ queryKey: ["getCourses"] });
         setState({
           code: "",
           title: "",

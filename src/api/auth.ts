@@ -18,7 +18,7 @@ export type UserData = AuthData & {
   email: string,
   role: "student" | "educator" | "admin",
   isDefaultPassword?: boolean,
-  courses: {}[],
+  courses: { _id: string, title: string }[],
   _id?: string,
 };
 
@@ -94,6 +94,18 @@ export const useCreateUser = () =>
       Request.post(`/auth/create-user`, values),
     onSuccess: async (data: any) => {
       customToast("New user created successfully", ToastType.success);
+    },
+    onError: (err: string) => {
+      customToast(err, ToastType.error);
+    },
+  });
+
+export const useAssignCoursesToUser = () =>
+  useMutation({
+    mutationFn: (values: { userId: string, courseIds: string[] }) =>
+      Request.put(`/admin/users/assign-courses`, values),
+    onSuccess: async (data: any) => {
+      customToast("Courses assigned to user successfully", ToastType.success);
     },
     onError: (err: string) => {
       customToast(err, ToastType.error);

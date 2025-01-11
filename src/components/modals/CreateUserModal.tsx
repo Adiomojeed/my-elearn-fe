@@ -6,8 +6,12 @@ import { SyntheticEvent, useEffect, useState } from "react";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import Select, { Select2 } from "../Select";
-import { useCreateUser, UserData } from "@/api/auth";
+import { useAssignCoursesToUser, useCreateUser, UserData } from "@/api/auth";
 import { createPortal } from "react-dom";
+import { useQueryClient } from "@tanstack/react-query";
+import { useGetCourses } from "@/api/admin";
+import { CourseData } from "@/api/course";
+import { Option } from "react-multi-select-component";
 
 const CreateUserModal = ({
   isOpen,
@@ -18,6 +22,7 @@ const CreateUserModal = ({
   onClose: () => void;
   user?: UserData | null;
 }) => {
+  const queryClient = useQueryClient();
   const isEdit = !!user;
   const [state, setState] = useState({
     account_id: "",
@@ -26,6 +31,7 @@ const CreateUserModal = ({
     lastname: "",
     role: "",
   });
+  const [coursesArr, setCourses] = useState<Option[] | []>([]);
 
   useEffect(() => {
     setState({
@@ -35,13 +41,23 @@ const CreateUserModal = ({
       lastname: user?.lastname ?? "",
       role: user?.role ?? "",
     });
+    const cs = user?.courses?.map((i, idx) => ({
+      label: i.title,
+      value: i._id,
+    }));
+    setCourses(cs ?? []);
   }, [user]);
+
+  const { data, isLoading } = useGetCourses({ limit: 1000, page: 1 });
+  const courses = (data as any)?.courses as CourseData[];
 
   const handleChange = (e: any) => {
     setState((prev) => ({ ...prev, [e.target.id]: e.target.value }));
   };
 
   const { mutate: createUser, isPending } = useCreateUser();
+  const { mutate: assignCoursesToUser, isPending: isAssigning } =
+    useAssignCoursesToUser();
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
@@ -54,6 +70,7 @@ const CreateUserModal = ({
       {
         onSuccess: () => {
           onClose();
+          queryClient.invalidateQueries({ queryKey: ["getUsers"] });
           setState({
             account_id: "",
             email: "",
@@ -61,6 +78,22 @@ const CreateUserModal = ({
             lastname: "",
             role: "",
           });
+        },
+      }
+    );
+  };
+
+  const handleAssignCourse = (e: SyntheticEvent) => {
+    e.preventDefault();
+
+    assignCoursesToUser(
+      // @ts-ignore
+      { userId: user?._id, courseIds: coursesArr.map((i) => i.value) },
+      {
+        onSuccess: () => {
+          onClose();
+          queryClient.invalidateQueries({ queryKey: ["getUsers"] });
+          setCourses([]);
         },
       }
     );
@@ -146,16 +179,6 @@ const CreateUserModal = ({
               required
               disabled={!!user}
             />
-            {/* <Select2
-            label="Courses"
-            value={[]}
-            options={[
-              { label: "1", value: "1" },
-              { label: "2", value: "2" },
-            ]}
-            onChange={() => {}}
-            id="courses"
-          /> */}
 
             <Button
               isLoading={isPending}
@@ -166,6 +189,34 @@ const CreateUserModal = ({
               {isEdit ? "Save" : "Create"}
             </Button>
           </form>
+          {user?.role !== "admin" && isEdit && (
+            <form
+              onSubmit={handleAssignCourse}
+              className="mt-4 flex flex-col gap-4"
+            >
+              <h6 className="test-sm lg:text-base font-medium">
+                Assign Courses
+              </h6>
+              <Select2
+                label="Courses"
+                value={coursesArr}
+                options={courses?.map((i, idx) => ({
+                  label: i.title,
+                  value: i._id,
+                }))}
+                onChange={setCourses}
+                id="courses"
+              />
+              <Button
+                isLoading={isPending}
+                type="submit"
+                className="px-6 text-sm w-max"
+                size="md"
+              >
+                Assign Courses
+              </Button>
+            </form>
+          )}
         </div>
       </div>
     </>,

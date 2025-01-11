@@ -50,6 +50,7 @@ const Select2 = ({
   value,
   onChange,
   options,
+  containerClassName,
 }: {
   label?: string;
   className?: string;
@@ -59,9 +60,10 @@ const Select2 = ({
   value: Option[];
   options: Option[];
   onChange?: (e: any) => void;
+  containerClassName?: string;
 }) => {
   return (
-    <div>
+    <div className={`${containerClassName}`}>
       <label htmlFor={id} className="block mb-3 text-sm text-grey-500">
         {label}
       </label>

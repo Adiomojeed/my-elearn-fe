@@ -16,8 +16,8 @@ export type CreateCourseData = {
 export type CourseData = CreateCourseData & {
   _id?: string,
   isActive?: boolean,
-  educators?: {}[],
-  students?: {}[],
+  educators?: { _id: string, firstname: string, lastname: string }[],
+  students?: { _id: string }[],
   modules: {}[]
 };
 

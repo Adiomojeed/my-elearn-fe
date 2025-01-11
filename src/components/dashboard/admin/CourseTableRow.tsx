@@ -19,7 +19,9 @@ const CourseTableRow = ({
         <td className="max-w-[140px] md:max-w-[initial]">{course?.title}</td>
         <td className="hidden lg:table-cell">
           {course?.educators?.map((i, idx) => (
-            <p>hdjs</p>
+            <p key={idx}>
+              Dr. {i.firstname} {i.lastname}
+            </p>
           ))}
         </td>
         <td className="hidden lg:table-cell">{course?.students?.length}</td>

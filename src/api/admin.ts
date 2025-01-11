@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Request, tokenConfig as config } from "./request";
+import { Request } from "./request";
 import { CreateCourseData } from "./course";
 import customToast, { ToastType } from "@/components/Toast";
 
@@ -23,7 +23,7 @@ export const useGetCourses = ({ page, limit }: { page: number, limit: number }) 
 export const useCreateCourse = () =>
   useMutation({
     mutationFn: (values: CreateCourseData) =>
-      Request.post(`/admin/create-course`, values),
+      Request.post(`/admin/courses`, values),
     onSuccess: async (data: any) => {
       customToast("Course created successfully", ToastType.success);
     },

@@ -116,7 +116,11 @@ const AnnouncementModal = ({
                     size="sm"
                     className="ml-auto px-2"
                   >
-                    <img src="/pen.svg" alt="edit icon" />
+                    <img
+                      src="/pen.svg"
+                      className="hover:bg-green-200"
+                      alt="edit icon"
+                    />
                   </Button>
                 )}
               </div>

@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import ChevronRight from "./icons/ChevronRight";
 
 interface AccordionProps {
@@ -14,6 +14,7 @@ const Accordion: React.FC<AccordionProps> = (props) => {
   const content = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState<boolean | null>(null);
   const [height, setHeight] = useState("0px");
+  const [isClicked, setIsClicked] = useState(false);
   const toggleAccordion = () => {
     setActive(active ? null : true);
     setHeight(

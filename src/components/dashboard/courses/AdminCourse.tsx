@@ -1,9 +1,16 @@
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import ModuleCard from "./ModuleCard";
-import { CourseData } from "@/api/course";
+import { CourseData, useCreateModule } from "@/api/course";
+import { useState } from "react";
+import { numbers } from "@/utils/numbers";
+import { useQueryClient } from "@tanstack/react-query";
 
 const AdminCourse = ({ course }: { course: CourseData }) => {
+  const { mutate: createModule, isPending } = useCreateModule();
+  console.log(course);
+  const [modules, setModules] = useState(course?.modules);
+  const queryClient = useQueryClient();
   return (
     <div className="mt-4 flex flex-col gap-3 lg:gap-4 xl:max-w-[75%] pb-8">
       <div className="bg-white border border-[#F3F3F3] p-4 lg:py-5 lg:px-6 flex flex-col lg:flex-row lg:items-center justify-between">
@@ -34,8 +41,8 @@ const AdminCourse = ({ course }: { course: CourseData }) => {
         </div>
       </div>
 
-      {Array.from({ length: 3 }).map((i, idx) => (
-        <ModuleCard key={idx} />
+      {modules?.map((i, idx) => (
+        <ModuleCard key={idx} module={i} id={idx + 1} />
       ))}
 
       <Button
@@ -43,6 +50,26 @@ const AdminCourse = ({ course }: { course: CourseData }) => {
         btnType="outline"
         className="px-4 text-sm"
         size="md"
+        onClick={() => {
+          if (course._id) {
+            createModule(
+              {
+                courseId: course._id,
+                module: {
+                  title: `Module ${
+                    numbers[(modules.length + 1) as keyof typeof numbers]
+                  }`,
+                },
+              },
+              {
+                onSuccess: () =>
+                  queryClient.invalidateQueries({
+                    queryKey: ["getSingleCourse"],
+                  }),
+              }
+            );
+          }
+        }}
       >
         Add New Module
       </Button>

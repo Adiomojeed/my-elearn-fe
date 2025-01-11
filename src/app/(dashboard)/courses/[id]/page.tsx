@@ -8,7 +8,7 @@ import Courses from "@/components/dashboard/courses/Courses";
 import Resources from "@/components/dashboard/courses/Resources";
 import { useAppSelector } from "@/store/useAppSelector";
 import { useParams } from "next/navigation";
-import { act, useState } from "react";
+import { useState } from "react";
 
 const Page = () => {
   const [active, setActive] = useState("course");

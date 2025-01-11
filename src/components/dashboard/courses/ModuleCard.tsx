@@ -1,64 +1,72 @@
+import { ModuleData } from "@/api/course";
 import Accordion from "@/components/Accordion";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
+import { useEffect, useState } from "react";
+import LessonCard from "./LessonCard";
+import LessonModal from "@/components/modals/LessonModal";
+import useDisclosure from "@/hooks/useDisclosure";
 
-const ModuleCard = () => {
+const ModuleCard = ({ module, id }: { module: ModuleData; id: number }) => {
+  const [title, setTitle] = useState(module?.title);
+  useEffect(() => {
+    setTitle(module.title);
+  }, [module]);
+  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <Accordion
       className="rounded-lg bg-white border border-[#F3F3F3]"
       titleClassName="border-b border-[#F3F3F3]"
       title={
-        <div className="">
+        <div className="flex w-full items-center gap-4 justify-between">
           <small className="font-medium">
-            Module 1 : Introduction to Game Development
+            Module {id} : {title}
           </small>
+          <Button
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+            className="px-4 text-xs mr-2"
+            size="sm"
+          >
+            {module.isVisible ? "Hide" : "Unhide"}
+          </Button>
         </div>
       }
       content={
-        <div className="p-3 md:p-4 lg:px-12 flex flex-col divide-y divide-[#F3F3F3] gap-3 lg:gap-3">
-          {Array.from({ length: 3 }).map((i, idx) => (
-            <div key={idx} className="pt-3 md:pt-4 first:pt-0">
-              <div className="flex md:grid grid-cols-1 lg:grid-cols-2 gap-3 ">
-                <Input placeholder="Lesson title" size="md" className="" />
-                <div className="flex ml-auto gap-3">
-                  <Button btnType="outline" className="px-4 text-xs" size="sm">
-                    Hide
-                  </Button>
-                  <button>
-                    <img src="/trash.svg" alt="" />
-                  </button>
-                </div>
-              </div>
-              <div className="mt-3 p-3 rounded border border-dashed border-[#F3F3F3] flex items-center gap-4">
-                <img src="/attach.svg" alt="attach icon" />
-                <div className="">
-                  <p className="text-sm font-medium line-clamp-1">
-                    Upload a file
-                  </p>
-                  <small className="text-xs text-grey-200">
-                    PDF, PNG, JPG, or XLS{" "}
-                    <span className="text-grey-400 font-medium">
-                      (Max 15MB)
-                    </span>
-                  </small>
-                </div>
-                <label
-                  htmlFor="file"
-                  className="ml-auto btn-outline px-4 text-xs"
-                >
-                  Attach
-                </label>
-                <input type="file" name="file" id="file" className="hidden" />
-              </div>
-            </div>
-          ))}
-          <Button
-            type="submit"
-            className="px-4 text-sm mt3 ml-auto w-max"
-            size="md"
-          >
-            Add new lesson
-          </Button>
+        <div className="p-3 md:p-4 lg:px-12 ">
+          <div className="flex flex-col divide-y divide-[#F3F3F3] gap-3 lg:gap-3">
+            <form className="flex items-end gap-3">
+              <Input
+                label="Module Title"
+                placeholder="Module title"
+                size="md"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                className="w-[280px] md:w-[300px]"
+                required
+              />
+              <Button className="px-4 text-xs " size="sm">
+                Save
+              </Button>
+            </form>
+            {module?.lessons?.map((i, idx) => (
+              <LessonCard key={idx} lesson={i} module={module._id as string} />
+            ))}
+            <Button
+              type="submit"
+              className="px-4 text-sm mt3 ml-auto w-max"
+              size="md"
+              onClick={onOpen}
+            >
+              Add new lesson
+            </Button>
+            <LessonModal
+              isOpen={isOpen}
+              onClose={onClose}
+              module={module._id as string}
+            />
+          </div>
         </div>
       }
     />

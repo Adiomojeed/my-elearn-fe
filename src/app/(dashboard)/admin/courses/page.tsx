@@ -1,6 +1,6 @@
 "use client";
 
-import { useGetCourses } from "@/api/admin";
+import { useGetAdminCourses } from "@/api/admin";
 import { CourseData } from "@/api/course";
 import Button from "@/components/Button";
 import CourseTableRow from "@/components/dashboard/admin/CourseTableRow";
@@ -14,7 +14,7 @@ const Page = () => {
   const [content, setContent] = useState<CourseData | null>(null);
   const limit = 20;
   const [page, setPage] = useState<number>(1);
-  const { data, isLoading } = useGetCourses({ limit, page });
+  const { data, isLoading } = useGetAdminCourses({ limit, page });
   const courses = (data as any)?.courses as CourseData[];
 
   const stats = useMemo(

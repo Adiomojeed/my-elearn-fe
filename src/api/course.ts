@@ -37,14 +37,18 @@ export const useUpdateUser = () =>
     },
   });
 
-export const useUpdatePassword = () =>
-  useMutation({
-    mutationFn: (values: { old_password: string, new_password: string }) =>
-      Request.post(`/user/change-password`, values),
-    onSuccess: async (data: any) => {
-      customToast("Password changed successfully", ToastType.success);
+export const useGetCourses = (limit?: number) =>
+  useQuery({
+    queryKey: ["getCourses",],
+    queryFn: () => {
+      return Request.get(`/user/get-courses?limit=${limit}`).then(res => res)
     },
-    onError: (err: string) => {
-      customToast(err, ToastType.error);
+  });
+
+export const useGetSingleCourse = (id: string) =>
+  useQuery({
+    queryKey: ["getSingleCourse",],
+    queryFn: () => {
+      return Request.get(`/courses/${id}`).then(res => res)
     },
   });

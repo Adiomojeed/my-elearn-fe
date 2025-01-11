@@ -1,14 +1,15 @@
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import ModuleCard from "./ModuleCard";
+import { CourseData } from "@/api/course";
 
-const AdminCourse = () => {
+const AdminCourse = ({ course }: { course: CourseData }) => {
   return (
     <div className="mt-4 flex flex-col gap-3 lg:gap-4 xl:max-w-[75%] pb-8">
       <div className="bg-white border border-[#F3F3F3] p-4 lg:py-5 lg:px-6 flex flex-col lg:flex-row lg:items-center justify-between">
         <div>
           <h5 className="text-lg lg:text-2xl font-medium">
-            GDG 411 - Game Development II
+            {course?.code} - {course?.title}
           </h5>
           <p className="text-sm text-grey-300">
             This contains everything you need about the course.

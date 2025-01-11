@@ -24,16 +24,17 @@ const CreateCourseModal = ({
     code: "",
     title: "",
     description: "",
-    status: false,
   });
+
+  const [status, setStatus] = useState<boolean>(false);
 
   useEffect(() => {
     setState({
       code: course?.code ?? "",
       title: course?.title ?? "",
       description: course?.description ?? "",
-      status: course?.isActive ?? false,
     });
+    setStatus(course?.isActive ?? false);
   }, [course]);
 
   const handleChange = (e: any) => {
@@ -45,19 +46,21 @@ const CreateCourseModal = ({
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
 
-    const { status, ...rest } = state;
-    createCourse(rest, {
-      onSuccess: () => {
-        onClose();
-        queryClient.invalidateQueries({ queryKey: ["getCourses"] });
-        setState({
-          code: "",
-          title: "",
-          description: "",
-          status: false,
-        });
-      },
-    });
+    createCourse(
+      { ...state },
+      {
+        onSuccess: () => {
+          onClose();
+          queryClient.invalidateQueries({ queryKey: ["getAdminCourses"] });
+          setState({
+            code: "",
+            title: "",
+            description: "",
+          });
+          setStatus(false);
+        },
+      }
+    );
   };
 
   return (
@@ -116,7 +119,14 @@ const CreateCourseModal = ({
               onChange={(e) => handleChange(e)}
               required
             />
-
+            <p className="flex items-center gap-5 text-sm text-grey-500">
+              Course active status{" "}
+              <input
+                type="checkbox"
+                checked={status}
+                onChange={() => setStatus(!status)}
+              />
+            </p>
             {/* <Input
               label="Email Address"
               type="email"

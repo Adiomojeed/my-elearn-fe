@@ -12,9 +12,9 @@ export const useGetUsers = ({ page, limit }: { page: number, limit: number }) =>
     },
   });
 
-export const useGetCourses = ({ page, limit }: { page: number, limit: number }) =>
+export const useGetAdminCourses = ({ page, limit }: { page: number, limit: number }) =>
   useQuery({
-    queryKey: ["getCourses",],
+    queryKey: ["getAdminCourses",],
     queryFn: () => {
       return Request.get(`/admin/courses?page=${page}&limit=${limit}`).then(res => res)
     },

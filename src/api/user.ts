@@ -10,7 +10,7 @@ const dispatch = store.dispatch;
 export const useUpdateUser = () =>
   useMutation({
     mutationFn: (values: UserData) =>
-      Request.post(`/user/update-user`, values),
+      Request.put(`/user/update-user`, values),
     onSuccess: async (data: any) => {
       customToast("User updated successfully", ToastType.success);
       dispatch({
@@ -26,7 +26,7 @@ export const useUpdateUser = () =>
 export const useUpdatePassword = () =>
   useMutation({
     mutationFn: (values: { old_password: string, new_password: string }) =>
-      Request.post(`/user/change-password`, values),
+      Request.put(`/user/change-password`, values),
     onSuccess: async (data: any) => {
       customToast("Password changed successfully", ToastType.success);
     },

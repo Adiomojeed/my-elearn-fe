@@ -1,15 +1,19 @@
 import Accordion from "@/components/Accordion";
 import CourseAccordion from "./CourseAccordion";
+import { CourseData } from "@/api/course";
 
-const Courses = () => {
+const Courses = ({ course }: { course: CourseData }) => {
+  const educator = course?.educators?.[0];
   return (
     <div className="mt-4 bg-white flex flex-col divide-y divide-[#F3F3F3]">
       <div className="p-4 lg:py-5 lg:px-6 flex flex-col lg:flex-row lg:items-center justify-between">
         <div>
           <h5 className="text-lg lg:text-2xl font-medium">
-            GDG 411 - Game Development II
+            {course?.code} - {course?.title}
           </h5>
-          <p className="text-grey-300">Dr. Amanda Fortune</p>
+          <p className="text-grey-300">
+            Dr. {educator?.firstname} {educator?.lastname}
+          </p>
         </div>
         <p className="text-sm lg:text-base text-grey-500 mt-1 lg:mt-0">
           <span className="text-primary-500">5</span> of 20 Completed

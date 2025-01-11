@@ -1,11 +1,13 @@
 "use client";
 
+import { CourseData, useGetSingleCourse } from "@/api/course";
 import AdminCourse from "@/components/dashboard/courses/AdminCourse";
 import Announcements from "@/components/dashboard/courses/Announcements";
 import Assignments from "@/components/dashboard/courses/Assignments";
 import Courses from "@/components/dashboard/courses/Courses";
 import Resources from "@/components/dashboard/courses/Resources";
 import { useAppSelector } from "@/store/useAppSelector";
+import { useParams } from "next/navigation";
 import { act, useState } from "react";
 
 const Page = () => {
@@ -22,13 +24,16 @@ const Page = () => {
   } = useAppSelector((s) => s);
 
   const role = user?.role;
+  const { id } = useParams();
+  const { data, isLoading } = useGetSingleCourse(id as string);
+  const course = data as unknown as CourseData;
 
   const ActiveTab = () =>
     active === "course" ? (
       role === "student" ? (
-        <Courses />
+        <Courses course={course} />
       ) : (
-        <AdminCourse />
+        <AdminCourse course={course} />
       )
     ) : active === "announcements" ? (
       <Announcements />

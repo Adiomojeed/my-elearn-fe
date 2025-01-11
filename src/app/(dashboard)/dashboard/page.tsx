@@ -1,5 +1,6 @@
 "use client";
 
+import { CourseData, useGetCourses } from "@/api/course";
 import AnnouncementCard from "@/components/dashboard/AnnouncementCard";
 import CourseCard from "@/components/dashboard/CourseCard";
 import Stats, { StatsProps } from "@/components/dashboard/Stats";
@@ -11,7 +12,8 @@ const Page = () => {
   const {
     auth: { user },
   } = useAppSelector((s) => s);
-
+  const { data, isLoading } = useGetCourses();
+  const courses = data as unknown as CourseData[];
   const role = user?.role;
   const stats = useMemo(
     () =>
@@ -65,8 +67,8 @@ const Page = () => {
               </Link>
             </div>
             <div className="mt-4 lg:mt-[16px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-4 xl:gap-6">
-              {Array.from({ length: 3 }).map((_, idx) => (
-                <CourseCard key={idx} />
+              {courses?.map((i, idx) => (
+                <CourseCard key={idx} course={i} />
               ))}
             </div>
           </div>
@@ -80,7 +82,11 @@ const Page = () => {
               </Link>
             )}
           </div>
-          <div className={`mt-4 lg:mt-[16px] grid grid-cols-1 ${role !== "student" ? "lg:grid-cols-3": ""} gap-5`}>
+          <div
+            className={`mt-4 lg:mt-[16px] grid grid-cols-1 ${
+              role !== "student" ? "lg:grid-cols-3" : ""
+            } gap-5`}
+          >
             {Array.from({ length: 3 }).map((_, idx) => (
               <AnnouncementCard key={idx} />
             ))}

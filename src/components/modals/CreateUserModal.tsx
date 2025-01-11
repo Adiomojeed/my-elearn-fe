@@ -9,7 +9,7 @@ import Select, { Select2 } from "../Select";
 import { useAssignCoursesToUser, useCreateUser, UserData } from "@/api/auth";
 import { createPortal } from "react-dom";
 import { useQueryClient } from "@tanstack/react-query";
-import { useGetCourses } from "@/api/admin";
+import { useGetAdminCourses } from "@/api/admin";
 import { CourseData } from "@/api/course";
 import { Option } from "react-multi-select-component";
 
@@ -48,7 +48,7 @@ const CreateUserModal = ({
     setCourses(cs ?? []);
   }, [user]);
 
-  const { data, isLoading } = useGetCourses({ limit: 1000, page: 1 });
+  const { data, isLoading } = useGetAdminCourses({ limit: 1000, page: 1 });
   const courses = (data as any)?.courses as CourseData[];
 
   const handleChange = (e: any) => {

@@ -18,8 +18,8 @@ const Courses = ({ course }: { course: CourseData }) => {
           </p>
         </div>
         <p className="text-sm lg:text-base text-grey-500 mt-1 lg:mt-0">
-          <span className="text-primary-500">5</span> of {countLessons(course)}{" "}
-          Completed
+          <span className="text-primary-500">{countLessons(course)}</span>{" "}
+          Lessons
         </p>
       </div>
       {course?.modules.map((_, idx) => (

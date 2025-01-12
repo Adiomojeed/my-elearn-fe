@@ -4,19 +4,18 @@ import useDisclosure from "@/hooks/useDisclosure";
 import Button from "../Button";
 import AnnouncementModal from "../modals/AnnouncementModal";
 import { useAppSelector } from "@/store/useAppSelector";
+import { AnnouncementData } from "@/api/announcement";
+import moment from "moment";
 
-export type AnnouncementProps = {
-  name: string;
-  announcement: string;
-  lessons: string;
-  isPinned: boolean;
+export const stripHTML = (i: any) => {
+  return i && i.replace(/(<([^>]+)>)/gi, "");
 };
 
 const AnnouncementCard = ({
   announcement,
   pinned,
 }: {
-  announcement?: AnnouncementProps;
+  announcement?: AnnouncementData;
   pinned?: boolean;
 }) => {
   const {
@@ -24,28 +23,36 @@ const AnnouncementCard = ({
   } = useAppSelector((s) => s);
 
   const role = user?.role;
-  const isPinned = pinned ?? announcement?.isPinned;
+  const isPinned = pinned;
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <div
       className={`${
         !pinned ? "border border-[#F3F3F3] p-4 lg:px-6 lg:py-9" : "p-4"
-      } bg-white rounded-lg `}
+      } bg-white rounded-lg flex flex-col`}
     >
-      <AnnouncementModal isOpen={isOpen} onClose={onClose} />
+      <AnnouncementModal
+        isOpen={isOpen}
+        onClose={onClose}
+        announcement={announcement}
+      />
       <div className="flex gap-[10px]">
         {role === "student" && (
           <img src="/avatar-l.svg" className="w-9 h-9" alt="avatar" />
         )}
         <div>
           {role === "student" && (
-            <p className="leading-[19px]">Dr. Amarachi Orji</p>
+            <p className="leading-[19px]">
+              Dr. {announcement?.createdBy?.firstname}{" "}
+              {announcement?.createdBy?.lastname}
+            </p>
           )}
           <small className="text-grey-200 leading-[20px]">
-            October 15, 2024, 4:10 PM
+            {moment(announcement?.createdAt).format("MMMM d, yyyy")}{" "}
+            {moment(announcement?.createdAt).format("hh:mm A")}
           </small>
         </div>
-        {role === "student" && (
+        {/* {role === "student" && (
           <button
             className={`ml-auto ${
               isPinned
@@ -56,16 +63,15 @@ const AnnouncementCard = ({
             <img src={isPinned ? "/pin-g.svg" : "/pin.svg"} alt="pin" />
             {isPinned ? <span className="pt-1">Pinned</span> : ""}
           </button>
-        )}
+        )} */}
       </div>
-      <h6 className="lg:text-[17px] leading-[24px] mt-4 lg:mt-6 mb-3 font-medium">
-        New Course Module Release: Advanced Data Analysis Techniques
+      <h6 className="lg:text-[17px] leading-[24px] mt-4 lg:mt-6 mb-3 font-medium line-clamp-1">
+        {announcement?.title}
       </h6>
-      <p className="text-sm lg:text-base text-grey-300 whitespace-pre-wrap line-clamp-4">
-        {`Dear Students,
-We are thrilled to announce the release of a new module in the Advanced Data Analysis course! The 'Data Visualization and Interpretation' module is now available. Dive deep into practical techniques for visualizing complex datasets and interpreting trends using tools like Tableau, Power BI, and Python.`}
+      <p className="text-sm lg:text-base text-grey-300 whitespace-pre-wrap line-clamp-4 mb-3">
+        {stripHTML(announcement?.content)}
       </p>
-      <div className="flex justify-end mt-3">
+      <div className="flex justify-end mt-auto">
         <Button onClick={onOpen} btnType="outline" size="sm" className="px-5">
           View
         </Button>

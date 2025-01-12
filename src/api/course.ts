@@ -1,9 +1,8 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Request, tokenConfig as config } from "./request";
+import { Request } from "./request";
 import { store } from "@store/index";
 import customToast, { ToastType } from "@/components/Toast";
-import { UserData } from "./auth";
-import { EDIT_USER } from "@/store/reducers/types";
+
 
 export const invalidateSingleCourse = (queryClient: any, onClose?: any,) => {
   onClose && onClose();
@@ -42,27 +41,24 @@ export type CourseData = CreateCourseData & {
   modules: ModuleData[]
 };
 
-export const useUpdateUser = () =>
+export const useUpdateCourse = () =>
   useMutation({
-    mutationFn: (values: UserData) =>
-      Request.post(`/user/update-user`, values),
+    mutationFn: (values: { course: CourseData, courseId: string }) =>
+      Request.put(`/courses/${values.courseId}`, values.course),
     onSuccess: async (data: any) => {
-      customToast("User updated successfully", ToastType.success);
-      dispatch({
-        type: EDIT_USER,
-        payload: data,
-      });
+      customToast("Course updated successfully", ToastType.success);
     },
     onError: (err: string) => {
       customToast(err, ToastType.error);
     },
   });
 
+
 export const useGetCourses = (limit?: number) =>
   useQuery({
     queryKey: ["getCourses",],
     queryFn: () => {
-      return Request.get(`/user/get-courses?limit=${limit}`).then(res => res)
+      return Request.get(`/user/get-courses?limit=${limit ?? 1000}`).then(res => res)
     },
   });
 
@@ -91,7 +87,7 @@ export const useEditModule = () =>
     mutationFn: (values: { module: ModuleData, courseId: string, moduleId: string }) =>
       Request.put(`/courses/${values.courseId}/modules/${values.moduleId}`, values.module),
     onSuccess: async (data: any) => {
-      customToast("Module edited successfully", ToastType.success);
+      customToast("Module updated successfully", ToastType.success);
     },
     onError: (err: string) => {
       customToast(err, ToastType.error);

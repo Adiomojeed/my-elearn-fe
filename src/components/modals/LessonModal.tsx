@@ -114,7 +114,7 @@ const LessonModal = ({
             type="submit"
             className="px-3 text-sm mt-2 w-max"
           >
-            Save Changes
+            {isEdit ? "Save Changes" : "Add Lesson"}
           </Button>
         </form>
       </div>

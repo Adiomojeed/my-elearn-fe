@@ -8,6 +8,7 @@ const Button = ({
   size = "md",
   btnType = "main",
   isLoading,
+  disabled,
 }: {
   children: string | ReactNode;
   className?: string;
@@ -16,9 +17,11 @@ const Button = ({
   size?: "md" | "lg" | "sm";
   btnType?: "main" | "light" | "outline";
   isLoading?: boolean;
+  disabled?: boolean;
 }) => {
   return (
     <button
+      disabled={disabled}
       type={type}
       className={`${
         btnType === "main"
@@ -34,7 +37,7 @@ const Button = ({
           : size === "lg"
           ? `h-[50px] md:h-[55px]`
           : ""
-      } flex items-center justify-center px-10 whitespace-nowrap ${className}`}
+      } flex items-center justify-center px-10 whitespace-nowrap disabled:bg-[#F9FAFB] disabled:!text-grey-300 disabled:hover:!text-grey-300 disabled:!border-0 ${className}`}
       onClick={onClick}
     >
       {isLoading ? (

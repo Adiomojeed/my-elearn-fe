@@ -1,13 +1,18 @@
+"use client";
+
+import { AnnouncementData, useGetAnnouncements } from "@/api/announcement";
 import AnnouncementCard from "@/components/dashboard/AnnouncementCard";
 
 const Page = () => {
+  const { data, isLoading } = useGetAnnouncements();
+  const announcements = data as unknown as AnnouncementData[];
   return (
     <section className="flex h-full">
       <div className="w-full xl:min-w-[68%] xl:max-w-[730px] xl:pr-6 lg:overflow-auto">
         <h6 className="md:text-lg font-medium">Announcements</h6>
         <div className="mt-4 lg:mt-[18px] flex flex-col gap-4">
-          {Array.from({ length: 5 }).map((_, idx) => (
-            <AnnouncementCard key={idx} />
+          {announcements?.map((_, idx) => (
+            <AnnouncementCard key={idx} announcement={_} />
           ))}
         </div>
       </div>
@@ -16,9 +21,10 @@ const Page = () => {
           Pinned Announcements
         </p>
         <div className="mt-4 flex flex-col gap-4 divide-y px-1 divide-[#F3F3F3]">
-          {Array.from({ length: 3 }).map((_, idx) => (
-            <AnnouncementCard key={idx} pinned />
-          ))}
+          {announcements?.map(
+            (_, idx) =>
+              idx < 2 && <AnnouncementCard key={idx} announcement={_} pinned />
+          )}
         </div>
       </div>
     </section>

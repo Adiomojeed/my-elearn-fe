@@ -1,5 +1,6 @@
 "use client";
 
+import { AnnouncementData, useGetAnnouncements } from "@/api/announcement";
 import { CourseData, useGetCourses } from "@/api/course";
 import AnnouncementCard from "@/components/dashboard/AnnouncementCard";
 import CourseCard from "@/components/dashboard/CourseCard";
@@ -15,6 +16,9 @@ const Page = () => {
   const { data, isLoading } = useGetCourses();
   const courses = data as unknown as CourseData[];
   const role = user?.role;
+  const { data: ann, isLoading: isGettingAnnounce } = useGetAnnouncements(3);
+  const announcements = ann as unknown as AnnouncementData[];
+
   const stats = useMemo(
     () =>
       role === "student"
@@ -87,8 +91,8 @@ const Page = () => {
               role !== "student" ? "lg:grid-cols-3" : ""
             } gap-5`}
           >
-            {Array.from({ length: 3 }).map((_, idx) => (
-              <AnnouncementCard key={idx} />
+            {announcements?.map((_, idx) => (
+              <AnnouncementCard key={idx} announcement={_} />
             ))}
           </div>
         </div>

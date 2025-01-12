@@ -3,7 +3,7 @@
 import { SyntheticEvent, useEffect, useState } from "react";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
-import { CourseData } from "@/api/course";
+import { CourseData, useUpdateCourse } from "@/api/course";
 import TextArea from "../TextArea";
 import { useCreateCourse } from "@/api/admin";
 import { useQueryClient } from "@tanstack/react-query";
@@ -42,25 +42,34 @@ const CreateCourseModal = ({
   };
 
   const { mutate: createCourse, isPending } = useCreateCourse();
+  const { mutate: updateCourse, isPending: updating } = useUpdateCourse();
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
-
-    createCourse(
-      { ...state },
-      {
-        onSuccess: () => {
-          onClose();
-          queryClient.invalidateQueries({ queryKey: ["getAdminCourses"] });
-          setState({
-            code: "",
-            title: "",
-            description: "",
-          });
-          setStatus(false);
-        },
-      }
-    );
+    const onSuccess = () => {
+      onClose();
+      queryClient.invalidateQueries({ queryKey: ["getAdminCourses"] });
+      setState({
+        code: "",
+        title: "",
+        description: "",
+      });
+      setStatus(false);
+    };
+    isEdit
+      ? updateCourse(
+          // @ts-ignore
+          { courseId: course._id, course: { ...state, isActive: status } },
+          {
+            onSuccess,
+          }
+        )
+      : createCourse(
+          { ...state },
+          {
+            onSuccess,
+          }
+        );
   };
 
   return (
@@ -148,7 +157,7 @@ const CreateCourseModal = ({
             /> */}
 
             <Button
-              isLoading={isPending}
+              isLoading={isPending ?? updating}
               type="submit"
               className="px-6 text-sm w-max"
               size="md"

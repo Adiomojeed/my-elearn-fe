@@ -90,6 +90,7 @@ const Sidebar = ({
     ],
     []
   );
+
   return (
     <aside
       className={`absolute flex flex-col bg-white top-0 z-[100] h-full w-full py-8 lg:py-10 px-5 max-w-[304px] md:max-w-[250px] lg:max-w-[280px] xl:max-w-[304px] transition-[left] duration-[750ms] md:static ${
@@ -110,14 +111,21 @@ const Sidebar = ({
               key={idx}
               href={`/${i.targetSegment}`}
               className={`flex h-11 items-center gap-3 rounded px-3 text-sm hover:bg-[#E6F9EE] hover:text-grey-500 ${
-                activeSegment === i.targetSegment
+                activeSegment === i.targetSegment ||
+                (activeSegment.includes("courses") &&
+                  i.targetSegment.includes("courses"))
                   ? "bg-[#E6F9EE]"
                   : "text-grey-200"
               }`}
               onClick={onClose}
             >
               {createElement(i.icon, {
-                fill: activeSegment === i.targetSegment ? "#00B051" : "#B8B8B8",
+                fill:
+                  activeSegment === i.targetSegment ||
+                  (activeSegment.includes("courses") &&
+                    i.targetSegment.includes("courses"))
+                    ? "#00B051"
+                    : "#B8B8B8",
               })}
               <p className="mt-1">{i.label}</p>
             </Link>

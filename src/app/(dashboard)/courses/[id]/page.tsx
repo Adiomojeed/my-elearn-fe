@@ -7,7 +7,7 @@ import Assignments from "@/components/dashboard/courses/Assignments";
 import Courses from "@/components/dashboard/courses/Courses";
 import Resources from "@/components/dashboard/courses/Resources";
 import { useAppSelector } from "@/store/useAppSelector";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 
 const Page = () => {
@@ -27,7 +27,7 @@ const Page = () => {
   const { id } = useParams();
   const { data, isLoading } = useGetSingleCourse(id as string);
   const course = data as unknown as CourseData;
-
+  const router = useRouter();
   const ActiveTab = () =>
     active === "course" ? (
       role === "student" ? (
@@ -42,6 +42,9 @@ const Page = () => {
     ) : (
       <Resources />
     );
+  if (role === "student" && !course?.isActive) {
+    router.push("/courses");
+  }
   return (
     <section className="flex flex-col h-full">
       <nav className="flex items-center">

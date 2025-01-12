@@ -41,8 +41,9 @@ const CourseCard = ({ course }: { course?: CourseData }) => {
           onClick={() => router.push(`/courses/${course?._id}`)}
           btnType="outline"
           className="mt-2"
+          disabled={role === "student" && !course?.isActive}
         >
-          View
+          {role === "student" && !course?.isActive ? "Not Open" : "View"}
         </Button>
       </div>
     </div>

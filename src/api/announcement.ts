@@ -22,11 +22,11 @@ export type AnnouncementData = {
   createdAt?: string
 }
 
-export const useGetAnnouncements = (limit?: number) =>
+export const useGetAnnouncements = ({ limit = 1000, courseId }: { limit?: number, courseId?: string }) =>
   useQuery({
     queryKey: ["getAnnouncements",],
     queryFn: () => {
-      return Request.get(`/announcements?limit=${limit ?? 1000}`).then(res => res)
+      return Request.get(courseId ? `/announcements/${courseId}?limit=${limit}` : `/announcements?limit=${limit}`).then(res => res)
     },
   });
 

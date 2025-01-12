@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import Button from "../Button";
 import { useAppSelector } from "@/store/useAppSelector";
 import { CourseData } from "@/api/course";
+import { countLessons } from "@/utils/counters";
 
 export type CourseProps = {
   name: string;
@@ -36,7 +37,9 @@ const CourseCard = ({ course }: { course?: CourseData }) => {
           {course?.code} - {course?.title}
         </p>
 
-        <small className="text-grey-300 mt-auto">10 Lessons</small>
+        <small className="text-grey-300 mt-auto">
+          {course?.lessonCount} Lessons
+        </small>
         <Button
           onClick={() => router.push(`/courses/${course?._id}`)}
           btnType="outline"

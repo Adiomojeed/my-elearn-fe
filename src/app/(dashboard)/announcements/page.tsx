@@ -4,7 +4,7 @@ import { AnnouncementData, useGetAnnouncements } from "@/api/announcement";
 import AnnouncementCard from "@/components/dashboard/AnnouncementCard";
 
 const Page = () => {
-  const { data, isLoading } = useGetAnnouncements();
+  const { data, isLoading } = useGetAnnouncements({});
   const announcements = data as unknown as AnnouncementData[];
   return (
     <section className="flex h-full">

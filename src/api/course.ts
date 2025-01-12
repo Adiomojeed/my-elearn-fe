@@ -39,6 +39,7 @@ export type CourseData = CreateCourseData & {
   educators?: { _id: string, firstname: string, lastname: string }[],
   students?: { _id: string }[],
   modules: ModuleData[]
+  lessonCount?: number
 };
 
 export const useUpdateCourse = () =>

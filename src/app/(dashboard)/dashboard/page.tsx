@@ -16,7 +16,9 @@ const Page = () => {
   const { data, isLoading } = useGetCourses();
   const courses = data as unknown as CourseData[];
   const role = user?.role;
-  const { data: ann, isLoading: isGettingAnnounce } = useGetAnnouncements(3);
+  const { data: ann, isLoading: isGettingAnnounce } = useGetAnnouncements({
+    limit: 3,
+  });
   const announcements = ann as unknown as AnnouncementData[];
 
   const stats = useMemo(

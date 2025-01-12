@@ -7,6 +7,7 @@ import Button from "@/components/Button";
 import useDisclosure from "@/hooks/useDisclosure";
 import AnnouncementModal from "../../modals/AnnouncementModal";
 import { AnnouncementData, useGetAnnouncements } from "@/api/announcement";
+import { useParams } from "next/navigation";
 
 const Announcements = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -14,14 +15,15 @@ const Announcements = () => {
     auth: { user },
   } = useAppSelector((s) => s);
 
+  const { id } = useParams();
   const role = user?.role;
-  const { data, isLoading } = useGetAnnouncements();
+  const { data, isLoading } = useGetAnnouncements({ courseId: id as string });
   const announcements = data as unknown as AnnouncementData[];
-  
+
   return (
     <div className="mt-8  flex flex-col gap-4">
       {role === "student" ? (
-        announcements.map((_, idx) => (
+        announcements?.map((_, idx) => (
           <AnnouncementAccordion key={idx} announcement={_} />
         ))
       ) : (

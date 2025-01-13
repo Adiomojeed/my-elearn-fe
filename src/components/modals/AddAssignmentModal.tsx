@@ -36,7 +36,7 @@ const AddAssignmentModal = ({
     description: "",
     dueDate: moment(new Date()).format("yyyy-MM-DD"),
   });
-  console.log(moment(assignment?.dueDate).format("yyyy-MM-DD"));
+
   const handleChange = (e: any) => {
     setState((prev) => ({ ...prev, [e.target.id]: e.target.value }));
   };

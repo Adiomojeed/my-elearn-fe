@@ -3,7 +3,12 @@ import useDisclosure from "@/hooks/useDisclosure";
 import { useAppSelector } from "@/store/useAppSelector";
 import AddAssignmentModal from "../../modals/AddAssignmentModal";
 import AssignmentDetailsTableRow from "./AssignementDetailsTableRow";
-import { AssignmentData, useGetSingleAssignment } from "@/api/assignments";
+import {
+  AssignmentData,
+  submissionData,
+  useGetAssignmentSubmission,
+  useGetSingleAssignment,
+} from "@/api/assignments";
 
 const AssignmentDetails = ({
   assignmentId,
@@ -13,12 +18,14 @@ const AssignmentDetails = ({
   goBack: () => void;
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { user } = useAppSelector((s) => s.auth);
+
+  const { data: sub, isLoading: isFetchSub } =
+    useGetAssignmentSubmission(assignmentId);
+  const submissions = sub as unknown as submissionData[];
 
   const { data, isLoading } = useGetSingleAssignment(assignmentId);
   const assignment = data as unknown as AssignmentData;
 
-  const role = user?.role;
   return (
     <div className="mt-4 lg:mt-8">
       <div className="bg-white border mb-5 border-[#F3F3F3] p-3 lg:p-4 ">
@@ -82,8 +89,8 @@ const AssignmentDetails = ({
           </tr>
         </thead>
         <tbody>
-          {Array.from({ length: 5 }).map((i, idx) => (
-            <AssignmentDetailsTableRow key={idx} />
+          {submissions?.map((i, idx) => (
+            <AssignmentDetailsTableRow key={idx} submission={i} />
           ))}
         </tbody>
       </table>

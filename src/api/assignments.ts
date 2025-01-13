@@ -23,7 +23,25 @@ export type AssignmentData = {
   courseId?: string,
   _id?: string,
   createdAt?: Date,
-  file?: { name: string, url: string }
+  file?: { name: string, url: string };
+  isSubmitted?: boolean;
+  grade?: number;
+  feedback?: number;
+}
+
+export type submissionData = {
+  _id: string;
+  file?: { name: string, url: string };
+  student: {
+    _id: string;
+    account_id: string;
+    firstname: string;
+    lastname: string;
+  },
+  comment?: string;
+  grade: number;
+  feedback: string;
+  createdAt: string
 }
 
 export const useGetAssignments = ({ limit = 1000, courseId }: { limit?: number, courseId?: string }) =>
@@ -60,6 +78,38 @@ export const useUpdateAssignment = () =>
       Request.put(`/assignments/${values.assId}`, values.assignment),
     onSuccess: async (data: any) => {
       customToast("Assignment updated successfully", ToastType.success);
+    },
+    onError: (err: string) => {
+      customToast(err, ToastType.error);
+    },
+  });
+
+export const useSubmitAssignment = () =>
+  useMutation({
+    mutationFn: (values: { assignmentId: string, comment: string, file?: { name: string, url: string } }) =>
+      Request.post(`/assignments/submit`, values),
+    onSuccess: async (data: any) => {
+      customToast("Assignment submitted successfully", ToastType.success);
+    },
+    onError: (err: string) => {
+      customToast(err, ToastType.error);
+    },
+  });
+
+export const useGetAssignmentSubmission = (assignmentId?: string) =>
+  useQuery({
+    queryKey: ["getAssignmentSubmission",],
+    queryFn: () => {
+      return Request.get(`assignments/${assignmentId}/submissions`).then(res => res)
+    },
+  });
+
+export const useGradeAssignment = () =>
+  useMutation({
+    mutationFn: (values: { submissionId: string, data: { feedback: string, grade: number } }) =>
+      Request.put(`/assignments/submissions/${values.submissionId}`, values.data),
+    onSuccess: async (data: any) => {
+      customToast("Assignment submitted successfully", ToastType.success);
     },
     onError: (err: string) => {
       customToast(err, ToastType.error);

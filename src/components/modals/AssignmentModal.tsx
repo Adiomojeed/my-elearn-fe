@@ -2,8 +2,10 @@ import { createPortal } from "react-dom";
 import Button from "../Button";
 import TextArea from "../TextArea";
 import ResourceCard from "../dashboard/ResourceCard";
-import { AssignmentData } from "@/api/assignments";
+import { AssignmentData, useSubmitAssignment } from "@/api/assignments";
 import moment from "moment";
+import { SyntheticEvent, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 
 const AssignmentModal = ({
   isOpen,
@@ -14,6 +16,29 @@ const AssignmentModal = ({
   onClose: () => void;
   assignment: AssignmentData;
 }) => {
+  const [comment, setComment] = useState("");
+
+  const queryClient = useQueryClient();
+  const { mutate: submitAssignment, isPending } = useSubmitAssignment();
+  const handleSubmit = (e: SyntheticEvent) => {
+    e.preventDefault();
+    const onSuccess = () => {
+      onClose();
+      queryClient.invalidateQueries({ queryKey: ["getAssignments"] });
+      setComment("");
+    };
+    submitAssignment(
+      {
+        assignmentId: assignment._id as string,
+        comment,
+        file: { name: "file-name-dsjhdhsja.pdf", url: "url" },
+      },
+      {
+        onSuccess,
+      }
+    );
+  };
+
   return createPortal(
     <>
       {isOpen && (
@@ -42,14 +67,16 @@ const AssignmentModal = ({
             Assignment Details
           </small>
         </div>
-        <div className="p-4 md:p-5">
+        <form onSubmit={handleSubmit} className="p-4 md:p-5">
           <p className="lg:text-lg leading-[22px] font-medium">
             {assignment?.title}
           </p>
           <div className="flex items-center gap-4 mt-2">
             <small className="text-grey-300 leading-[20px] flex items-center gap-1">
               <img src="/calendar.svg" alt="calendar icon" />{" "}
-              <span className="mt-1">{moment(assignment?.dueDate).format("DD MMM yyyy")}</span>
+              <span className="mt-1">
+                {moment(assignment?.dueDate).format("DD MMM yyyy")}
+              </span>
             </small>
             <small className="text-grey-300 leading-[20px] flex items-center gap-1">
               <img src="/clock.svg" alt="clcok icon" />{" "}
@@ -84,16 +111,38 @@ const AssignmentModal = ({
             </div>
           </div>
 
-          <TextArea
-            placeholder="Write your comment here"
-            label="Comment"
-            labelClassName="font-medium text-grey-500"
-          />
+          {!assignment.isSubmitted ? (
+            <>
+              <TextArea
+                placeholder="Write your comment here"
+                label="Comment"
+                labelClassName="font-medium text-grey-500"
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+              />
 
-          <Button className="mt-6 px-6 text-sm" size="md">
-            Submit
-          </Button>
-        </div>
+              <Button
+                type="submit"
+                isLoading={isPending}
+                className="mt-6 px-6 text-sm"
+                size="md"
+              >
+                Submit
+              </Button>
+            </>
+          ) : (
+            <>
+              <p className="text-sm mt-6 font-medium">Grade</p>
+              <p className="text-sm mt-3 text-grey-400">
+                {assignment?.grade === null ? "N/A" : assignment?.grade}
+              </p>
+              <p className="text-sm mt-6 font-medium">Feedback</p>
+              <p className="text-sm mt-3 text-grey-400">
+                {assignment?.feedback ?? "N/A"}
+              </p>
+            </>
+          )}
+        </form>
       </div>
     </>,
     document.body

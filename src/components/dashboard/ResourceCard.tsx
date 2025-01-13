@@ -15,11 +15,16 @@ const ResourceCard = ({ resource }: { resource: ResourceCardProps }) => {
     title,
   } = resource ?? {};
   const type = name.split(".")[name.split(".").length - 1];
+
   return (
     <div className="p-3 bg-white rounded border border-[#F3F3F3] flex items-center gap-3 md:gap-4 wmax">
       <img
         src={
-          type === "pdf" ? "/pdf.svg" : type === "xls" ? "xls.svg" : "jpeg.svg"
+          type === "pdf"
+            ? "/pdf.svg"
+            : type === "xls"
+            ? "/xls.svg"
+            : "/jpeg.svg"
         }
         alt="pdf icon"
       />
@@ -33,7 +38,7 @@ const ResourceCard = ({ resource }: { resource: ResourceCardProps }) => {
           </small>
         )}
       </div>
-      <button className="ml-auto">
+      <button type="button" className="ml-auto">
         <img src="/download.svg" alt="download icon" />
       </button>
     </div>

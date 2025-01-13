@@ -13,7 +13,7 @@ const Page = () => {
 
   const stats = useMemo(
     () => [
-      { status: "completed", value: counts.completed },
+      { status: "submitted", value: counts.submitted },
       { status: "pending", value: counts.pending },
       { status: "overdue", value: counts.overdue },
     ],
@@ -38,10 +38,10 @@ const Page = () => {
                   className={`w-[10px] h-[10px] rounded-full ${
                     i.status === "pending"
                       ? "bg-[#B58700]"
-                      : i.status === "completed"
+                      : i.status === "submitted"
                       ? "bg-[#00893F]"
                       : "bg-[#E8382C]"
-                  } bg-primary-600 first-uppercase`}
+                  } first-uppercase`}
                 />
                 {i.status}
               </small>

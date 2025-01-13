@@ -1,16 +1,47 @@
 import Button from "@/components/Button";
 import TextArea from "@/components/TextArea";
 import ResourceCard from "../dashboard/ResourceCard";
-import { useState } from "react";
+import { SyntheticEvent, useState } from "react";
+import { submissionData, useGradeAssignment } from "@/api/assignments";
+import moment from "moment";
+import Input from "../Input";
+import { useQueryClient } from "@tanstack/react-query";
 
 const SubmissionModal = ({
   isOpen,
   onClose,
+  submission,
 }: {
   isOpen: boolean;
   onClose: () => void;
+  submission: submissionData;
 }) => {
-  const [grade, setGrade] = useState<number>();
+  const [grade, setGrade] = useState<string>(
+    submission?.grade.toString() ?? ""
+  );
+  const [feedback, setFeedback] = useState<string>(submission?.feedback ?? "");
+
+  const queryClient = useQueryClient();
+  const { mutate: submitAssignment, isPending } = useGradeAssignment();
+  const handleSubmit = (e: SyntheticEvent) => {
+    e.preventDefault();
+    const onSuccess = () => {
+      onClose();
+      queryClient.invalidateQueries({ queryKey: ["getAssignmentSubmission"] });
+      setFeedback("");
+      setGrade("");
+    };
+    submitAssignment(
+      {
+        submissionId: submission._id as string,
+        data: { feedback, grade: Number(grade) },
+      },
+      {
+        onSuccess,
+      }
+    );
+  };
+
   return (
     <>
       {isOpen && (
@@ -37,37 +68,52 @@ const SubmissionModal = ({
             Submission Details
           </small>
         </div>
-        <div className="p-4 md:p-5">
-          <p className="lg:text-lg leading-[22px] font-medium">Adio Mojeed</p>
-          <small className="mt-1 text-grey-300">LRN2024-001</small>
+        <form onSubmit={handleSubmit} className="p-4 md:p-5">
+          <p className="lg:text-lg leading-[22px] font-medium">
+            {submission?.student?.firstname} {submission?.student?.lastname}
+          </p>
+          <small className="mt-1 text-grey-300">{submission?.file?.name}</small>
           <div className="flex items-center gap-4 mt-2">
             <small className="text-grey-300 leading-[20px] flex items-center gap-1">
               <img src="/calendar.svg" alt="calendar icon" />{" "}
-              <span className="mt-1">15 Oct 2024</span>
+              <span className="mt-1">
+                {moment(submission.createdAt).format("DD MMM yyyy")}
+              </span>
             </small>
             <small className="text-grey-300 leading-[20px] flex items-center gap-1">
               <img src="/clock.svg" alt="clcok icon" />{" "}
-              <span className="mt-1">10:10 PM</span>
+              <span className="mt-1">
+                {moment(submission.createdAt).format("hh:mm A")}
+              </span>
             </small>
           </div>
           <p className="text-sm mt-6 font-medium">Comment</p>
-          <p className="text-sm mt-3 text-grey-400">
-            From the document attached, Create your own game asset and upload
-            your file to unreal engine asset library and submit your link in the
-            comment section
-          </p>
+          <p className="text-sm mt-3 text-grey-400">{submission.comment}</p>
           <p className="text-sm mt-6 font-medium mb-3">File</p>
           <div className="w-max">
             <ResourceCard />
           </div>
+          <div className="flex flex-col mt-6 gap-4">
+            <Input
+              label="Grade"
+              type="number"
+              placeholder="Enter grade here"
+              className="mt-6"
+              value={grade}
+              onChange={(e) => setGrade(e.target.value)}
+              required
+            />
+            <TextArea
+              placeholder="Write your feedback here"
+              label="Feedback"
+              labelClassName="font-medium text-grey-500"
+              value={feedback}
+              onChange={(e) => setFeedback(e.target.value)}
+              required
+            />
+          </div>
 
-          <TextArea
-            placeholder="Write your feedback here"
-            label="Feedback"
-            labelClassName="font-medium text-grey-500 mt-6"
-          />
-
-          <p className="text-sm mt-6 font-medium mb-3">Grade</p>
+          {/* <p className="text-sm mt-6 font-medium mb-3">Grade</p>
           <div className="flex gap-5">
             {Array.from({ length: 5 }).map((i, idx) => (
               <button
@@ -80,21 +126,26 @@ const SubmissionModal = ({
                 {idx + 1}
               </button>
             ))}
-          </div>
+          </div> */}
 
           <div className="mt-6 flex gap-3">
-            <Button
+            {/* <Button
               btnType="outline"
               className="px-6 text-sm text-red-700 border-red-700 hover:bg-red-700 focus:ring-red-700"
               size="md"
             >
               Reject
-            </Button>
-            <Button className="px-6 text-sm" size="md">
-              Accept
+            </Button> */}
+            <Button
+              type="submit"
+              isLoading={isPending}
+              className="px-6 text-sm"
+              size="md"
+            >
+              Submit
             </Button>
           </div>
-        </div>
+        </form>
       </div>
     </>
   );

@@ -14,12 +14,13 @@ const AssignmentTableRow = ({
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const course = assignment?.course as CourseData;
-  const status =
-    moment(assignment?.dueDate).diff(moment(new Date()), "seconds") < 0
-      ? "overdue"
-      : assignment?.isVisible
-      ? "pending"
-      : "completed";
+  const status = assignment?.isSubmitted
+    ? "submitted"
+    : moment(assignment?.dueDate).diff(moment(new Date()), "seconds") < 0
+    ? "overdue"
+    : assignment?.isVisible
+    ? "pending"
+    : "";
   return (
     <>
       <tr>
@@ -35,7 +36,7 @@ const AssignmentTableRow = ({
             className={`text-xs px-2 py-1 rounded-[10px] w-min first-uppercase ${
               status === "pending"
                 ? "text-[#B58700] bg-[#FFF9E6]"
-                : status === "completed"
+                : status === "submitted"
                 ? "text-[#00893F] bg-[#E6F9EE]"
                 : "text-[#E8382C] bg-[#FFECEA]"
             }`}
@@ -43,7 +44,9 @@ const AssignmentTableRow = ({
             {status}
           </p>
         </td>
-        <td className="max-w-[80px]">0</td>
+        <td className="max-w-[80px]">
+          {assignment?.grade === null ? "N/A" : assignment?.grade}
+        </td>
         <td>
           <Button onClick={onOpen} btnType="outline" size="sm" className="px-4">
             View

@@ -1,7 +1,7 @@
 import Button from "@/components/Button";
 import TextArea from "@/components/TextArea";
 import ResourceCard from "../dashboard/ResourceCard";
-import { SyntheticEvent, useState } from "react";
+import { SyntheticEvent, useEffect, useState } from "react";
 import Input from "../Input";
 import {
   invalidateSingleCourse,
@@ -11,6 +11,7 @@ import {
 } from "@/api/course";
 import { useParams } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
+import { toBase64 } from "@/utils/downloadFile";
 
 const LessonModal = ({
   isOpen,
@@ -26,15 +27,32 @@ const LessonModal = ({
   const queryClient = useQueryClient();
   const { id } = useParams();
   const isEdit = !!lesson;
-  const [title, setTitle] = useState<string>(lesson?.title || "");
+  const [title, setTitle] = useState<string>("");
   const { mutate: createLesson, isPending } = useCreateLesson();
+  const [file, setFile] = useState<any | null>(null);
+  const [fileObj, setFileObj] = useState<File | null>(null);
   const { mutate: editLesson, isPending: editing } = useEditLesson();
-  const handleSubmit = (e: SyntheticEvent) => {
+
+  useEffect(() => {
+    setTitle(lesson?.title || "");
+    setFile(lesson?.file ?? null);
+  }, [lesson]);
+
+  const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
     isEdit
       ? editLesson(
           {
-            lesson: { title },
+            lesson: {
+              title,
+              file: {
+                ...file,
+                ...(fileObj && {
+                  file: await toBase64(fileObj),
+                  filename: fileObj.name,
+                }),
+              },
+            },
             courseId: id as string,
             moduleId: module,
             lessonId: lesson?._id as string,
@@ -47,7 +65,8 @@ const LessonModal = ({
           {
             lesson: {
               title,
-              file: { name: "file-name-dsjhdhsja.pdf", url: "url" },
+              // @ts-ignore
+              file: { filename: fileObj?.name, file: await toBase64(fileObj) },
             },
             courseId: id as string,
             moduleId: module,
@@ -83,6 +102,7 @@ const LessonModal = ({
             {isEdit ? "Edit" : "Add"} Lesson
           </small>
         </div>
+
         <form
           onSubmit={handleSubmit}
           className="p-4 md:p-5 flex flex-col gap-3"
@@ -98,7 +118,9 @@ const LessonModal = ({
           <div className="mt-3 p-3 lg:p-4 bg-white rounded border border-dashed border-[#F3F3F3] flex items-center gap-4">
             <img src="/attach.svg" alt="attach icon" />
             <div className="">
-              <p className="text-sm font-medium line-clamp-1">Upload a file</p>
+              <p className="text-sm font-medium line-clamp-1">
+                {fileObj?.name ?? file?.name ?? "Upload a file"}
+              </p>
               <small className="text-xs text-grey-200">
                 PDF, PNG, JPG, or XLS{" "}
                 <span className="text-grey-400 font-medium">(Max 15MB)</span>
@@ -107,7 +129,19 @@ const LessonModal = ({
             <label htmlFor="file" className="ml-auto btn-outline px-4 text-xs">
               Attach
             </label>
-            <input type="file" name="file" id="file" className="hidden" />
+            <input
+              type="file"
+              name="file"
+              id="file"
+              className="hidden"
+              onChange={(e) => {
+                const f = e.target.files;
+                if (f && f.length > 0) {
+                  setFileObj(f[0]);
+                }
+              }}
+              required={!isEdit}
+            />
           </div>
           <Button
             isLoading={isPending}

@@ -5,22 +5,20 @@ import {
   useEditLesson,
 } from "@/api/course";
 import Button from "@/components/Button";
-import LessonModal from "@/components/modals/LessonModal";
-import useDisclosure from "@/hooks/useDisclosure";
 import { useQueryClient } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
-import { useState } from "react";
 
 const LessonCard = ({
   lesson,
   module,
+  onOpen,
 }: {
   lesson?: LessonData;
   module: string;
+  onOpen?: () => void;
 }) => {
   const queryClient = useQueryClient();
   const { id } = useParams();
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const { mutate: editLesson, isPending: editing } = useEditLesson();
   const { mutate: deleteLesson, isPending: deleting } = useDeleteLesson();
   return (
@@ -84,13 +82,6 @@ const LessonCard = ({
           </button>
         </div>
       </div>
-
-      <LessonModal
-        isOpen={isOpen}
-        onClose={onClose}
-        lesson={lesson}
-        module={module}
-      />
     </div>
   );
 };

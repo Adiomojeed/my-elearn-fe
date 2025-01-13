@@ -1,18 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Request, } from "./request";
-import { store } from "@store/index";
 import customToast, { ToastType } from "@/components/Toast";
 import { CourseData } from "./course";
-
-// export const invalidateSingleCourse = (queryClient: any, onClose?: any,) => {
-//   onClose && onClose();
-//   queryClient.invalidateQueries({
-//     queryKey: ["getSingleCourse"],
-//   });
-// };
-
-const dispatch = store.dispatch;
-
 
 export type AssignmentData = {
   title?: string;
@@ -23,10 +12,11 @@ export type AssignmentData = {
   courseId?: string,
   _id?: string,
   createdAt?: Date,
-  file?: { name: string, url: string };
+  file?: { name?: string, url?: string, filename?: string, file?: string };
   isSubmitted?: boolean;
   grade?: number;
   feedback?: number;
+  submittedFile?: any;
 }
 
 export type submissionData = {
@@ -86,7 +76,7 @@ export const useUpdateAssignment = () =>
 
 export const useSubmitAssignment = () =>
   useMutation({
-    mutationFn: (values: { assignmentId: string, comment: string, file?: { name: string, url: string } }) =>
+    mutationFn: (values: { assignmentId: string, comment: string, file?: { name?: string, url?: string, filename?: string, file?: string } }) =>
       Request.post(`/assignments/submit`, values),
     onSuccess: async (data: any) => {
       customToast("Assignment submitted successfully", ToastType.success);
@@ -109,7 +99,7 @@ export const useGradeAssignment = () =>
     mutationFn: (values: { submissionId: string, data: { feedback: string, grade: number } }) =>
       Request.put(`/assignments/submissions/${values.submissionId}`, values.data),
     onSuccess: async (data: any) => {
-      customToast("Assignment submitted successfully", ToastType.success);
+      customToast("Submission graded successfully", ToastType.success);
     },
     onError: (err: string) => {
       customToast(err, ToastType.error);

@@ -7,9 +7,15 @@ import { useState } from "react";
 import AssignmentDetails from "./AssignmentDetails";
 import { AssignmentData, useGetAssignments } from "@/api/assignments";
 import { useParams } from "next/navigation";
+import AssignmentModal from "@/components/modals/AssignmentModal";
 
 const Assignments = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isOpen2,
+    onOpen: onOpen2,
+    onClose: onClose2,
+  } = useDisclosure();
   const { user } = useAppSelector((s) => s.auth);
 
   const role = user?.role;
@@ -18,6 +24,7 @@ const Assignments = () => {
   const assignments = data as unknown as AssignmentData[];
 
   const [isDetails, setIsDetails] = useState<string | null>();
+  const [assignment, setAssignment] = useState<AssignmentData | null>();
 
   return !isDetails ? (
     <div className="mt-4 lg:mt-8">
@@ -41,9 +48,22 @@ const Assignments = () => {
             key={idx}
             assignment={i}
             setIsDetails={(e) => setIsDetails(e)}
+            setAssignment={(e) => {
+              setAssignment(e);
+              onOpen2();
+            }}
           />
         ))}
       </div>
+
+      <AssignmentModal
+        isOpen={isOpen2}
+        onClose={() => {
+          onClose2();
+          setAssignment(null);
+        }}
+        assignment={assignment as AssignmentData}
+      />
     </div>
   ) : (
     <AssignmentDetails

@@ -1,7 +1,7 @@
 import Button from "@/components/Button";
 import TextArea from "@/components/TextArea";
-import ResourceCard from "../dashboard/ResourceCard";
-import { SyntheticEvent, useState } from "react";
+import ResourceCard, { ResourceCardProps } from "../dashboard/ResourceCard";
+import { SyntheticEvent, useEffect, useState } from "react";
 import { submissionData, useGradeAssignment } from "@/api/assignments";
 import moment from "moment";
 import Input from "../Input";
@@ -16,10 +16,13 @@ const SubmissionModal = ({
   onClose: () => void;
   submission: submissionData;
 }) => {
-  const [grade, setGrade] = useState<string>(
-    submission?.grade.toString() ?? ""
-  );
-  const [feedback, setFeedback] = useState<string>(submission?.feedback ?? "");
+  const [grade, setGrade] = useState<string>("");
+  const [feedback, setFeedback] = useState<string>("");
+
+  useEffect(() => {
+    setGrade(submission?.grade?.toString() ?? "");
+    setFeedback(submission?.feedback ?? "");
+  }, [submission]);
 
   const queryClient = useQueryClient();
   const { mutate: submitAssignment, isPending } = useGradeAssignment();
@@ -91,7 +94,7 @@ const SubmissionModal = ({
           <p className="text-sm mt-3 text-grey-400">{submission.comment}</p>
           <p className="text-sm mt-6 font-medium mb-3">File</p>
           <div className="w-max">
-            <ResourceCard />
+            <ResourceCard resource={submission.file as ResourceCardProps} />
           </div>
           <div className="flex flex-col mt-6 gap-4">
             <Input

@@ -46,7 +46,7 @@ const AnnouncementCard = ({
             </p>
           )}
           <small className="text-grey-200 leading-[20px]">
-            {moment(announcement?.createdAt).format("MMMM d, yyyy")}{" "}
+            {moment(announcement?.createdAt).format("MMMM DD, yyyy")}{" "}
             {moment(announcement?.createdAt).format("hh:mm A")}
           </small>
         </div>

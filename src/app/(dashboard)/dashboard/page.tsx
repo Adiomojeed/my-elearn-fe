@@ -17,6 +17,7 @@ const Page = () => {
   const { user } = useAppSelector((s) => s.auth);
   const { data, isLoading } = useGetCourses();
   const courses = data as unknown as CourseData[];
+
   const role = user?.role;
   const { data: ann, isLoading: isGettingAnnounce } = useGetAnnouncements({
     limit: 3,
@@ -34,7 +35,11 @@ const Page = () => {
               value: "48/60",
               icon: "/attendance.svg",
             },
-            { title: "Enrolled Courses", value: "8", icon: "/enrolled.svg" },
+            {
+              title: "Enrolled Courses",
+              value: courses?.length ?? 0,
+              icon: "/enrolled.svg",
+            },
             {
               title: "Cumulative Grade Point",
               value: "4.78/5.0",

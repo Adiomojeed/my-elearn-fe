@@ -1,3 +1,5 @@
+import handleDownload from "@/utils/downloadFile";
+
 export type ResourceCardProps = {
   name?: string;
   url?: string;
@@ -29,16 +31,18 @@ const ResourceCard = ({ resource }: { resource: ResourceCardProps }) => {
         alt="pdf icon"
       />
       <div className="min-w[100px] pr-3">
-        <p className="text-sm font-medium line-clamp-1">
-          {name}.{type}
-        </p>
+        <p className="text-sm font-medium line-clamp-1">{name}</p>
         {code && (
           <small className="text-xs text-grey-200 line-clamp-1 mt-1">
             {code} &bull; {title}
           </small>
         )}
       </div>
-      <button type="button" className="ml-auto">
+      <button
+        type="button"
+        className="ml-auto"
+        onClick={() => handleDownload(url, name)}
+      >
         <img src="/download.svg" alt="download icon" />
       </button>
     </div>

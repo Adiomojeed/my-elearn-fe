@@ -1,7 +1,7 @@
 "use client";
 
 import { useAppSelector } from "@/store/useAppSelector";
-import { SyntheticEvent, useEffect, useState } from "react";
+import { SyntheticEvent, useEffect, useRef, useState } from "react";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import TextArea from "@/components/TextArea";
@@ -13,6 +13,7 @@ import {
 import { useQueryClient } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import moment from "moment";
+import { toBase64 } from "@/utils/downloadFile";
 
 const AddAssignmentModal = ({
   isOpen,
@@ -23,12 +24,11 @@ const AddAssignmentModal = ({
   onClose: () => void;
   assignment?: AssignmentData;
 }) => {
+  const ref = useRef(null);
   const isEdit = !!assignment;
-  const { user } = useAppSelector((s) => s.auth);
-  const role = user?.role;
+
   const { id } = useParams();
-  // const [title, setTitle] = useState<string>(assignment?.title ?? "");
-  // const [content, setContent] = useState<string>(assignment?.description ?? "");
+
   const [status, setStatus] = useState<boolean>(false);
 
   const [state, setState] = useState({
@@ -41,12 +41,16 @@ const AddAssignmentModal = ({
     setState((prev) => ({ ...prev, [e.target.id]: e.target.value }));
   };
 
+  const [file, setFile] = useState<any | null>(null);
+  const [fileObj, setFileObj] = useState<File | null>(null);
+
   useEffect(() => {
     setState({
       title: assignment?.title ?? "",
       description: assignment?.description ?? "",
       dueDate: moment(assignment?.dueDate ?? new Date()).format("yyyy-MM-DD"),
     });
+    setFile(assignment?.file ?? null);
 
     setStatus(assignment?.isVisible ?? false);
   }, [assignment]);
@@ -65,17 +69,19 @@ const AddAssignmentModal = ({
       description: "",
       dueDate: moment(new Date()).format("yyyy-MM-DD"),
     });
+    setFile(null);
+    setFileObj(null);
   };
-  const handleSubmit = (e: SyntheticEvent) => {
+  const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
-    console.log(state);
+
     !isEdit
       ? createAssignment(
           {
             ...state,
             file: {
-              name: "file name",
-              url: "url",
+              filename: fileObj?.name,
+              file: (await toBase64(fileObj)) as string,
             },
             courseId: id as string,
           },
@@ -86,6 +92,13 @@ const AddAssignmentModal = ({
             assId: assignment._id as string,
             assignment: {
               ...state,
+              file: {
+                ...file,
+                ...(fileObj && {
+                  file: await toBase64(fileObj),
+                  filename: fileObj.name,
+                }),
+              },
               isVisible: status,
             },
           },
@@ -151,7 +164,7 @@ const AddAssignmentModal = ({
                 <img src="/attach.svg" alt="attach icon" />
                 <div className="">
                   <p className="text-sm font-medium line-clamp-1">
-                    Upload a file
+                    {fileObj?.name ?? file?.name ?? "Upload a file"}
                   </p>
                   <small className="text-xs text-grey-200">
                     PDF, PNG, JPG, or XLS{" "}
@@ -163,7 +176,23 @@ const AddAssignmentModal = ({
                 <label htmlFor="file" className="ml-auto btn-outline px-4">
                   Attach
                 </label>
-                <input type="file" name="file" id="file" className="hidden" />
+                <input
+                  type="file"
+                  name="file"
+                  id="file"
+                  className="hidden"
+                  ref={ref}
+                  onChange={(e) => {
+                    const f = e.target.files;
+                    if (f && f.length > 0) {
+                      setFileObj(f[0]);
+                      if (ref.current) {
+                        (ref.current as HTMLInputElement).value = "";
+                      }
+                    }
+                  }}
+                  required={!isEdit}
+                />
               </div>
             </div>
             <TextArea

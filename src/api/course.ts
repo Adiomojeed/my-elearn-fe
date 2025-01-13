@@ -2,7 +2,15 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { Request } from "./request";
 import { store } from "@store/index";
 import customToast, { ToastType } from "@/components/Toast";
+import { headers } from "next/headers";
 
+const convertToFormData = (data: any) => {
+  const form_data = new FormData();
+  for (const key in data) {
+    form_data.append(key, data[key]);
+  }
+  return form_data;
+};
 
 export const invalidateSingleCourse = (queryClient: any, onClose?: any,) => {
   onClose && onClose();
@@ -23,7 +31,7 @@ export type LessonData = {
   _id?: string;
   title?: string,
   isVisible?: boolean,
-  file?: { name: string, url: string }
+  file?: { name?: string, url?: string, file?: File }
 }
 
 export type ModuleData = {

@@ -1,5 +1,6 @@
 import {
   invalidateSingleCourse,
+  LessonData,
   ModuleData,
   useDeleteModule,
   useEditModule,
@@ -18,6 +19,7 @@ const ModuleCard = ({ module, id }: { module: ModuleData; id: number }) => {
   const queryClient = useQueryClient();
   const { id: courseId } = useParams();
   const [title, setTitle] = useState(module?.title);
+  const [lesson, setLesson] = useState<LessonData | null>();
   useEffect(() => {
     setTitle(module.title);
   }, [module]);
@@ -38,6 +40,7 @@ const ModuleCard = ({ module, id }: { module: ModuleData; id: number }) => {
       }
     );
   };
+
   return (
     <Accordion
       className="rounded-lg bg-white border border-[#F3F3F3]"
@@ -119,7 +122,15 @@ const ModuleCard = ({ module, id }: { module: ModuleData; id: number }) => {
               </Button>
             </form>
             {module?.lessons?.map((i, idx) => (
-              <LessonCard key={idx} lesson={i} module={module._id as string} />
+              <LessonCard
+                key={idx}
+                lesson={i}
+                module={module._id as string}
+                onOpen={() => {
+                  onOpen();
+                  setLesson(i);
+                }}
+              />
             ))}
             <Button
               type="submit"
@@ -131,8 +142,12 @@ const ModuleCard = ({ module, id }: { module: ModuleData; id: number }) => {
             </Button>
             <LessonModal
               isOpen={isOpen}
-              onClose={onClose}
+              onClose={() => {
+                onClose();
+                setLesson(null);
+              }}
               module={module._id as string}
+              lesson={lesson as LessonData}
             />
           </div>
         </div>

@@ -1,11 +1,12 @@
 import { createPortal } from "react-dom";
 import Button from "../Button";
 import TextArea from "../TextArea";
-import ResourceCard from "../dashboard/ResourceCard";
+import ResourceCard, { ResourceCardProps } from "../dashboard/ResourceCard";
 import { AssignmentData, useSubmitAssignment } from "@/api/assignments";
 import moment from "moment";
 import { SyntheticEvent, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
+import { toBase64 } from "@/utils/downloadFile";
 
 const AssignmentModal = ({
   isOpen,
@@ -17,21 +18,26 @@ const AssignmentModal = ({
   assignment: AssignmentData;
 }) => {
   const [comment, setComment] = useState("");
+  const [fileObj, setFileObj] = useState<File | null>(null);
 
   const queryClient = useQueryClient();
   const { mutate: submitAssignment, isPending } = useSubmitAssignment();
-  const handleSubmit = (e: SyntheticEvent) => {
+  const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
     const onSuccess = () => {
       onClose();
       queryClient.invalidateQueries({ queryKey: ["getAssignments"] });
       setComment("");
+      setFileObj(null);
     };
     submitAssignment(
       {
-        assignmentId: assignment._id as string,
+        assignmentId: assignment?._id as string,
         comment,
-        file: { name: "file-name-dsjhdhsja.pdf", url: "url" },
+        file: {
+          filename: fileObj?.name,
+          file: (await toBase64(fileObj)) as string,
+        },
       },
       {
         onSuccess,
@@ -89,29 +95,51 @@ const AssignmentModal = ({
           </p>
           <p className="text-sm mt-6 font-medium mb-3">File/Resources (1)</p>
           <div className="w-max">
-            <ResourceCard />
+            <ResourceCard resource={assignment?.file as ResourceCardProps} />
           </div>
-          <div className="mt-8 pt-8 border-t border-[#F3F3F3] mb-6">
-            <p className="text-sm font-medium">Attach your file</p>
-            <div className="mt-3 p-3 bg-white rounded border border-[#F3F3F3] flex items-center gap-4">
-              <img src="/attach.svg" alt="attach icon" />
-              <div className="">
-                <p className="text-sm font-medium line-clamp-1">
-                  Upload a file
-                </p>
-                <small className="text-xs text-grey-200">
-                  PDF, PNG, JPG, or XLS{" "}
-                  <span className="text-grey-400 font-medium">(Max 15MB)</span>
-                </small>
-              </div>
-              <label htmlFor="file" className="ml-auto btn-outline px-4">
-                Attach
-              </label>
-              <input type="file" name="file" id="file" className="hidden" />
+          {assignment.isSubmitted ? (
+            <div className="w-max flex flex-col mt-8 gap-2">
+              <p className="text-sm font-medium mb-">Submitted file</p>
+              <ResourceCard
+                resource={assignment?.submittedFile as ResourceCardProps}
+              />
             </div>
-          </div>
+          ) : (
+            <div className="mt-8 pt-8 border-t border-[#F3F3F3] mb-6">
+              <p className="text-sm font-medium">Attach your file</p>
+              <div className="mt-3 p-3 bg-white rounded border border-[#F3F3F3] flex items-center gap-4">
+                <img src="/attach.svg" alt="attach icon" />
+                <div className="">
+                  <p className="text-sm font-medium line-clamp-1">
+                    {fileObj?.name ?? "Upload a file"}
+                  </p>
+                  <small className="text-xs text-grey-200">
+                    PDF, PNG, JPG, or XLS{" "}
+                    <span className="text-grey-400 font-medium">
+                      (Max 15MB)
+                    </span>
+                  </small>
+                </div>
+                <label htmlFor="file" className="ml-auto btn-outline px-4">
+                  Attach
+                </label>
+                <input
+                  type="file"
+                  name="file"
+                  id="file"
+                  className="hidden"
+                  onChange={(e) => {
+                    const f = e.target.files;
+                    if (f && f.length > 0) {
+                      setFileObj(f[0]);
+                    }
+                  }}
+                />
+              </div>
+            </div>
+          )}
 
-          {!assignment.isSubmitted ? (
+          {!assignment?.isSubmitted ? (
             <>
               <TextArea
                 placeholder="Write your comment here"

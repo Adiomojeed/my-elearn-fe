@@ -63,11 +63,20 @@ export const useGetCourses = (limit?: number) =>
     },
   });
 
+
 export const useGetSingleCourse = (id: string) =>
   useQuery({
     queryKey: ["getSingleCourse",],
     queryFn: () => {
       return Request.get(`/courses/${id}`).then(res => res)
+    },
+  });
+
+export const useGetSingleCourseResources = (id: string) =>
+  useQuery({
+    queryKey: ["getSingleCourseResources",],
+    queryFn: () => {
+      return Request.get(`/courses/${id}/resources`).then(res => res)
     },
   });
 

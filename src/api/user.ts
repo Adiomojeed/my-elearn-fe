@@ -34,3 +34,11 @@ export const useUpdatePassword = () =>
       customToast(err, ToastType.error);
     },
   });
+
+export const useGetResources = () =>
+  useQuery({
+    queryKey: ["getResources",],
+    queryFn: () => {
+      return Request.get(`/user/resources`).then(res => res)
+    },
+  });

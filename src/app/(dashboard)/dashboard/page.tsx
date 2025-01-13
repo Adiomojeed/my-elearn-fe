@@ -2,8 +2,12 @@
 
 import { AnnouncementData, useGetAnnouncements } from "@/api/announcement";
 import { CourseData, useGetCourses } from "@/api/course";
+import { useGetResources } from "@/api/user";
 import AnnouncementCard from "@/components/dashboard/AnnouncementCard";
 import CourseCard from "@/components/dashboard/CourseCard";
+import ResourceCard, {
+  ResourceCardProps,
+} from "@/components/dashboard/ResourceCard";
 import Stats, { StatsProps } from "@/components/dashboard/Stats";
 import { useAppSelector } from "@/store/useAppSelector";
 import Link from "next/link";
@@ -18,6 +22,8 @@ const Page = () => {
     limit: 3,
   });
   const announcements = ann as unknown as AnnouncementData[];
+  const { data: res, isLoading: isFetchingResources } = useGetResources();
+  const resources = res as unknown as ResourceCardProps[];
 
   const stats = useMemo(
     () =>
@@ -101,9 +107,14 @@ const Page = () => {
         <div className="hidden xl:block bg-white w-full overflow-auto">
           <div className="flex justify-between px-5 py-4 border-b border-[#F3F3F3]">
             <p className="font-medium">Recent Docs</p>
-            <Link href="/folders" className="text-sm text-primary-600">
+            <Link href="/resources" className="text-sm text-primary-600">
               View all
             </Link>
+          </div>
+          <div className="mt-3 grid grid-cols-1 gap-3 px-3">
+            {resources?.map((_, idx) => (
+              <ResourceCard key={idx} resource={_} />
+            ))}
           </div>
         </div>
       )}

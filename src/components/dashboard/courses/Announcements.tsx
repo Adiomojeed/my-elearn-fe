@@ -11,9 +11,7 @@ import { useParams } from "next/navigation";
 
 const Announcements = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const {
-    auth: { user },
-  } = useAppSelector((s) => s);
+  const { user } = useAppSelector((s) => s.auth);
 
   const { id } = useParams();
   const role = user?.role;

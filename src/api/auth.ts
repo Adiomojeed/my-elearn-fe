@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Request, tokenConfig as config } from "./request";
 import { store } from "@store/index";
-import { AUTH_USER } from "@store/reducers/types";
+import { AUTH_USER, LOGOUT } from "@store/reducers/types";
 // import customToast, { ToastType } from "@components/Toast";
 // import config from "./config";
 import { createCookie, deleteCookie } from "./cookiesActions";
@@ -114,7 +114,7 @@ export const useAssignCoursesToUser = () =>
 
 export const logoutUser = () => {
   deleteCookie();
-
+  dispatch({ type: LOGOUT })
   localStorage.removeItem(config.key.token);
   // window.location.href = "/sign-in";
   // permanentRedirect("/sign-in");

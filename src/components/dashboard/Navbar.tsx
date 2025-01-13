@@ -3,9 +3,7 @@
 import { useAppSelector } from "@/store/useAppSelector";
 
 const Navbar = ({ onOpen }: { onOpen: () => void }) => {
-  const {
-    auth: { user },
-  } = useAppSelector((s) => s);
+  const { user } = useAppSelector((s) => s.auth);
 
   const role = user?.role;
 

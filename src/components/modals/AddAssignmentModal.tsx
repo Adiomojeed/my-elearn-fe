@@ -1,27 +1,97 @@
 "use client";
 
 import { useAppSelector } from "@/store/useAppSelector";
-import { useEffect, useState } from "react";
+import { SyntheticEvent, useEffect, useState } from "react";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import TextArea from "@/components/TextArea";
-import { AssignmentCardProps } from "../dashboard/AssignmentCard";
+import {
+  AssignmentData,
+  useCreateAssignment,
+  useUpdateAssignment,
+} from "@/api/assignments";
+import { useQueryClient } from "@tanstack/react-query";
+import { useParams } from "next/navigation";
+import moment from "moment";
 
 const AddAssignmentModal = ({
   isOpen,
   onClose,
-  isEdit,
   assignment,
 }: {
   isOpen: boolean;
   onClose: () => void;
-  isEdit?: boolean;
-  assignment?: AssignmentCardProps;
+  assignment?: AssignmentData;
 }) => {
-  const {
-    auth: { user },
-  } = useAppSelector((s) => s);
+  const isEdit = !!assignment;
+  const { user } = useAppSelector((s) => s.auth);
   const role = user?.role;
+  const { id } = useParams();
+  // const [title, setTitle] = useState<string>(assignment?.title ?? "");
+  // const [content, setContent] = useState<string>(assignment?.description ?? "");
+  const [status, setStatus] = useState<boolean>(false);
+
+  const [state, setState] = useState({
+    title: "",
+    description: "",
+    dueDate: moment(new Date()).format("yyyy-MM-DD"),
+  });
+  console.log(moment(assignment?.dueDate).format("yyyy-MM-DD"));
+  const handleChange = (e: any) => {
+    setState((prev) => ({ ...prev, [e.target.id]: e.target.value }));
+  };
+
+  useEffect(() => {
+    setState({
+      title: assignment?.title ?? "",
+      description: assignment?.description ?? "",
+      dueDate: moment(assignment?.dueDate ?? new Date()).format("yyyy-MM-DD"),
+    });
+
+    setStatus(assignment?.isVisible ?? false);
+  }, [assignment]);
+
+  const { mutate: createAssignment, isPending } = useCreateAssignment();
+  const { mutate: updateAssignment, isPending: updating } =
+    useUpdateAssignment();
+  const queryClient = useQueryClient();
+  const onSuccess = () => {
+    onClose();
+    queryClient.invalidateQueries({
+      queryKey: [isEdit ? "getSingleAssignment" : "getAssignments"],
+    });
+    setState({
+      title: "",
+      description: "",
+      dueDate: moment(new Date()).format("yyyy-MM-DD"),
+    });
+  };
+  const handleSubmit = (e: SyntheticEvent) => {
+    e.preventDefault();
+    console.log(state);
+    !isEdit
+      ? createAssignment(
+          {
+            ...state,
+            file: {
+              name: "file name",
+              url: "url",
+            },
+            courseId: id as string,
+          },
+          { onSuccess }
+        )
+      : updateAssignment(
+          {
+            assId: assignment._id as string,
+            assignment: {
+              ...state,
+              isVisible: status,
+            },
+          },
+          { onSuccess }
+        );
+  };
 
   return (
     <>
@@ -55,8 +125,26 @@ const AddAssignmentModal = ({
           </small>
         </div>
         <div className="p-4 md:p-5">
-          <form className="flex flex-col gap-4">
-            <Input label="Assignment Title" placeholder="Input Title here" />
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <Input
+              label="Assignment Title"
+              placeholder="Input Title here"
+              value={state.title}
+              id="title"
+              onChange={(e) => handleChange(e)}
+              required
+            />
+            <Input
+              label="Submission Due date"
+              type="date"
+              // placeholder="Input Title here"
+              // @ts-ignore
+              value={state.dueDate}
+              id="dueDate"
+              onChange={(e) => handleChange(e)}
+              required
+              min={moment(new Date()).format("yyyy-MM-DD")}
+            />
             <div className="">
               <p className="text-sm">Attach a file</p>
               <div className="mt-3 p-3 bg-white rounded border border-[#F3F3F3] flex items-center gap-4">
@@ -82,10 +170,28 @@ const AddAssignmentModal = ({
               label="Assignment Details"
               placeholder="Assignment Details"
               className="min-h-[400px]"
+              value={state.description}
+              id="description"
+              onChange={(e) => handleChange(e)}
+              required
             />
-
-            <Button type="submit" className="px-6 text-sm w-max" size="md">
-              {isEdit ? "Save" : "Publish"}
+            {isEdit && (
+              <p className="flex items-center gap-5 text-sm text-grey-500">
+                Make assignment open to students{" "}
+                <input
+                  type="checkbox"
+                  checked={status}
+                  onChange={() => setStatus(!status)}
+                />
+              </p>
+            )}
+            <Button
+              isLoading={isPending ?? updating}
+              type="submit"
+              className="px-6 text-sm w-max"
+              size="md"
+            >
+              {isEdit ? "Edit" : "Create"} Assignmet
             </Button>
           </form>
         </div>

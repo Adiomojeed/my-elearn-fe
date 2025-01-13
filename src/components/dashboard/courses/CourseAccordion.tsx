@@ -30,7 +30,7 @@ const CourseAccordion = ({
                 <Button
                   btnType="outline"
                   size="sm"
-                  className="text-xs lg:text-sm px-4 !border-grey-50 !text-grey-500"
+                  className="text-xs lg:text-sm px-4 !border-grey-50 text-grey-500 hover:!text-white"
                 >
                   View Lesson
                 </Button>

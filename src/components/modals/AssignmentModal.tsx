@@ -1,3 +1,4 @@
+import { createPortal } from "react-dom";
 import Button from "../Button";
 import TextArea from "../TextArea";
 import ResourceCard from "../dashboard/ResourceCard";
@@ -9,7 +10,7 @@ const AssignmentModal = ({
   isOpen: boolean;
   onClose: () => void;
 }) => {
-  return (
+  return createPortal(
     <>
       {isOpen && (
         <div
@@ -92,7 +93,8 @@ const AssignmentModal = ({
           </Button>
         </div>
       </div>
-    </>
+    </>,
+    document.body
   );
 };
 

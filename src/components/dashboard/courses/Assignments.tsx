@@ -1,65 +1,24 @@
 import Button from "@/components/Button";
-import AssignmentCard, { AssignmentCardProps } from "../AssignmentCard";
+import AssignmentCard from "../AssignmentCard";
 import useDisclosure from "@/hooks/useDisclosure";
-import AnnouncementModal from "../../modals/AnnouncementModal";
 import { useAppSelector } from "@/store/useAppSelector";
 import AddAssignmentModal from "../../modals/AddAssignmentModal";
 import { useState } from "react";
 import AssignmentDetails from "./AssignmentDetails";
+import { AssignmentData, useGetAssignments } from "@/api/assignments";
+import { useParams } from "next/navigation";
 
 const Assignments = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const {
-    auth: { user },
-  } = useAppSelector((s) => s);
+  const { user } = useAppSelector((s) => s.auth);
 
   const role = user?.role;
-  const items = [
-    {
-      id: "1",
-      status: "pending",
-      title: "Week 5 Assignment - Game Research Analysis",
-      description:
-        "From the document attached, Create your own game asset and upload your file to unreal engine asset library and submit your link in the comment section",
-    },
-    {
-      id: "1",
-      status: "pending",
-      title: "Week 5 Assignment - Game Research Analysis",
-      description:
-        "From the document attached, Create your own game asset and upload your file to unreal engine asset library and submit your link in the comment section",
-    },
-    {
-      id: "1",
-      status: "completed",
-      title: "Week 5 Assignment - Game Research Analysis",
-      description:
-        "From the document attached, Create your own game asset and upload your file to unreal engine asset library and submit your link in the comment section",
-    },
-    {
-      id: "1",
-      status: "overdue",
-      title: "Week 5 Assignment - Game Research Analysis",
-      description:
-        "From the document attached, Create your own game asset and upload your file to unreal engine asset library and submit your link in the comment section",
-    },
-    {
-      id: "1",
-      status: "pending",
-      title: "Week 5 Assignment - Game Research Analysis",
-      description:
-        "From the document attached, Create your own game asset and upload your file to unreal engine asset library and submit your link in the comment section",
-    },
-    {
-      id: "1",
-      status: "pending",
-      title: "Week 5 Assignment - Game Research Analysis",
-      description:
-        "From the document attached, Create your own game asset and upload your file to unreal engine asset library and submit your link in the comment section",
-    },
-  ];
+  const { id } = useParams();
+  const { data, isLoading } = useGetAssignments({ courseId: id as string });
+  const assignments = data as unknown as AssignmentData[];
 
-  const [isDetails, setIsDetails] = useState<AssignmentCardProps | null>();
+  const [isDetails, setIsDetails] = useState<string | null>();
+
   return !isDetails ? (
     <div className="mt-4 lg:mt-8">
       {role !== "student" && (
@@ -77,7 +36,7 @@ const Assignments = () => {
         </div>
       )}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
-        {items.map((i, idx) => (
+        {assignments?.map((i, idx) => (
           <AssignmentCard
             key={idx}
             assignment={i}
@@ -88,7 +47,7 @@ const Assignments = () => {
     </div>
   ) : (
     <AssignmentDetails
-      assignment={isDetails}
+      assignmentId={isDetails}
       goBack={() => setIsDetails(null)}
     />
   );

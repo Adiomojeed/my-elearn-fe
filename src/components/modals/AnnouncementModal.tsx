@@ -42,9 +42,7 @@ const AnnouncementModal = ({
   announcement?: AnnouncementData;
 }) => {
   const isNew = !announcement;
-  const {
-    auth: { user },
-  } = useAppSelector((s) => s);
+  const { user } = useAppSelector((s) => s.auth);
   const role = user?.role;
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const { id } = useParams();

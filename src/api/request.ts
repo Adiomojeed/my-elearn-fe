@@ -43,8 +43,8 @@ Request?.interceptors?.request?.use(requestConfiguration, (error) => {
 });
 
 const handleError = (error: any) => {
-  if (Number(error.status) === 401) {
-    // logoutUser()
+  if (Number(error.status) === 403) {
+    logoutUser()
   }
 
   // customToast(error?.response?.data?.message, ToastType.error);

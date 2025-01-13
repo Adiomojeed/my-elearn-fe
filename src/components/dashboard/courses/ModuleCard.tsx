@@ -45,7 +45,14 @@ const ModuleCard = ({ module, id }: { module: ModuleData; id: number }) => {
       title={
         <div className="flex w-full items-center gap-4 justifybetween">
           <small className="font-medium">
-            Module {id} : {title}
+            Module {id} : {title}{" "}
+            {!module?.isVisible && (
+              <span
+                className={`text-[10px] px-2 py-1 font-normal rounded-[10px] w-min first-uppercase text-[#00893F] bg-[#E6F9EE]`}
+              >
+                Hidden
+              </span>
+            )}
           </small>
           <Button
             onClick={(e) => {
@@ -65,8 +72,10 @@ const ModuleCard = ({ module, id }: { module: ModuleData; id: number }) => {
             size="sm"
             isLoading={editing}
           >
-            {module.isVisible ? "Hide" : "Unhide"}
-            <span className="hidden md:inline">&nbsp;from students</span>
+            {module.isVisible ? "Hide" : "Show"}
+            <span className="hidden md:inline">
+              &nbsp;{module?.isVisible ? "from" : "to"} students
+            </span>
           </Button>
           <button
             className="mr-2"

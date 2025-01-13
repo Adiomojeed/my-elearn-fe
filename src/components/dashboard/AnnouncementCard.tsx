@@ -18,9 +18,7 @@ const AnnouncementCard = ({
   announcement?: AnnouncementData;
   pinned?: boolean;
 }) => {
-  const {
-    auth: { user },
-  } = useAppSelector((s) => s);
+  const { user } = useAppSelector((s) => s.auth);
 
   const role = user?.role;
   const isPinned = pinned;

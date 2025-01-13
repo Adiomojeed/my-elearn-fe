@@ -7,9 +7,7 @@ import { useAppSelector } from "@/store/useAppSelector";
 import { SyntheticEvent, useEffect, useState } from "react";
 
 const Page = () => {
-  const {
-    auth: { user },
-  } = useAppSelector((s) => s);
+  const { user } = useAppSelector((s) => s.auth);
 
   const role = user?.role;
   const [state, setState] = useState({

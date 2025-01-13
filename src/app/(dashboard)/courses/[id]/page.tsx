@@ -19,9 +19,7 @@ const Page = () => {
     { name: "Resources", path: "resources" },
   ];
 
-  const {
-    auth: { user },
-  } = useAppSelector((s) => s);
+  const { user } = useAppSelector((s) => s.auth);
 
   const role = user?.role;
   const { id } = useParams();

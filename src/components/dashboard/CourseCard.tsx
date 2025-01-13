@@ -14,9 +14,7 @@ export type CourseProps = {
 
 const CourseCard = ({ course }: { course?: CourseData }) => {
   const router = useRouter();
-  const {
-    auth: { user },
-  } = useAppSelector((s) => s);
+  const { user } = useAppSelector((s) => s.auth);
 
   const role = user?.role;
   const educator = course?.educators?.[0];

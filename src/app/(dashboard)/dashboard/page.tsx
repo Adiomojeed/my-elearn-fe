@@ -10,9 +10,7 @@ import Link from "next/link";
 import React, { useMemo } from "react";
 
 const Page = () => {
-  const {
-    auth: { user },
-  } = useAppSelector((s) => s);
+  const { user } = useAppSelector((s) => s.auth);
   const { data, isLoading } = useGetCourses();
   const courses = data as unknown as CourseData[];
   const role = user?.role;

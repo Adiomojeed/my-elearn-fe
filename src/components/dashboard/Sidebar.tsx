@@ -26,9 +26,7 @@ const Sidebar = ({
   const activeSegments = useSelectedLayoutSegments();
   const activeSegment = activeSegments.join("/");
 
-  const {
-    auth: { user },
-  } = useAppSelector((s) => s);
+  const { user } = useAppSelector((s) => s.auth);
 
   const role = user?.role;
 

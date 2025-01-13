@@ -10,7 +10,8 @@ const Input = ({
   onChange,
   className,
   size = "base",
-  disabled
+  disabled,
+  min,
 }: {
   label?: string;
   placeholder?: string;
@@ -22,11 +23,15 @@ const Input = ({
   className?: string;
   size?: "md" | "base";
   disabled?: boolean;
+  min?: string;
 }) => {
   return (
     <div className="">
       {label && (
-        <label htmlFor={id} className="block mb-3 text-sm text-grey-500 first-uppercase">
+        <label
+          htmlFor={id}
+          className="block mb-3 text-sm text-grey-500 first-uppercase"
+        >
           {label}
         </label>
       )}
@@ -43,6 +48,7 @@ const Input = ({
         value={value}
         onChange={onChange}
         disabled={disabled}
+        min={min}
       />
     </div>
   );

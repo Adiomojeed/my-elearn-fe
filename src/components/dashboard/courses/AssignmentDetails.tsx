@@ -1,28 +1,40 @@
 import Button from "@/components/Button";
 import useDisclosure from "@/hooks/useDisclosure";
 import { useAppSelector } from "@/store/useAppSelector";
-import { AssignmentCardProps } from "../AssignmentCard";
 import AddAssignmentModal from "../../modals/AddAssignmentModal";
 import AssignmentDetailsTableRow from "./AssignementDetailsTableRow";
+import { AssignmentData, useGetSingleAssignment } from "@/api/assignments";
 
 const AssignmentDetails = ({
-  assignment,
+  assignmentId,
   goBack,
 }: {
-  assignment: AssignmentCardProps;
+  assignmentId: string;
   goBack: () => void;
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const {
-    auth: { user },
-  } = useAppSelector((s) => s);
+  const { user } = useAppSelector((s) => s.auth);
+
+  const { data, isLoading } = useGetSingleAssignment(assignmentId);
+  const assignment = data as unknown as AssignmentData;
 
   const role = user?.role;
   return (
     <div className="mt-4 lg:mt-8">
       <div className="bg-white border mb-5 border-[#F3F3F3] p-3 lg:p-4 ">
         <div className="flex items-center gap-2 justify-between">
-          <p className="font-medium">First Assignment</p>
+          <p className="font-medium">
+            {assignment?.title}{" "}
+            <span
+              className={`text-xs font-normal px-2 py-1 rounded-[10px] ml-1 w-min first-uppercase ${
+                assignment.isVisible
+                  ? "text-[#00893F] bg-[#E6F9EE]"
+                  : "text-[#E8382C] bg-[#FFECEA]"
+              }`}
+            >
+              {assignment.isVisible ? "Open" : "Closed"}
+            </span>
+          </p>
           <div className="flex gap-3">
             <Button
               onClick={onOpen}
@@ -42,17 +54,19 @@ const AssignmentDetails = ({
               Back
             </Button>
           </div>
-          <AddAssignmentModal isOpen={isOpen} onClose={onClose} isEdit />
+          <AddAssignmentModal
+            isOpen={isOpen}
+            onClose={onClose}
+            assignment={assignment}
+          />
         </div>
 
-        <p className="text-sm mt-4 text-grey-400">
-          From the document attached, Create your own game asset and upload your
-          file to unreal engine asset library and submit your link in the
-          comment section. Lorem ipsum dolor sit amet, consectetur adipisicing
-          elit. Sunt nam cum sit praesentium ipsa cupiditate tempore optio
-          expedita dignissimos quis perferendis nisi, doloribus ab id, veritatis
-          libero unde deserunt eum!
-        </p>
+        <p
+          className="text-sm mt-2 text-grey-400 wysiwyg-render"
+          dangerouslySetInnerHTML={{
+            __html: assignment?.description as string,
+          }}
+        />
       </div>
 
       <p className="mt-4 lg:mt-6 font-medium">Student Submission</p>

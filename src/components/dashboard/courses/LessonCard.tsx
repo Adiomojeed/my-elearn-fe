@@ -27,7 +27,16 @@ const LessonCard = ({
     <div className="pt-3 md:pt-4 first:pt-0">
       <div className="flex items-center md:grid grid-cols-1 lg:grid-cols-2 gap-3 ">
         {/* <Input placeholder="Lesson title" size="md" className="" /> */}
-        <p className="text-sm">{lesson?.title}</p>
+        <p className="text-sm">
+          {lesson?.title}{" "}
+          {!lesson?.isVisible && (
+            <span
+              className={`text-[10px] px-2 py-1 font-normal rounded-[10px] w-min first-uppercase text-[#00893F] bg-[#E6F9EE]`}
+            >
+              Hidden
+            </span>
+          )}
+        </p>
 
         <div className="flex ml-auto gap-3">
           <button onClick={onOpen}>
@@ -52,8 +61,10 @@ const LessonCard = ({
             size="sm"
             isLoading={editing}
           >
-            {lesson?.isVisible ? "Hide" : "Unhide"}
-            <span className="hidden md:inline">&nbsp;from students</span>
+            {lesson?.isVisible ? "Hide" : "Show"}
+            <span className="hidden md:inline">
+              &nbsp;{lesson?.isVisible ? "from" : "to"} students
+            </span>
           </Button>
           <button
             onClick={() => {

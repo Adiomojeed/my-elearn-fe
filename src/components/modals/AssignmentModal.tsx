@@ -2,13 +2,17 @@ import { createPortal } from "react-dom";
 import Button from "../Button";
 import TextArea from "../TextArea";
 import ResourceCard from "../dashboard/ResourceCard";
+import { AssignmentData } from "@/api/assignments";
+import moment from "moment";
 
 const AssignmentModal = ({
   isOpen,
   onClose,
+  assignment,
 }: {
   isOpen: boolean;
   onClose: () => void;
+  assignment: AssignmentData;
 }) => {
   return createPortal(
     <>
@@ -19,11 +23,11 @@ const AssignmentModal = ({
         ></div>
       )}
       <div
-        className={`absolute z-[101] h-full top-0 ${
+        className={`absolute z-[101] h-full max-h-screen top-0 ${
           isOpen
             ? "right-0"
             : "-right-[100%] md:-right-[500px] lg:-right-[514px]"
-        } bg-[#F9FAFB] w-full md:max-w-[500px] lg:max-w-[514px] transition-[right] easein duration-[750ms]`}
+        } bg-[#F9FAFB] w-full md:max-w-[500px] overflow-y-auto lg:max-w-[514px] transition-[right] easein duration-[750ms]`}
       >
         <div className="bg-white h-20 lg:h-[108px] border-b border-[#F3F3F3] flex items-center px-5 gap-3 sticky top-0">
           <Button
@@ -40,23 +44,21 @@ const AssignmentModal = ({
         </div>
         <div className="p-4 md:p-5">
           <p className="lg:text-lg leading-[22px] font-medium">
-            Week 5 Assignment - Game Research Analysis
+            {assignment?.title}
           </p>
           <div className="flex items-center gap-4 mt-2">
             <small className="text-grey-300 leading-[20px] flex items-center gap-1">
               <img src="/calendar.svg" alt="calendar icon" />{" "}
-              <span className="mt-1">15 Oct 2024</span>
+              <span className="mt-1">{moment(assignment?.dueDate).format("DD MMM yyyy")}</span>
             </small>
             <small className="text-grey-300 leading-[20px] flex items-center gap-1">
               <img src="/clock.svg" alt="clcok icon" />{" "}
-              <span className="mt-1">10:10 PM</span>
+              <span className="mt-1">11:59 PM</span>
             </small>
           </div>
           <p className="text-sm mt-6 font-medium">Description</p>
           <p className="text-sm mt-3 text-grey-400">
-            From the document attached, Create your own game asset and upload
-            your file to unreal engine asset library and submit your link in the
-            comment section
+            {assignment?.description}
           </p>
           <p className="text-sm mt-6 font-medium mb-3">File/Resources (1)</p>
           <div className="w-max">

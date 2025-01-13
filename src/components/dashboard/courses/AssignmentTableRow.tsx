@@ -3,29 +3,32 @@
 import Button from "@/components/Button";
 import useDisclosure from "@/hooks/useDisclosure";
 import AssignmentModal from "../../modals/AssignmentModal";
-
-export type AssignmentTableRowProps = {
-  id: string;
-  course: string;
-  title: string;
-  description: string;
-  status: string;
-};
+import { AssignmentData } from "@/api/assignments";
+import { CourseData } from "@/api/course";
+import moment from "moment";
 
 const AssignmentTableRow = ({
   assignment,
 }: {
-  assignment?: AssignmentTableRowProps;
+  assignment?: AssignmentData;
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const status = "pending";
+  const course = assignment?.course as CourseData;
+  const status =
+    moment(assignment?.dueDate).diff(moment(new Date()), "seconds") < 0
+      ? "overdue"
+      : assignment?.isVisible
+      ? "pending"
+      : "completed";
   return (
     <>
       <tr>
-        <td>MAT 420 - Operations Research</td>
-        <td>Week 3 Assignment</td>
-        <td className="hidden lg:table-cell">
-          Solve the Questions and submit the document
+        <td className="max-w-[90px] lg:max-w-[110px] xl:max-w-[200px]">
+          {course?.code} - {course?.title}
+        </td>
+        <td className="max-w-[50px] xl:max-w-[200px]">{assignment?.title}</td>
+        <td className="hidden lg:table-cell line-clamp-1 lg:max-w-[200px] xl:max-w-[400px]">
+          {assignment?.description}
         </td>
         <td className="hidden lg:table-cell">
           <p
@@ -40,13 +43,20 @@ const AssignmentTableRow = ({
             {status}
           </p>
         </td>
+        <td className="max-w-[80px]">0</td>
         <td>
           <Button onClick={onOpen} btnType="outline" size="sm" className="px-4">
             View
           </Button>
         </td>
       </tr>
-      <AssignmentModal isOpen={isOpen} onClose={onClose} />
+      {assignment && (
+        <AssignmentModal
+          isOpen={isOpen}
+          onClose={onClose}
+          assignment={assignment}
+        />
+      )}
     </>
   );
 };

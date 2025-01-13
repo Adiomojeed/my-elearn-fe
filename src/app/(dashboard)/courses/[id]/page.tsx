@@ -40,7 +40,8 @@ const Page = () => {
     ) : (
       <Resources />
     );
-  if (role === "student" && !course?.isActive) {
+
+  if (course && role === "student" && !course?.isActive) {
     router.push("/courses");
   }
   return (

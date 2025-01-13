@@ -27,12 +27,12 @@ const AssignmentDetails = ({
             {assignment?.title}{" "}
             <span
               className={`text-xs font-normal px-2 py-1 rounded-[10px] ml-1 w-min first-uppercase ${
-                assignment.isVisible
+                assignment?.isVisible
                   ? "text-[#00893F] bg-[#E6F9EE]"
                   : "text-[#E8382C] bg-[#FFECEA]"
               }`}
             >
-              {assignment.isVisible ? "Open" : "Closed"}
+              {assignment?.isVisible ? "Open" : "Closed"}
             </span>
           </p>
           <div className="flex gap-3">

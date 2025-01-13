@@ -2,6 +2,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { Request, } from "./request";
 import { store } from "@store/index";
 import customToast, { ToastType } from "@/components/Toast";
+import { CourseData } from "./course";
 
 // export const invalidateSingleCourse = (queryClient: any, onClose?: any,) => {
 //   onClose && onClose();
@@ -18,7 +19,7 @@ export type AssignmentData = {
   description?: string,
   isVisible?: boolean,
   dueDate?: Date | string,
-  course?: string,
+  course?: CourseData | string,
   courseId?: string,
   _id?: string,
   createdAt?: Date,

@@ -1,26 +1,52 @@
-import Button from "@/components/Button";
+"use client";
+
+import { AssignmentData, useGetAssignments } from "@/api/assignments";
 import AssignmentTableRow from "@/components/dashboard/courses/AssignmentTableRow";
-import React from "react";
+import { assignmentsStats } from "@/utils/counters";
+import React, { useMemo } from "react";
 
 const Page = () => {
-  const status = "pending";
+  const { data, isLoading } = useGetAssignments({});
+  const assignments = data as unknown as AssignmentData[];
+
+  const counts = assignmentsStats(assignments);
+
+  const stats = useMemo(
+    () => [
+      { status: "completed", value: counts.completed },
+      { status: "pending", value: counts.pending },
+      { status: "overdue", value: counts.overdue },
+    ],
+    [assignments]
+  );
+
   return (
     <section className="flex flex-col h-full">
       <h6 className="md:text-lg font-medium">Assignments</h6>
       <div className="mt-4 border border-[#F3F3F3] bg-white rounded-lg p-4 lg:p-5 lg:flex items-center">
         <div>
           <small className="text-xs text-grey-200">Total Assignments</small>
-          <h5 className="text-2xl font-medium leading-[29px]">6</h5>
+          <h5 className="text-2xl font-medium leading-[29px] mt-2">
+            {assignments?.length ?? 0}
+          </h5>
         </div>
         <div className="mt-4 lg:mt-0 lg:ml-auto flex gap-3">
-          {Array.from({ length: 3 }).map((i, idx) => (
+          {stats.map((i, idx) => (
             <div key={idx} className="min-w-[100px]">
               <small className="text-xs text-grey-200 flex items-center gap-2">
-                <div className="w-[10px] h-[10px] rounded-full bg-primary-600" />
-                Completed
+                <div
+                  className={`w-[10px] h-[10px] rounded-full ${
+                    i.status === "pending"
+                      ? "bg-[#B58700]"
+                      : i.status === "completed"
+                      ? "bg-[#00893F]"
+                      : "bg-[#E8382C]"
+                  } bg-primary-600 first-uppercase`}
+                />
+                {i.status}
               </small>
-              <h5 className="text-2xl font-medium leading-[29px] mt-[2px]">
-                3
+              <h5 className="text-2xl font-medium leading-[29px] mt-2">
+                {i.value}
               </h5>
             </div>
           ))}
@@ -33,12 +59,13 @@ const Page = () => {
             <th>Assignment Title</th>
             <th className="hidden lg:table-cell">Description</th>
             <th className="hidden lg:table-cell">Status</th>
+            <th>Grade</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
-          {Array.from({ length: 5 }).map((i, idx) => (
-            <AssignmentTableRow key={idx} />
+          {assignments?.map((i, idx) => (
+            <AssignmentTableRow key={idx} assignment={i} />
           ))}
         </tbody>
       </table>

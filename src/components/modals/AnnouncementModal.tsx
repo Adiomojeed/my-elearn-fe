@@ -77,7 +77,7 @@ const AnnouncementModal = ({
         )
       : updateAnnouncement(
           {
-            annId: announcement._id as string,
+            annId: announcement?._id as string,
             announcement: { title, content },
           },
           { onSuccess }

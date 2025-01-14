@@ -21,7 +21,7 @@ const ModuleCard = ({ module, id }: { module: ModuleData; id: number }) => {
   const [title, setTitle] = useState(module?.title);
   const [lesson, setLesson] = useState<LessonData | null>();
   useEffect(() => {
-    setTitle(module.title);
+    setTitle(module?.title);
   }, [module]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { mutate: editModule, isPending: editing } = useEditModule();
@@ -33,7 +33,7 @@ const ModuleCard = ({ module, id }: { module: ModuleData; id: number }) => {
       {
         module: { title },
         courseId: courseId as string,
-        moduleId: module._id as string,
+        moduleId: module?._id as string,
       },
       {
         onSuccess: () => invalidateSingleCourse(queryClient),
@@ -64,7 +64,7 @@ const ModuleCard = ({ module, id }: { module: ModuleData; id: number }) => {
                 {
                   module: { isVisible: !module?.isVisible },
                   courseId: courseId as string,
-                  moduleId: module._id as string,
+                  moduleId: module?._id as string,
                 },
                 {
                   onSuccess: () => invalidateSingleCourse(queryClient),
@@ -75,7 +75,7 @@ const ModuleCard = ({ module, id }: { module: ModuleData; id: number }) => {
             size="sm"
             isLoading={editing}
           >
-            {module.isVisible ? "Hide" : "Show"}
+            {module?.isVisible ? "Hide" : "Show"}
             <span className="hidden md:inline">
               &nbsp;{module?.isVisible ? "from" : "to"} students
             </span>
@@ -87,7 +87,7 @@ const ModuleCard = ({ module, id }: { module: ModuleData; id: number }) => {
               deleteModule(
                 {
                   courseId: courseId as string,
-                  moduleId: module._id as string,
+                  moduleId: module?._id as string,
                 },
                 {
                   onSuccess: () => invalidateSingleCourse(queryClient),
@@ -125,7 +125,7 @@ const ModuleCard = ({ module, id }: { module: ModuleData; id: number }) => {
               <LessonCard
                 key={idx}
                 lesson={i}
-                module={module._id as string}
+                module={module?._id as string}
                 onOpen={() => {
                   onOpen();
                   setLesson(i);
@@ -146,7 +146,7 @@ const ModuleCard = ({ module, id }: { module: ModuleData; id: number }) => {
                 onClose();
                 setLesson(null);
               }}
-              module={module._id as string}
+              module={module?._id as string}
               lesson={lesson as LessonData}
             />
           </div>

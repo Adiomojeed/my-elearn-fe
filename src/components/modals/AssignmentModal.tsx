@@ -97,7 +97,7 @@ const AssignmentModal = ({
           <div className="w-max">
             <ResourceCard resource={assignment?.file as ResourceCardProps} />
           </div>
-          {assignment.isSubmitted ? (
+          {assignment?.isSubmitted ? (
             <div className="w-max flex flex-col mt-8 gap-2">
               <p className="text-sm font-medium mb-">Submitted file</p>
               <ResourceCard

@@ -2,11 +2,14 @@ import Accordion from "@/components/Accordion";
 import CourseAccordion from "./CourseAccordion";
 import { CourseData } from "@/api/course";
 import { countLessons } from "@/utils/counters";
+import { LoaderContainer } from "@/components/Loader";
 
 const Courses = ({ course }: { course: CourseData }) => {
   const educator = course?.educators?.[0];
 
-  return (
+  return !course ? (
+    <LoaderContainer />
+  ) : (
     <div className="mt-4 bg-white flex flex-col divide-y divide-[#F3F3F3]">
       <div className="p-4 lg:py-5 lg:px-6 flex flex-col lg:flex-row lg:items-center justify-between">
         <div>
@@ -22,7 +25,7 @@ const Courses = ({ course }: { course: CourseData }) => {
           Lessons
         </p>
       </div>
-      {course?.modules.map((_, idx) => (
+      {course?.modules?.map((_, idx) => (
         <CourseAccordion key={idx} module={_} id={idx + 1} />
       ))}
     </div>

@@ -9,6 +9,7 @@ import {
   useGetAssignmentSubmission,
   useGetSingleAssignment,
 } from "@/api/assignments";
+import { LoaderContainer, NotFound } from "@/components/Loader";
 
 const AssignmentDetails = ({
   assignmentId,
@@ -26,7 +27,9 @@ const AssignmentDetails = ({
   const { data, isLoading } = useGetSingleAssignment(assignmentId);
   const assignment = data as unknown as AssignmentData;
 
-  return (
+  return isLoading ? (
+    <LoaderContainer />
+  ) : (
     <div className="mt-4 lg:mt-8">
       <div className="bg-white border mb-5 border-[#F3F3F3] p-3 lg:p-4 ">
         <div className="flex items-center gap-2 justify-between">
@@ -89,11 +92,22 @@ const AssignmentDetails = ({
           </tr>
         </thead>
         <tbody>
-          {submissions?.map((i, idx) => (
-            <AssignmentDetailsTableRow key={idx} submission={i} />
-          ))}
+          {submissions?.length > 0 &&
+            submissions?.map((i, idx) => (
+              <AssignmentDetailsTableRow key={idx} submission={i} />
+            ))}
         </tbody>
       </table>
+      {isFetchSub ? (
+        <LoaderContainer />
+      ) : submissions?.length === 0 ? (
+        <NotFound
+          title="No Submission Yet"
+          subtitle="Submissions from students would shown here when created"
+        />
+      ) : (
+        <></>
+      )}
     </div>
   );
 };

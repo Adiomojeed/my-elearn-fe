@@ -8,6 +8,7 @@ import { useState, type ReactNode, useEffect } from "react";
 import useDisclosure from "@/hooks/useDisclosure";
 import Navbar from "@/components/dashboard/Navbar";
 import Sidebar from "@/components/dashboard/Sidebar";
+import { LoaderContainer } from "@/components/Loader";
 
 const DashboardLayout = ({
   children,
@@ -43,15 +44,7 @@ const DashboardLayout = ({
           </section>
         </>
       ) : (
-        <div className="flex-center h-full w-full">
-          {/* <Spinner
-            thickness="5px"
-            speed="1s"
-            color="#042515"
-            width="60px"
-            height="60px"
-          /> */}
-        </div>
+        <LoaderContainer />
       )}
     </main>
   );

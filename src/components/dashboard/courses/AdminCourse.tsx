@@ -5,6 +5,7 @@ import { CourseData, useCreateModule, useUpdateCourse } from "@/api/course";
 import { useState } from "react";
 import { numbers } from "@/utils/numbers";
 import { useQueryClient } from "@tanstack/react-query";
+import { LoaderContainer } from "@/components/Loader";
 
 const AdminCourse = ({ course }: { course: CourseData }) => {
   const { mutate: createModule, isPending } = useCreateModule();
@@ -15,7 +16,9 @@ const AdminCourse = ({ course }: { course: CourseData }) => {
       queryKey: ["getSingleCourse"],
     });
   const { mutate: updateCourse, isPending: updating } = useUpdateCourse();
-  return (
+  return !course ? (
+    <LoaderContainer />
+  ) : (
     <div className="mt-4 flex flex-col gap-3 lg:gap-4 xl:max-w-[75%] pb-8">
       <div className="bg-white border border-[#F3F3F3] p-4 lg:py-5 lg:px-6 flex flex-col lg:flex-row lg:items-center justify-between">
         <div>
@@ -23,7 +26,7 @@ const AdminCourse = ({ course }: { course: CourseData }) => {
             {course?.code} - {course?.title}
           </h5>
           <p className="text-sm text-grey-300">
-            This contains everything you need about the course.
+            This contains everything you need about the course?.
           </p>
         </div>
         <div className="flex gap-3">
@@ -45,7 +48,7 @@ const AdminCourse = ({ course }: { course: CourseData }) => {
                 {
                   courseId: course?._id as string,
                   // @ts-ignore
-                  course: { isActive: !course.isActive },
+                  course: { isActive: !course?.isActive },
                 },
                 {
                   onSuccess,
@@ -68,14 +71,14 @@ const AdminCourse = ({ course }: { course: CourseData }) => {
         className="px-4 text-sm"
         size="md"
         onClick={() => {
-          if (course._id) {
+          if (course?._id) {
             createModule(
               {
-                courseId: course._id,
+                courseId: course?._id,
                 module: {
                   title: `Module ${
                     numbers[
-                      (course?.modules.length + 1) as keyof typeof numbers
+                      (course?.modules?.length + 1) as keyof typeof numbers
                     ]
                   }`,
                 },

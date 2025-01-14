@@ -59,7 +59,7 @@ const CreateCourseModal = ({
     isEdit
       ? updateCourse(
           // @ts-ignore
-          { courseId: course._id, course: { ...state, isActive: status } },
+          { courseId: course?._id, course: { ...state, isActive: status } },
           {
             onSuccess,
           }

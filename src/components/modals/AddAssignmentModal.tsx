@@ -89,7 +89,7 @@ const AddAssignmentModal = ({
         )
       : updateAssignment(
           {
-            assId: assignment._id as string,
+            assId: assignment?._id as string,
             assignment: {
               ...state,
               file: {

@@ -2,6 +2,7 @@
 
 import { AssignmentData, useGetAssignments } from "@/api/assignments";
 import AssignmentTableRow from "@/components/dashboard/courses/AssignmentTableRow";
+import { LoaderContainer, NotFound } from "@/components/Loader";
 import { assignmentsStats } from "@/utils/counters";
 import React, { useMemo } from "react";
 
@@ -20,7 +21,9 @@ const Page = () => {
     [assignments]
   );
 
-  return (
+  return isLoading ? (
+    <LoaderContainer />
+  ) : (
     <section className="flex flex-col h-full">
       <h6 className="md:text-lg font-medium">Assignments</h6>
       <div className="mt-4 border border-[#F3F3F3] bg-white rounded-lg p-4 lg:p-5 lg:flex items-center">
@@ -64,11 +67,18 @@ const Page = () => {
           </tr>
         </thead>
         <tbody>
-          {assignments?.map((i, idx) => (
-            <AssignmentTableRow key={idx} assignment={i} />
-          ))}
+          {assignments.length > 0 &&
+            assignments?.map((i, idx) => (
+              <AssignmentTableRow key={idx} assignment={i} />
+            ))}
         </tbody>
       </table>
+      {assignments.length === 0 && (
+        <NotFound
+          title="No Assignment Yet"
+          subtitle="Assignments from courses would shown here when created"
+        />
+      )}
     </section>
   );
 };

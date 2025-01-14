@@ -4,7 +4,6 @@ import { SyntheticEvent, useState } from "react";
 import { useLoginUser } from "@/api/auth";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
-import Image from "next/image";
 import Link from "next/link";
 
 const Page = () => {

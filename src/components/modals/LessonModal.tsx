@@ -144,7 +144,7 @@ const LessonModal = ({
             />
           </div>
           <Button
-            isLoading={isPending}
+            isLoading={isPending ?? editing}
             type="submit"
             className="px-3 text-sm mt-2 w-max"
           >

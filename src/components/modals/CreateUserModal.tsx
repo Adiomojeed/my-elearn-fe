@@ -208,7 +208,7 @@ const CreateUserModal = ({
                 id="courses"
               />
               <Button
-                isLoading={isPending}
+                isLoading={isAssigning}
                 type="submit"
                 className="px-6 text-sm w-max"
                 size="md"

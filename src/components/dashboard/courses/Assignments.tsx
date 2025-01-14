@@ -8,6 +8,7 @@ import AssignmentDetails from "./AssignmentDetails";
 import { AssignmentData, useGetAssignments } from "@/api/assignments";
 import { useParams } from "next/navigation";
 import AssignmentModal from "@/components/modals/AssignmentModal";
+import { LoaderContainer, NotFound } from "@/components/Loader";
 
 const Assignments = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -42,19 +43,28 @@ const Assignments = () => {
           <AddAssignmentModal isOpen={isOpen} onClose={onClose} />
         </div>
       )}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
-        {assignments?.map((i, idx) => (
-          <AssignmentCard
-            key={idx}
-            assignment={i}
-            setIsDetails={(e) => setIsDetails(e)}
-            setAssignment={(e) => {
-              setAssignment(e);
-              onOpen2();
-            }}
-          />
-        ))}
-      </div>
+      {isLoading ? (
+        <LoaderContainer />
+      ) : assignments?.length === 0 ? (
+        <NotFound
+          title="No Assignment Yet"
+          subtitle="Assignments would shown here when created"
+        />
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
+          {assignments?.map((i, idx) => (
+            <AssignmentCard
+              key={idx}
+              assignment={i}
+              setIsDetails={(e) => setIsDetails(e)}
+              setAssignment={(e) => {
+                setAssignment(e);
+                onOpen2();
+              }}
+            />
+          ))}
+        </div>
+      )}
 
       <AssignmentModal
         isOpen={isOpen2}

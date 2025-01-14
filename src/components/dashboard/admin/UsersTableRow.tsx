@@ -19,7 +19,7 @@ const UsersTableRow = ({
         </td>
         <td className="first-uppercase">{user?.role}</td>
         <td className="hidden lg:table-cell">{user?.email}</td>
-        <td className="hidden lg:table-cell">{user?.courses.length}</td>
+        <td className="hidden lg:table-cell">{user?.courses?.length}</td>
         <td>
           <Button
             onClick={() => user && onOpen(user)}

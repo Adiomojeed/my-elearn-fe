@@ -136,7 +136,7 @@ const Sidebar = ({
           alt="avatar"
         />
         <div>
-          <h6 className="lg:text-lg leading-[26px]">
+          <h6 className="lg:text-lg leading-[26px] whitespace-nowrap">
             {user?.firstname} {user?.lastname}
           </h6>
           <small className="text-grey-200 leading-[26px] uppercase">

@@ -9,6 +9,7 @@ import ResourceCard, {
   ResourceCardProps,
 } from "@/components/dashboard/ResourceCard";
 import Stats, { StatsProps } from "@/components/dashboard/Stats";
+import { LoaderContainer, NotFound } from "@/components/Loader";
 import { useAppSelector } from "@/store/useAppSelector";
 import Link from "next/link";
 import React, { useMemo } from "react";
@@ -81,11 +82,20 @@ const Page = () => {
                 View all
               </Link>
             </div>
-            <div className="mt-4 lg:mt-[16px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-4 xl:gap-6">
-              {courses?.map((i, idx) => (
-                <CourseCard key={idx} course={i} />
-              ))}
-            </div>
+            {isLoading ? (
+              <LoaderContainer />
+            ) : courses?.length === 0 ? (
+              <NotFound
+                title="No Course Yet"
+                subtitle="Assigned courses would shown here"
+              />
+            ) : (
+              <div className="mt-4 lg:mt-[16px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-4 xl:gap-6">
+                {courses?.map((i, idx) => (
+                  <CourseCard key={idx} course={i} />
+                ))}
+              </div>
+            )}
           </div>
         )}
         <div>
@@ -97,15 +107,24 @@ const Page = () => {
               </Link>
             )}
           </div>
-          <div
-            className={`mt-4 lg:mt-[16px] grid grid-cols-1 ${
-              role !== "student" ? "lg:grid-cols-3" : ""
-            } gap-5`}
-          >
-            {announcements?.map((_, idx) => (
-              <AnnouncementCard key={idx} announcement={_} />
-            ))}
-          </div>
+          {isGettingAnnounce ? (
+            <LoaderContainer />
+          ) : announcements.length === 0 ? (
+            <NotFound
+              title="No Announcement Yet"
+              subtitle="Announcements would shown here when created"
+            />
+          ) : (
+            <div
+              className={`mt-4 lg:mt-[16px] grid grid-cols-1 ${
+                role !== "student" ? "lg:grid-cols-3" : ""
+              } gap-5`}
+            >
+              {announcements?.map((_, idx) => (
+                <AnnouncementCard key={idx} announcement={_} />
+              ))}
+            </div>
+          )}
         </div>
       </div>
       {role === "student" && (

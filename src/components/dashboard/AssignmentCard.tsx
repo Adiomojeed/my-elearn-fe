@@ -18,9 +18,9 @@ const AssignmentCard = ({
 
   const role = user?.role;
   const status =
-    moment(assignment.dueDate).diff(moment(new Date()), "seconds") < 0
+    moment(assignment?.dueDate).diff(moment(new Date()), "seconds") < 0
       ? "overdue"
-      : assignment.isVisible
+      : assignment?.isVisible
       ? "pending"
       : "completed";
 
@@ -43,20 +43,20 @@ const AssignmentCard = ({
                 : status === "completed"
                 ? "text-[#00893F] bg-[#E6F9EE]"
                 : "text-[#E8382C] bg-[#FFECEA]"
-              : assignment.isVisible
+              : assignment?.isVisible
               ? "text-[#00893F] bg-[#E6F9EE]"
               : "text-[#E8382C] bg-[#FFECEA]"
           }`}
         >
           {role === "student"
             ? status
-            : assignment.isVisible
+            : assignment?.isVisible
             ? "Open"
             : "Closed"}
         </p>
-        <p className="font-medium line-clamp-1">{assignment.title}</p>
+        <p className="font-medium line-clamp-1">{assignment?.title}</p>
         <p className="text-xs text-grey-300 line-clamp-2 -mt-1 leading-[1.65em]">
-          {assignment.description}
+          {assignment?.description}
         </p>
         <Button
           onClick={() => {
@@ -64,7 +64,7 @@ const AssignmentCard = ({
               setAssignment && setAssignment(assignment);
             } else {
               // @ts-ignore
-              setIsDetails && setIsDetails(assignment._id);
+              setIsDetails && setIsDetails(assignment?._id);
             }
           }}
           btnType="outline"

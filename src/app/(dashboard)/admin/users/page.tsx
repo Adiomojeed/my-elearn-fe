@@ -5,6 +5,7 @@ import { UserData } from "@/api/auth";
 import Button from "@/components/Button";
 import UsersTableRow from "@/components/dashboard/admin/UsersTableRow";
 import Stats, { StatsProps } from "@/components/dashboard/Stats";
+import { LoaderContainer, NotFound } from "@/components/Loader";
 import CreateUserModal from "@/components/modals/CreateUserModal";
 import useDisclosure from "@/hooks/useDisclosure";
 import { useMemo, useState } from "react";
@@ -37,7 +38,9 @@ const Page = () => {
     ],
     [users]
   );
-  return (
+  return isLoading ? (
+    <LoaderContainer />
+  ) : (
     <section className="flex flex-col h-full">
       <div className="bg-white border mb-5 border-[#F3F3F3] p-3 lg:p-4 flex flex-col lg:flex-row lg:items-center gap-2 justify-between">
         <div>
@@ -70,18 +73,25 @@ const Page = () => {
           </tr>
         </thead>
         <tbody>
-          {users?.map((i, idx: number) => (
-            <UsersTableRow
-              key={idx}
-              user={i}
-              onOpen={(e) => {
-                setContent(e);
-                onOpen();
-              }}
-            />
-          ))}
+          {users?.length > 0 &&
+            users?.map((i, idx: number) => (
+              <UsersTableRow
+                key={idx}
+                user={i}
+                onOpen={(e) => {
+                  setContent(e);
+                  onOpen();
+                }}
+              />
+            ))}
         </tbody>
       </table>
+      {users?.length === 0 && (
+        <NotFound
+          title="No User Created Yet"
+          subtitle="All users would shown here when created"
+        />
+      )}
       <CreateUserModal
         isOpen={isOpen}
         onClose={() => {

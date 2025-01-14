@@ -5,6 +5,7 @@ import { CourseData } from "@/api/course";
 import Button from "@/components/Button";
 import CourseTableRow from "@/components/dashboard/admin/CourseTableRow";
 import Stats, { StatsProps } from "@/components/dashboard/Stats";
+import { LoaderContainer, NotFound } from "@/components/Loader";
 import CreateCourseModal from "@/components/modals/CreateCourseModal";
 import useDisclosure from "@/hooks/useDisclosure";
 import { useMemo, useState } from "react";
@@ -37,7 +38,9 @@ const Page = () => {
     ],
     [courses]
   );
-  return (
+  return isLoading ? (
+    <LoaderContainer />
+  ) : (
     <section className="flex flex-col h-full">
       <div className="bg-white border mb-5 border-[#F3F3F3] p-3 lg:p-4 flex flex-col lg:flex-row lg:items-center gap-2 justify-between">
         <div>
@@ -71,18 +74,25 @@ const Page = () => {
           </tr>
         </thead>
         <tbody>
-          {courses?.map((i, idx: number) => (
-            <CourseTableRow
-              key={idx}
-              course={i}
-              onOpen={(e) => {
-                setContent(e);
-                onOpen();
-              }}
-            />
-          ))}
+          {courses?.length > 0 &&
+            courses?.map((i, idx: number) => (
+              <CourseTableRow
+                key={idx}
+                course={i}
+                onOpen={(e) => {
+                  setContent(e);
+                  onOpen();
+                }}
+              />
+            ))}
         </tbody>
       </table>
+      {courses?.length === 0 && (
+        <NotFound
+          title="No Announcement Yet"
+          subtitle="Announcements would shown here when created"
+        />
+      )}
       <CreateCourseModal
         isOpen={isOpen}
         onClose={() => {

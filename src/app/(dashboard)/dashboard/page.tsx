@@ -2,7 +2,7 @@
 
 import { AnnouncementData, useGetAnnouncements } from "@/api/announcement";
 import { CourseData, useGetCourses } from "@/api/course";
-import { useGetResources } from "@/api/user";
+import { useGetResources, useGetStatistics } from "@/api/user";
 import AnnouncementCard from "@/components/dashboard/AnnouncementCard";
 import CourseCard from "@/components/dashboard/CourseCard";
 import ResourceCard, {
@@ -16,7 +16,9 @@ import React, { useMemo } from "react";
 
 const Page = () => {
   const { user } = useAppSelector((s) => s.auth);
-  const { data, isLoading } = useGetCourses();
+  const { data, isLoading } = useGetCourses(3);
+  const { data: statistics, isLoading: isStatsLoad } = useGetStatistics();
+
   const courses = data as unknown as CourseData[];
 
   const role = user?.role;
@@ -32,37 +34,48 @@ const Page = () => {
       role === "student"
         ? [
             {
-              title: "Class Attendance",
-              value: "48/60",
-              icon: "/attendance.svg",
-            },
-            {
               title: "Enrolled Courses",
-              value: courses?.length ?? 0,
+              value: (statistics as any)?.courses,
               icon: "/enrolled.svg",
             },
             {
-              title: "Cumulative Grade Point",
-              value: "4.78/5.0",
-              icon: "/cgpa.svg",
+              title: "Course Announcements",
+              value: (statistics as any)?.announcements,
+              icon: "/attendance.svg",
             },
+            {
+              title: "Assignments",
+              value: (statistics as any)?.assignments,
+              icon: "/o_ass.svg",
+            },
+            // {
+            //   title: "Cumulative Grade Point",
+            //   value: "4.78/5.0",
+            //   icon: "/cgpa.svg",
+            // },
           ]
         : [
             {
               title: "Total Courses",
-              value: 4,
+              value: (statistics as any)?.courses,
               icon: "/t_courses.svg",
             },
-            { title: "Open Assignment", value: 8, icon: "/o_ass.svg" },
             {
-              title: "Closed Assignment",
-              value: 2,
+              title: "Open Assignments",
+              value: (statistics as any)?.openAssignments,
+              icon: "/o_ass.svg",
+            },
+            {
+              title: "Closed Assignments",
+              value: (statistics as any)?.closedAssignments,
               icon: "/c_ass.svg",
             },
           ],
-    []
+    [statistics]
   );
-  return (
+  return isStatsLoad ? (
+    <LoaderContainer />
+  ) : (
     <section className="flex h-full">
       <div
         className={`w-full ${

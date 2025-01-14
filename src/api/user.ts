@@ -42,3 +42,11 @@ export const useGetResources = () =>
       return Request.get(`/user/resources`).then(res => res)
     },
   });
+
+export const useGetStatistics = () =>
+  useQuery({
+    queryKey: ["getStatistics",],
+    queryFn: () => {
+      return Request.get(`/user/statistics`).then(res => res)
+    },
+  });

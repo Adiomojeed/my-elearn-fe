@@ -29,7 +29,7 @@ const CreateUserModal = ({
     email: "",
     firstname: "",
     lastname: "",
-    role: "",
+    role: "student",
   });
   const [coursesArr, setCourses] = useState<Option[] | []>([]);
 
@@ -39,7 +39,7 @@ const CreateUserModal = ({
       email: user?.email ?? "",
       firstname: user?.firstname ?? "",
       lastname: user?.lastname ?? "",
-      role: user?.role ?? "",
+      role: user?.role ?? "student",
     });
     const cs = user?.courses?.map((i, idx) => ({
       label: i.title,

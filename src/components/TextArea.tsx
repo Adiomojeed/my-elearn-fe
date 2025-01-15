@@ -1,3 +1,5 @@
+import { Editor } from "react-draft-wysiwyg";
+
 type TextareaProps = {
   label?: string;
   placeholder?: string;
@@ -43,4 +45,41 @@ const TextArea = ({
   );
 };
 
+const RichEditor = ({
+  label,
+  placeholder = "",
+  className,
+  id,
+  required = false,
+  value,
+  onChange,
+  labelClassName,
+  disabled,
+}: TextareaProps) => {
+  return (
+    <div>
+      {label && (
+        <label
+          htmlFor={id}
+          className={`block mb-3 text-sm text-grey-500 ${labelClassName}`}
+        >
+          {label}
+        </label>
+      )}
+      <Editor
+        wrapperClassName="bg-white p-3  text-sm border border-grey-50 text-grey-500 focus:outline-none focus:ring-primary focus:border-primary-500 placeholder:text-grey-200 text-sm rounded-lg focus:ring-[3px] focus:ring-primary-500 focus:ring-opacity-30"
+        editorClassName="editor-class min-h-[300px]"
+        toolbarClassName="toolbar-class"
+        // @ts-ignore
+        editorState={value}
+        onEditorStateChange={onChange}
+        // wrapperStyle={<wrapperStyleObject>}
+        // editorStyle={<editorStyleObject>}
+        // toolbarStyle={<toolbarStyleObject>}
+      />
+    </div>
+  );
+};
+
+export { RichEditor };
 export default TextArea;

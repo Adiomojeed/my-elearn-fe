@@ -15,11 +15,12 @@ const AssignmentTableRow = ({
   onOpen: () => void;
 }) => {
   const course = assignment?.course as CourseData;
+
   const status = assignment?.isSubmitted
     ? "submitted"
     : moment(assignment?.dueDate).diff(moment(new Date()), "seconds") < 0
     ? "overdue"
-    : assignment?.isVisible
+    : assignment?.isVisible ?? !assignment?.isSubmitted
     ? "pending"
     : "";
   return (

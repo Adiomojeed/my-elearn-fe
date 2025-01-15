@@ -13,7 +13,7 @@ import {
 import { useQueryClient } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import moment from "moment";
-import { toBase64 } from "@/utils/downloadFile";
+import handleDownload, { toBase64 } from "@/utils/downloadFile";
 
 const AddAssignmentModal = ({
   isOpen,
@@ -72,11 +72,17 @@ const AddAssignmentModal = ({
     setFile(null);
     setFileObj(null);
   };
+
+  const [error, setError] = useState<boolean>(false);
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
 
-    !isEdit
-      ? createAssignment(
+    if (!isEdit) {
+      if (!fileObj) {
+        setError(true);
+      } else {
+        setError(false);
+        createAssignment(
           {
             ...state,
             file: {
@@ -86,24 +92,27 @@ const AddAssignmentModal = ({
             courseId: id as string,
           },
           { onSuccess }
-        )
-      : updateAssignment(
-          {
-            assId: assignment?._id as string,
-            assignment: {
-              ...state,
-              file: {
-                ...file,
-                ...(fileObj && {
-                  file: await toBase64(fileObj),
-                  filename: fileObj.name,
-                }),
-              },
-              isVisible: status,
-            },
-          },
-          { onSuccess }
         );
+      }
+    } else {
+      updateAssignment(
+        {
+          assId: assignment?._id as string,
+          assignment: {
+            ...state,
+            file: {
+              ...file,
+              ...(fileObj && {
+                file: await toBase64(fileObj),
+                filename: fileObj.name,
+              }),
+            },
+            isVisible: status,
+          },
+        },
+        { onSuccess }
+      );
+    }
   };
 
   return (
@@ -191,9 +200,28 @@ const AddAssignmentModal = ({
                       }
                     }
                   }}
-                  required={!isEdit}
+                  // required={!isEdit}
                 />
               </div>
+              {error && (
+                <small className="text-red-400 mt-2">
+                  Select a file to continue
+                </small>
+              )}
+            {isEdit && (
+              <Button
+                onClick={() =>
+                  handleDownload(
+                    assignment?.file?.url as string,
+                    assignment?.file?.name as string
+                  )
+                }
+                type="button"
+                className="px-3 text-sm mt-2 w-max"
+              >
+                View Current Resource
+              </Button>
+            )}
             </div>
             <TextArea
               label="Assignment Details"

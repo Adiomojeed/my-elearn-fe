@@ -70,6 +70,7 @@ const AdminCourse = ({ course }: { course: CourseData }) => {
         btnType="outline"
         className="px-4 text-sm"
         size="md"
+        isLoading={isPending}
         onClick={() => {
           if (course?._id) {
             createModule(

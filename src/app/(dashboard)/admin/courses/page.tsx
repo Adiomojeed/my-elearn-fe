@@ -89,8 +89,8 @@ const Page = () => {
       </table>
       {courses?.length === 0 && (
         <NotFound
-          title="No Announcement Yet"
-          subtitle="Announcements would shown here when created"
+          title="No Course Yet"
+          subtitle="Courses would shown here when created"
         />
       )}
       <CreateCourseModal

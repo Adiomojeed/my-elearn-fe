@@ -10,6 +10,7 @@ import customToast, { ToastType } from "@/components/Toast";
 export type AuthData = {
   account_id: string,
   password: string,
+  role?: string
 };
 
 export type UserData = AuthData & {

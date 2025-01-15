@@ -91,7 +91,7 @@ const CreateUserModal = ({
       charset: "alphanumeric",
     });
     createUser(
-      { ...state, password },
+      { ...state, role: state.role ?? "student", password },
       {
         onSuccess: () => {
           onClose();

@@ -11,7 +11,7 @@ import {
 } from "@/api/course";
 import { useParams } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
-import { toBase64 } from "@/utils/downloadFile";
+import handleDownload, { toBase64 } from "@/utils/downloadFile";
 
 const LessonModal = ({
   isOpen,
@@ -38,30 +38,36 @@ const LessonModal = ({
     setFile(lesson?.file ?? null);
   }, [lesson]);
 
+  const [error, setError] = useState<boolean>(false);
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
-    isEdit
-      ? editLesson(
-          {
-            lesson: {
-              title,
-              file: {
-                ...file,
-                ...(fileObj && {
-                  file: await toBase64(fileObj),
-                  filename: fileObj.name,
-                }),
-              },
+    if (isEdit) {
+      editLesson(
+        {
+          lesson: {
+            title,
+            file: {
+              ...file,
+              ...(fileObj && {
+                file: await toBase64(fileObj),
+                filename: fileObj.name,
+              }),
             },
-            courseId: id as string,
-            moduleId: module,
-            lessonId: lesson?._id as string,
           },
-          {
-            onSuccess: () => invalidateSingleCourse(queryClient),
-          }
-        )
-      : createLesson(
+          courseId: id as string,
+          moduleId: module,
+          lessonId: lesson?._id as string,
+        },
+        {
+          onSuccess: () => invalidateSingleCourse(queryClient),
+        }
+      );
+    } else {
+      if (!fileObj) {
+        setError(true);
+      } else {
+        setError(false);
+        createLesson(
           {
             lesson: {
               title,
@@ -75,6 +81,8 @@ const LessonModal = ({
             onSuccess: () => invalidateSingleCourse(queryClient, onClose),
           }
         );
+      }
+    }
   };
   return (
     <>
@@ -115,34 +123,58 @@ const LessonModal = ({
             className=""
             required
           />
-          <div className="mt-3 p-3 lg:p-4 bg-white rounded border border-dashed border-[#F3F3F3] flex items-center gap-4">
-            <img src="/attach.svg" alt="attach icon" />
-            <div className="">
-              <p className="text-sm font-medium line-clamp-1">
-                {fileObj?.name ?? file?.name ?? "Upload a file"}
-              </p>
-              <small className="text-xs text-grey-200">
-                PDF, PNG, JPG, or XLS{" "}
-                <span className="text-grey-400 font-medium">(Max 15MB)</span>
-              </small>
+          <div>
+            <div className="mt-3 p-3 lg:p-4 bg-white rounded border border-dashed border-[#F3F3F3] flex items-center gap-4">
+              <img src="/attach.svg" alt="attach icon" />
+              <div className="">
+                <p className="text-sm font-medium line-clamp-1">
+                  {fileObj?.name ?? file?.name ?? "Upload a file"}
+                </p>
+                <small className="text-xs text-grey-200">
+                  PDF, PNG, JPG, or XLS{" "}
+                  <span className="text-grey-400 font-medium">(Max 15MB)</span>
+                </small>
+              </div>
+              <label
+                htmlFor="file"
+                className="ml-auto btn-outline px-4 text-xs"
+              >
+                Attach
+              </label>
+              <input
+                type="file"
+                name="file"
+                id="file"
+                className="hidden"
+                onChange={(e) => {
+                  const f = e.target.files;
+                  if (f && f.length > 0) {
+                    setFileObj(f[0]);
+                  }
+                }}
+                // required={!isEdit}
+              />
             </div>
-            <label htmlFor="file" className="ml-auto btn-outline px-4 text-xs">
-              Attach
-            </label>
-            <input
-              type="file"
-              name="file"
-              id="file"
-              className="hidden"
-              onChange={(e) => {
-                const f = e.target.files;
-                if (f && f.length > 0) {
-                  setFileObj(f[0]);
-                }
-              }}
-              required={!isEdit}
-            />
+            {error && (
+              <small className="text-red-400 mt-2">
+                Select a file to continue
+              </small>
+            )}
           </div>
+          {isEdit && (
+            <Button
+              onClick={() =>
+                handleDownload(
+                  lesson?.file?.url as string,
+                  lesson?.file?.name as string
+                )
+              }
+              type="button"
+              className="px-3 text-sm mt-2 w-max"
+            >
+              View Current Resource
+            </Button>
+          )}
           <Button
             isLoading={isPending ?? editing}
             type="submit"

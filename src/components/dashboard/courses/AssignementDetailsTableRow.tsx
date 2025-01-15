@@ -15,6 +15,7 @@ const AssignmentDetailsTableRow = ({
     submission?.grade === null || submission?.grade === undefined
       ? null
       : submission?.grade;
+
   return (
     <>
       <tr>

@@ -1,6 +1,7 @@
 import { ModuleData } from "@/api/course";
 import Accordion from "@/components/Accordion";
 import Button from "@/components/Button";
+import handleDownload from "@/utils/downloadFile";
 
 const CourseAccordion = ({
   id,
@@ -31,6 +32,12 @@ const CourseAccordion = ({
                   btnType="outline"
                   size="sm"
                   className="text-xs lg:text-sm px-4 !border-grey-50 text-grey-500 hover:!text-white"
+                  onClick={() =>
+                    handleDownload(
+                      _?.file?.url as string,
+                      _?.file?.name as string
+                    )
+                  }
                 >
                   View Lesson
                 </Button>

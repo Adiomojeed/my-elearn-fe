@@ -17,7 +17,7 @@ export const assignmentsStats = (assignments: AssignmentData[]) => {
     if (assignment?.isSubmitted) { statusCounts.submitted += 1; } else
       if (moment(assignment?.dueDate).diff(moment(new Date()), "seconds") < 0) {
         statusCounts.overdue += 1;
-      } else if (assignment?.isVisible) {
+      } else if (assignment?.isVisible ?? !assignment?.isSubmitted) {
         statusCounts.pending += 1;
       }
   });

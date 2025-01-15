@@ -4,6 +4,10 @@ import { NextResponse, type NextRequest } from "next/server";
 import { tokenConfig } from "@/api/request";
 
 export function middleware(request: NextRequest) {
+  const res = NextResponse.next();
+  // Set security headers to prevent iframe embedding
+  res.headers.set('X-Frame-Options', 'DENY');
+  res.headers.set('Content-Security-Policy', "frame-ancestors 'none'");
   const path = request.nextUrl.pathname;
   const publicPath = [
     "/",
@@ -29,7 +33,7 @@ export function middleware(request: NextRequest) {
     else return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
-  return NextResponse.next();
+  return res;
 }
 
 export const config = {

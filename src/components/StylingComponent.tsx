@@ -4,6 +4,8 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "react-toastify/dist/ReactToastify.css";
 import "@react-pdf-viewer/core/lib/styles/index.css";
+import "draft-js/dist/Draft.css";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
 // This function loads css file after page first load to prevent non-critical css to affect load time
 const lazyLoadFromCDN = (url: string) => {

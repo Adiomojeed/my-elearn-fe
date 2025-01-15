@@ -19,7 +19,7 @@ const AnnouncementAccordion = ({
             <small className="text-grey-300 leading-[20px] flex items-center gap-1">
               <img src="/calendar.svg" alt="calendar icon" />{" "}
               <span className="mt-1">
-                {moment(announcement?.createdAt).format("d MMM yyyy")}
+                {moment(announcement?.createdAt).format("DD MMM yyyy")}
               </span>
             </small>
             <small className="text-grey-300 leading-[20px] flex items-center gap-1">

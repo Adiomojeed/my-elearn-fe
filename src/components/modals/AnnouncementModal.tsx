@@ -1,9 +1,12 @@
 "use client";
+import { convertToRaw, EditorState, ContentState } from "draft-js";
+import draftToHtml from "draftjs-to-html";
+import htmlToDraft from "html-to-draftjs";
 import { useAppSelector } from "@/store/useAppSelector";
 import Button from "../Button";
 import { SyntheticEvent, useEffect, useState } from "react";
 import Input from "../Input";
-import TextArea from "../TextArea";
+import TextArea, { RichEditor } from "../TextArea";
 import {
   AnnouncementData,
   useCreateAnnouncement,
@@ -32,7 +35,23 @@ const AnnouncementModal = ({
     setIsEdit(isNew);
   }, [isNew]);
   const [title, setTitle] = useState<string>(announcement?.title ?? "");
-  const [content, setContent] = useState<string>(announcement?.content ?? "");
+
+  let contentState;
+  if (announcement?.content) {
+    const blocksFromHtml = htmlToDraft(announcement?.content);
+    const { contentBlocks, entityMap } = blocksFromHtml;
+    contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
+  }
+  const editorsState =
+    contentState && EditorState.createWithContent(contentState);
+
+  const [editorState, setEditorState] = useState(
+    editorsState || EditorState.createEmpty()
+  );
+
+  useEffect(() => {
+    setEditorState(editorsState || EditorState.createEmpty());
+  }, [announcement]);
 
   const { mutate: createAnnouncement, isPending } = useCreateAnnouncement();
   const { mutate: updateAnnouncement, isPending: updating } =
@@ -44,25 +63,37 @@ const AnnouncementModal = ({
       queryKey: ["getAnnouncements"],
     });
     setTitle("");
-    setContent("");
   };
+  const [error, setError] = useState(false);
+
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
-    isNew
-      ? createAnnouncement(
-          {
-            courseId: id as string,
-            announcement: { title, content },
-          },
-          { onSuccess }
-        )
-      : updateAnnouncement(
-          {
-            annId: announcement?._id as string,
-            announcement: { title, content },
-          },
-          { onSuccess }
-        );
+    const content = draftToHtml(convertToRaw(editorState.getCurrentContent()));
+
+    if (
+      !convertToRaw(editorState.getCurrentContent()).blocks.some(
+        (i) => i.text.length > 0
+      )
+    ) {
+      setError(true);
+    } else {
+      setError(false);
+      isNew
+        ? createAnnouncement(
+            {
+              courseId: id as string,
+              announcement: { title, content },
+            },
+            { onSuccess }
+          )
+        : updateAnnouncement(
+            {
+              annId: announcement?._id as string,
+              announcement: { title, content },
+            },
+            { onSuccess }
+          );
+    }
   };
   return (
     <>
@@ -105,14 +136,23 @@ const AnnouncementModal = ({
                 onChange={(e) => setTitle(e.target.value)}
                 required
               />
-              <TextArea
-                label="Announcements Details"
-                placeholder="Announcements Details"
-                className="min-h-[400px]"
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-                required
-              />
+              <div>
+                <RichEditor
+                  label="Announcements Details"
+                  placeholder="Announcements Details"
+                  className="min-h-[400px]"
+                  // @ts-ignore
+                  value={editorState}
+                  onChange={(e) => setEditorState(e)}
+                  required
+                />
+                {error && (
+                  <small className="text-red-400 mt-2">
+                    Announcement details is required
+                  </small>
+                )}
+              </div>
+
               <div className="flex gap-4 items-center">
                 {!isNew && (
                   <Button
@@ -169,7 +209,7 @@ const AnnouncementModal = ({
                 <small className="text-grey-300 leading-[20px] flex items-center gap-1">
                   <img src="/calendar.svg" alt="calendar icon" />{" "}
                   <span className="mt-1">
-                    {moment(announcement?.createdAt).format("d MMM yyyy")}
+                    {moment(announcement?.createdAt).format("DD MMM yyyy")}
                   </span>
                 </small>
                 <small className="text-grey-300 leading-[20px] flex items-center gap-1">

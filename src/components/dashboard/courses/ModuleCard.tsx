@@ -6,7 +6,7 @@ import {
   useEditModule,
 } from "@/api/course";
 import Accordion from "@/components/Accordion";
-import Button from "@/components/Button";
+import Button, { IconLoad } from "@/components/Button";
 import Input from "@/components/Input";
 import { SyntheticEvent, useEffect, useState } from "react";
 import LessonCard from "./LessonCard";
@@ -81,7 +81,7 @@ const ModuleCard = ({ module, id }: { module: ModuleData; id: number }) => {
             </span>
           </Button>
           <button
-            className="mr-2"
+            className="mr-2 flex-center"
             onClick={(e) => {
               e.stopPropagation();
               deleteModule(
@@ -95,7 +95,13 @@ const ModuleCard = ({ module, id }: { module: ModuleData; id: number }) => {
               );
             }}
           >
-            <img src="/trash.svg" alt="" />
+            {deleting ? (
+              <div className="px-4 flex-center">
+                <IconLoad />
+              </div>
+            ) : (
+              <img src="/trash.svg" alt="" />
+            )}
           </button>
         </div>
       }

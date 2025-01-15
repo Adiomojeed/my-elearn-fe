@@ -1,7 +1,5 @@
 "use client";
 import { convertToRaw, EditorState, ContentState } from "draft-js";
-import draftToHtml from "draftjs-to-html";
-import htmlToDraft from "html-to-draftjs";
 import { useAppSelector } from "@/store/useAppSelector";
 import Button from "../Button";
 import { SyntheticEvent, useEffect, useState } from "react";
@@ -15,6 +13,13 @@ import {
 import { useParams } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 import moment from "moment";
+
+let htmlToDraft = null;
+let draftToHtml = null;
+if (typeof window === "object") {
+  htmlToDraft = require("html-to-draftjs").default;
+  draftToHtml = require("draftjs-to-html").default;
+}
 
 const AnnouncementModal = ({
   isOpen,

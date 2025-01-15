@@ -13,25 +13,6 @@ import { useParams } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 import moment from "moment";
 
-export const text = `
-<i><p>
-Hello Students, <br />
-We are excited to announce a Live Career Advice Session on October 25th at 11:00 AM (WAT), exclusively for users! Join us as industry experts share insights on preparing for the job market, building a strong resume, and acing interviews. This is a great opportunity to ask questions and get personalized advice on your career path.
-<br /><br />
-<b>Topics Covered:</b><br />
-How to Craft a Winning Resume, Tips for Networking in Your Field, Interview Do's and Don'ts, Career Growth Strategies.
-<br /><br />
-Simply Add to your schedule by clicking on the 'Add to Schedule’ button below. Don’t miss out on this chance to gain valuable insights that can boost your career!
-<br /><br />
-For more information, reach out to our team at <a href="mailto:">career@edulinker.com</a>.
-<br /><br />
-Looking forward to seeing you there!
-<br /><br />
-Best Regards,<br />
-Dr. Amarachi Orji
-</p></i>
-`;
-
 const AnnouncementModal = ({
   isOpen,
   onClose,

@@ -10,6 +10,7 @@ export type AssignmentData = {
   dueDate?: Date | string,
   course?: CourseData | string,
   courseId?: string,
+  isGradesPublished?: boolean,
   _id?: string,
   createdAt?: Date,
   file?: { name?: string, url?: string, filename?: string, file?: string };

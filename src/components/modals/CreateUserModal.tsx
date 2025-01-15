@@ -17,10 +17,12 @@ const CreateUserModal = ({
   isOpen,
   onClose,
   user,
+  assignedCourses,
 }: {
   isOpen: boolean;
   onClose: () => void;
   user?: UserData | null;
+  assignedCourses?: string[];
 }) => {
   const queryClient = useQueryClient();
   const isEdit = !!user;
@@ -32,6 +34,10 @@ const CreateUserModal = ({
     role: "student",
   });
   const [coursesArr, setCourses] = useState<Option[] | []>([]);
+  const [coursesToMap, setCoursesToMap] = useState<Option[] | []>([]);
+
+  const { data, isLoading } = useGetAdminCourses({ limit: 1000, page: 1 });
+  const courses = (data as any)?.courses as CourseData[];
 
   useEffect(() => {
     setState({
@@ -46,10 +52,29 @@ const CreateUserModal = ({
       value: i._id,
     }));
     setCourses(cs ?? []);
+    setCoursesToMap(
+      user?.role === "educator"
+        ? [
+            ...user?.courses?.map((i, idx) => ({
+              label: i.title,
+              value: i._id,
+            })),
+            ...courses
+              ?.filter(
+                (course) =>
+                  course?._id && !assignedCourses?.includes(course._id)
+              )
+              .map((i) => ({
+                label: i.title,
+                value: i._id,
+              })),
+          ]
+        : courses?.map((i) => ({
+            label: i.title,
+            value: i._id,
+          }))
+    );
   }, [user]);
-
-  const { data, isLoading } = useGetAdminCourses({ limit: 1000, page: 1 });
-  const courses = (data as any)?.courses as CourseData[];
 
   const handleChange = (e: any) => {
     setState((prev) => ({ ...prev, [e.target.id]: e.target.value }));
@@ -200,9 +225,9 @@ const CreateUserModal = ({
               <Select2
                 label="Courses"
                 value={coursesArr}
-                options={courses?.map((i, idx) => ({
-                  label: i.title,
-                  value: i._id,
+                options={(coursesToMap ?? [])?.map((i, idx) => ({
+                  label: (i as any)?.label,
+                  value: (i as any)?.value,
                 }))}
                 onChange={setCourses}
                 id="courses"

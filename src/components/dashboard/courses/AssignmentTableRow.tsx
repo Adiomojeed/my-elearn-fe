@@ -9,10 +9,11 @@ import moment from "moment";
 
 const AssignmentTableRow = ({
   assignment,
+  onOpen,
 }: {
   assignment?: AssignmentData;
+  onOpen: () => void;
 }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const course = assignment?.course as CourseData;
   const status = assignment?.isSubmitted
     ? "submitted"
@@ -53,13 +54,6 @@ const AssignmentTableRow = ({
           </Button>
         </td>
       </tr>
-      {assignment && (
-        <AssignmentModal
-          isOpen={isOpen}
-          onClose={onClose}
-          assignment={assignment}
-        />
-      )}
     </>
   );
 };

@@ -17,6 +17,10 @@ const Page = () => {
   const [page, setPage] = useState<number>(1);
   const { data, isLoading } = useGetUsers({ limit, page });
   const users = (data as any)?.users as UserData[];
+  const assignedCourses = users
+    ?.filter((i) => i.role === "educator")
+    ?.flatMap((i) => i.courses)
+    ?.map((i) => i._id);
 
   const stats = useMemo(
     () => [
@@ -99,6 +103,7 @@ const Page = () => {
           onClose();
         }}
         user={content}
+        assignedCourses={assignedCourses}
       />
     </section>
   );

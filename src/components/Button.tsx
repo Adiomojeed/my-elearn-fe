@@ -43,7 +43,7 @@ const Button = ({
       onClick={onClick}
     >
       <div
-        className={`w-full h-full flex items-center ${
+        className={`w-[inherit] h-full flex items-center ${
           isLoading ? "invisible" : "visited:"
         }`}
       >

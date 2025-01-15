@@ -3,12 +3,16 @@
 import { AssignmentData, useGetAssignments } from "@/api/assignments";
 import AssignmentTableRow from "@/components/dashboard/courses/AssignmentTableRow";
 import { LoaderContainer, NotFound } from "@/components/Loader";
+import AssignmentModal from "@/components/modals/AssignmentModal";
+import useDisclosure from "@/hooks/useDisclosure";
 import { assignmentsStats } from "@/utils/counters";
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 
 const Page = () => {
   const { data, isLoading } = useGetAssignments({});
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const assignments = data as unknown as AssignmentData[];
+  const [assignment, setAssignment] = useState<AssignmentData | null>(null);
 
   const counts = assignmentsStats(assignments);
 
@@ -69,10 +73,27 @@ const Page = () => {
         <tbody>
           {assignments.length > 0 &&
             assignments?.map((i, idx) => (
-              <AssignmentTableRow key={idx} assignment={i} />
+              <AssignmentTableRow
+                key={idx}
+                assignment={i}
+                onOpen={() => {
+                  onOpen();
+                  setAssignment(i);
+                }}
+              />
             ))}
         </tbody>
       </table>
+
+      <AssignmentModal
+        isOpen={isOpen}
+        onClose={() => {
+          onClose();
+          setTimeout(() => setAssignment(null), 1000);
+        }}
+        assignment={assignment as AssignmentData}
+      />
+
       {assignments.length === 0 && (
         <NotFound
           title="No Assignment Yet"

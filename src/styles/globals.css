@@ -199,6 +199,14 @@ input {
   align-items: center !important;
 }
 
+.render-body {
+  max-width: calc(100vw - 510px);
+}
+
+.render-body > div {
+  height: calc(100vh - 200px);
+}
+
 /* Loader stylings */
 
 .lds-ellipsis,
@@ -218,7 +226,7 @@ input {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: #00B051;
+  background: #00b051;
   animation-timing-function: cubic-bezier(0, 1, 1, 0);
 }
 .lds-ellipsis div:nth-child(1) {

@@ -6,6 +6,7 @@ import { submissionData, useGradeAssignment } from "@/api/assignments";
 import moment from "moment";
 import Input from "../Input";
 import { useQueryClient } from "@tanstack/react-query";
+import ResourceLoader from "../dashboard/ResourceLoader";
 
 const SubmissionModal = ({
   isOpen,
@@ -53,6 +54,11 @@ const SubmissionModal = ({
           className="absolute left-0 top-0 z-[101] h-screen w-screen bg-black bg-opacity-10"
         ></div>
       )}
+      {isOpen && (
+        <div className="absolute z-[101] left-0 top-0 bg-white w-full h-screen max-h-screen flex-center render-body border--r[3px]">
+          <ResourceLoader url={submission?.file?.url as string} />
+        </div>
+      )}
       <div
         className={`absolute z-[101] h-full top-0 ${
           isOpen ? "right-0" : "-right-[100%] md:-right-[500px]"
@@ -91,7 +97,9 @@ const SubmissionModal = ({
             </small>
           </div>
           <p className="text-sm mt-6 font-medium">Comment</p>
-          <p className="text-sm mt-3 text-grey-400">{submission.comment}</p>
+          <p className="text-sm mt-3 text-grey-400">
+            {submission?.comment?.length ? submission?.comment : "N/A"}
+          </p>
           <p className="text-sm mt-6 font-medium mb-3">File</p>
           <div className="w-max">
             <ResourceCard resource={submission.file as ResourceCardProps} />

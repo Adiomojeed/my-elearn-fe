@@ -1,5 +1,14 @@
-import React from "react";
-
+type TextareaProps = {
+  label?: string;
+  placeholder?: string;
+  className?: string;
+  labelClassName?: string;
+  id?: string;
+  required?: boolean;
+  value?: string;
+  onChange?: (e: any) => void;
+  disabled?: boolean;
+};
 const TextArea = ({
   label,
   placeholder = "",
@@ -10,17 +19,7 @@ const TextArea = ({
   onChange,
   labelClassName,
   disabled,
-}: {
-  label?: string;
-  placeholder?: string;
-  className?: string;
-  labelClassName?: string;
-  id?: string;
-  required?: boolean;
-  value?: string;
-  onChange?: (e: any) => void;
-  disabled?: boolean;
-}) => {
+}: TextareaProps) => {
   return (
     <div className="">
       {label && (

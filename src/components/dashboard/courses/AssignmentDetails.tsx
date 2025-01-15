@@ -8,8 +8,10 @@ import {
   submissionData,
   useGetAssignmentSubmission,
   useGetSingleAssignment,
+  useUpdateAssignment,
 } from "@/api/assignments";
 import { LoaderContainer, NotFound } from "@/components/Loader";
+import { useQueryClient } from "@tanstack/react-query";
 
 const AssignmentDetails = ({
   assignmentId,
@@ -19,6 +21,7 @@ const AssignmentDetails = ({
   goBack: () => void;
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const queryClient = useQueryClient();
 
   const { data: sub, isLoading: isFetchSub } =
     useGetAssignmentSubmission(assignmentId);
@@ -26,6 +29,9 @@ const AssignmentDetails = ({
 
   const { data, isLoading } = useGetSingleAssignment(assignmentId);
   const assignment = data as unknown as AssignmentData;
+
+  const { mutate: updateAssignment, isPending: updatingAss } =
+    useUpdateAssignment();
 
   return isLoading ? (
     <LoaderContainer />
@@ -57,7 +63,7 @@ const AssignmentDetails = ({
             </Button>
             <Button
               onClick={goBack}
-              type="submit"
+              type="button"
               className="px-4 text-sm bg-[#E8382C]"
               size="sm"
             >
@@ -79,7 +85,35 @@ const AssignmentDetails = ({
         />
       </div>
 
-      <p className="mt-4 lg:mt-6 font-medium">Student Submission</p>
+      <div className="mt-4 lg:mt-6 flex items-center justify-between">
+        <p className="font-medium">Student Submission</p>
+        {submissions?.length > 0 && (
+          <Button
+            onClick={() => {
+              updateAssignment(
+                {
+                  assId: assignment?._id as string,
+                  assignment: {
+                    isGradesPublished: !assignment.isGradesPublished,
+                  },
+                },
+                {
+                  onSuccess: () =>
+                    queryClient.invalidateQueries({
+                      queryKey: ["getSingleAssignment"],
+                    }),
+                }
+              );
+            }}
+            className="px-4 text-sm bg-[#E8382C]"
+            size="sm"
+            isLoading={updatingAss}
+          >
+            {assignment.isGradesPublished ? "Hide" : "Publish"}&nbsp;grades
+          </Button>
+        )}
+      </div>
+
       <table className="mt-3 bg-white w-full">
         <thead>
           <tr>

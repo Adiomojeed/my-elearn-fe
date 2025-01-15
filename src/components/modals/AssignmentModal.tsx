@@ -22,6 +22,7 @@ const AssignmentModal = ({
 
   const queryClient = useQueryClient();
   const { mutate: submitAssignment, isPending } = useSubmitAssignment();
+  const [error, setError] = useState<boolean>(false);
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
     const onSuccess = () => {
@@ -30,19 +31,24 @@ const AssignmentModal = ({
       setComment("");
       setFileObj(null);
     };
-    submitAssignment(
-      {
-        assignmentId: assignment?._id as string,
-        comment,
-        file: {
-          filename: fileObj?.name,
-          file: (await toBase64(fileObj)) as string,
+    if (!fileObj) {
+      setError(true);
+    } else {
+      setError(false);
+      submitAssignment(
+        {
+          assignmentId: assignment?._id as string,
+          comment,
+          file: {
+            filename: fileObj?.name,
+            file: (await toBase64(fileObj)) as string,
+          },
         },
-      },
-      {
-        onSuccess,
-      }
-    );
+        {
+          onSuccess,
+        }
+      );
+    }
   };
 
   return createPortal(
@@ -105,37 +111,44 @@ const AssignmentModal = ({
               />
             </div>
           ) : (
-            <div className="mt-8 pt-8 border-t border-[#F3F3F3] mb-6">
-              <p className="text-sm font-medium">Attach your file</p>
-              <div className="mt-3 p-3 bg-white rounded border border-[#F3F3F3] flex items-center gap-4">
-                <img src="/attach.svg" alt="attach icon" />
-                <div className="">
-                  <p className="text-sm font-medium line-clamp-1">
-                    {fileObj?.name ?? "Upload a file"}
-                  </p>
-                  <small className="text-xs text-grey-200">
-                    PDF, PNG, JPG, or XLS{" "}
-                    <span className="text-grey-400 font-medium">
-                      (Max 15MB)
-                    </span>
-                  </small>
+            <div className="mb-6">
+              <div className="mt-8 pt-8 border-t border-[#F3F3F3]">
+                <p className="text-sm font-medium">Attach your file</p>
+                <div className="mt-3 p-3 bg-white rounded border border-[#F3F3F3] flex items-center gap-4">
+                  <img src="/attach.svg" alt="attach icon" />
+                  <div className="">
+                    <p className="text-sm font-medium line-clamp-1">
+                      {fileObj?.name ?? "Upload a file"}
+                    </p>
+                    <small className="text-xs text-grey-200">
+                      PDF, PNG, JPG, or XLS{" "}
+                      <span className="text-grey-400 font-medium">
+                        (Max 15MB)
+                      </span>
+                    </small>
+                  </div>
+                  <label htmlFor="file" className="ml-auto btn-outline px-4">
+                    Attach
+                  </label>
+                  <input
+                    type="file"
+                    name="file"
+                    id="file"
+                    className="hidden"
+                    onChange={(e) => {
+                      const f = e.target.files;
+                      if (f && f.length > 0) {
+                        setFileObj(f[0]);
+                      }
+                    }}
+                  />
                 </div>
-                <label htmlFor="file" className="ml-auto btn-outline px-4">
-                  Attach
-                </label>
-                <input
-                  type="file"
-                  name="file"
-                  id="file"
-                  className="hidden"
-                  onChange={(e) => {
-                    const f = e.target.files;
-                    if (f && f.length > 0) {
-                      setFileObj(f[0]);
-                    }
-                  }}
-                />
               </div>
+              {error && (
+                <small className="text-red-400 mt-2">
+                  Select a file to continue
+                </small>
+              )}
             </div>
           )}
 

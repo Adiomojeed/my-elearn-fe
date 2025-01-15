@@ -1,12 +1,12 @@
 "use client";
 
-import { SyntheticEvent, useState } from "react";
+import { Suspense, SyntheticEvent, useState } from "react";
 import { useResetPassword } from "@/api/auth";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import { useSearchParams } from "next/navigation";
 
-const Page = () => {
+const ResetPasswordForm = () => {
   const searchParams = useSearchParams();
   const token = searchParams.get("token") ?? "";
   const [password, setPassword] = useState<string>("");
@@ -44,6 +44,14 @@ const Page = () => {
         </Button>
       </form>
     </>
+  );
+};
+
+const Page = () => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ResetPasswordForm />
+    </Suspense>
   );
 };
 

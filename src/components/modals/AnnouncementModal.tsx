@@ -18,7 +18,7 @@ let htmlToDraft = null;
 let draftToHtml = null;
 if (typeof window === "object") {
   htmlToDraft = require("html-to-draftjs").default;
-  draftToHtml = require("draftjs-to-html").default;
+  draftToHtml = require("draftjs-to-html");
 }
 
 const AnnouncementModal = ({
@@ -55,6 +55,7 @@ const AnnouncementModal = ({
   );
 
   useEffect(() => {
+    setTitle(announcement?.title ?? "");
     setEditorState(editorsState || EditorState.createEmpty());
   }, [announcement]);
 

@@ -101,6 +101,18 @@ export const useCreateUser = () =>
     },
   });
 
+export const useCreateBulkUsers = () =>
+  useMutation({
+    mutationFn: (values: any) =>
+      Request.post(`/auth/create-bulk-users`, values),
+    onSuccess: async (data: any) => {
+      // customToast("All users created successfully", ToastType.success);
+    },
+    onError: (err: string) => {
+      customToast(err, ToastType.error);
+    },
+  });
+
 export const useAssignCoursesToUser = () =>
   useMutation({
     mutationFn: (values: { userId: string, courseIds: string[] }) =>
@@ -117,12 +129,8 @@ export const logoutUser = () => {
   deleteCookie();
   dispatch({ type: LOGOUT })
   localStorage.removeItem(config.key.token);
-  // window.location.href = "/sign-in";
-  // permanentRedirect("/sign-in");
   customToast("User logged out successfully", ToastType.success);
   setTimeout(() => {
     window.location.href = "/sign-in";
-
-    // window.location.reload();
   }, 1000);
 };

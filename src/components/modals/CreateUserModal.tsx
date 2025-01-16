@@ -2,11 +2,16 @@
 
 import randomstring from "randomstring";
 import { useAppSelector } from "@/store/useAppSelector";
-import { SyntheticEvent, useEffect, useState } from "react";
+import { SyntheticEvent, useEffect, useRef, useState } from "react";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import Select, { Select2 } from "../Select";
-import { useAssignCoursesToUser, useCreateUser, UserData } from "@/api/auth";
+import {
+  useAssignCoursesToUser,
+  useCreateBulkUsers,
+  useCreateUser,
+  UserData,
+} from "@/api/auth";
 import { createPortal } from "react-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { useGetAdminCourses } from "@/api/admin";
@@ -124,6 +129,39 @@ const CreateUserModal = ({
     );
   };
 
+  const [file, setFile] = useState(null);
+
+  const ref = useRef(null);
+  const handleFileChange = (e: any) => {
+    setFile(e.target.files[0]);
+    if (ref.current) {
+      (ref.current as HTMLInputElement).value = "";
+    }
+  };
+
+  const { mutate: createBulkUsers, isPending: uploading } =
+    useCreateBulkUsers();
+  const [error, setError] = useState<boolean>(false);
+
+  const handleUpload = (e: SyntheticEvent) => {
+    e.preventDefault();
+
+    if (!file) {
+      setError(true);
+    } else {
+      setError(false);
+      setFile(null);
+      const formData = new FormData();
+      formData.append("file", file);
+      createBulkUsers(formData, {
+        onSuccess: () => {
+          onClose();
+          queryClient.invalidateQueries({ queryKey: ["getUsers"] });
+        },
+      });
+    }
+  };
+
   return createPortal(
     <>
       {isOpen && (
@@ -239,6 +277,60 @@ const CreateUserModal = ({
                 size="md"
               >
                 Assign Courses
+              </Button>
+            </form>
+          )}
+          {!isEdit && (
+            <form
+              className="mt-6 flex flex-col gap-4 border-t pt-4"
+              onSubmit={handleUpload}
+            >
+              <h6 className="test-sm lg:text-base font-medium">
+                Bulk User Creation
+              </h6>
+              <div className="p-3 lg:p-4 bg-white rounded border border-dashed border-[#F3F3F3] flex items-center gap-4">
+                <img src="/attach.svg" alt="attach icon" />
+                <div className="">
+                  <p className="text-sm font-medium line-clamp-1">
+                    {(file as any)?.name ?? "Upload a file"}
+                  </p>
+                  <small className="text-xs text-grey-200">
+                    CSV or XLSX{" "}
+                    <span className="text-grey-400 font-medium">
+                      (Max 15MB)
+                    </span>
+                  </small>
+                </div>
+                <label
+                  htmlFor="file"
+                  className="ml-auto btn-outline px-4 text-xs"
+                >
+                  Attach
+                </label>
+                <input
+                  type="file"
+                  name="file"
+                  id="file"
+                  accept=".csv,.xlsx"
+                  className="hidden"
+                  onChange={handleFileChange}
+                  // @ts-ignore
+                  ref={ref}
+                />
+              </div>
+              {error && (
+                <small className="text-red-400 -mt-2">
+                  Select a file to continue
+                </small>
+              )}
+
+              <Button
+                isLoading={uploading}
+                type="submit"
+                className="px-6 text-sm w-max"
+                size="md"
+              >
+                Create Users
               </Button>
             </form>
           )}

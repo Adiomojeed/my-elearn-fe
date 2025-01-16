@@ -3,6 +3,7 @@
 // import customToast, { ToastType } from "@/components/Toast";
 import axios, { type AxiosRequestConfig } from "axios";
 import { logoutUser } from "./auth";
+import customToast, { ToastType } from "@/components/Toast";
 
 
 export const tokenConfig = {
@@ -16,14 +17,6 @@ const Request = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_URL,
   timeout: 30000,
 });
-
-// const convertToFormData = (data: any) => {
-//   const form_data = new FormData();
-//   for (const key in data) {
-//     form_data.append(key, data[key]);
-//   }
-//   return form_data;
-// };
 
 const requestConfiguration = (config: AxiosRequestConfig) => {
   let token;
@@ -54,12 +47,15 @@ const handleError = (error: any) => {
     logoutUser()
   }
 
-  // customToast(error?.response?.data?.message, ToastType.error);
   return Promise.reject(error?.response?.data?.message);
 };
 
 Request?.interceptors?.response?.use(
   async (response) => {
+    const url = response.request.responseURL;
+    if (url.includes("bulk")) {
+      customToast(response.data.message, ToastType.success);
+    }
     return response.data.data;
   },
   async (error) => {

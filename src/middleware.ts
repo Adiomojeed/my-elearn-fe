@@ -5,17 +5,16 @@ import { tokenConfig } from "@/api/request";
 
 export function middleware(request: NextRequest) {
   const res = NextResponse.next();
+
   // Set security headers to prevent iframe embedding
-  // res.headers.set('X-Frame-Options', 'DENY');
-  // res.headers.set('Content-Security-Policy', "frame-ancestors 'none'");
+  res.headers.set('X-Frame-Options', 'DENY');
+  res.headers.set('Content-Security-Policy', "frame-ancestors 'none'");
   const path = request.nextUrl.pathname;
   const publicPath = [
     "/",
     "/sign-in",
-    // "/sign-up",
-    // "/forgot-password",
-    // "/verify-account",
-    // "/reset-password",
+    "/forgot-password",
+    "/reset-password",
   ];
 
   const isPublicPath = publicPath.includes(path);
@@ -39,12 +38,8 @@ export function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     "/sign-in",
-    "/new-password",
-    // "/sign-up",
-    // "/verify-email",
-    // "/forgot-password",
-    // "/verify-account",
-    // "/reset-password",
+    "/forgot-password",
+    "/reset-password",
     "/dashboard",
     "/announcements",
     "/assignments",
@@ -52,6 +47,7 @@ export const config = {
     "/courses/:id",
     "/resources",
     "/settings",
-    "/admin/users"
+    "/admin/users",
+    "/admin/courses"
   ],
 };

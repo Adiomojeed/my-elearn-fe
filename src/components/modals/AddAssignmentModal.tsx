@@ -128,7 +128,7 @@ const AddAssignmentModal = ({
           isOpen
             ? "right-0"
             : "-right-[100%] md:-right-[500px] lg:-right-[514px]"
-        } bg-[#F9FAFB] w-full md:max-w-[500px] lg:max-w-[514px] transition-[right] easein duration-[750ms]`}
+        } bg-[#F9FAFB] w-full md:max-w-[500px] lg:max-w-[514px] overflow-y-auto transition-[right] easein duration-[750ms]`}
       >
         <div className="bg-white h-20 lg:h-[108px] border-b border-[#F3F3F3] flex items-center px-5 gap-3 sticky top-0">
           <Button

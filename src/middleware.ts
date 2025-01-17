@@ -4,11 +4,44 @@ import { NextResponse, type NextRequest } from "next/server";
 import { tokenConfig } from "@/api/request";
 
 export function middleware(request: NextRequest) {
-  const res = NextResponse.next();
+  const requestHeaders = new Headers(request.headers)
+  const cspHeader = `
+    default-src 'self';
+    img-src 'self' blob: data:;
+    font-src 'self';
+    object-src 'none';
+    base-uri 'self';
+    form-action 'self';
+    frame-ancestors 'none';
+    upgrade-insecure-requests;
+`
+  const contentSecurityPolicyHeaderValue = cspHeader
+    .replace(/\s{2,}/g, ' ')
+    .trim()
 
-  // Set security headers to prevent iframe embedding
+  requestHeaders.set(
+    'Content-Security-Policy',
+    contentSecurityPolicyHeaderValue
+  )
+
+  requestHeaders.set('X-Frame-Options', 'DENY');
+  requestHeaders.set('Content-Security-Policy', "frame-ancestors 'none'");
+  const res = NextResponse.next({
+    request: {
+      headers: requestHeaders,
+    },
+  });
+
+  res.headers.set(
+    'Content-Security-Policy',
+    contentSecurityPolicyHeaderValue
+  )
   res.headers.set('X-Frame-Options', 'DENY');
   res.headers.set('Content-Security-Policy', "frame-ancestors 'none'");
+
+
+  // Set security headers to prevent iframe embedding
+
   const path = request.nextUrl.pathname;
   const publicPath = [
     "/",

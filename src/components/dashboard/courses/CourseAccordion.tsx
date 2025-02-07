@@ -1,7 +1,8 @@
 import { ModuleData } from "@/api/course";
 import Accordion from "@/components/Accordion";
 import Button from "@/components/Button";
-import handleDownload from "@/utils/downloadFile";
+import ResourceLoader from "../ResourceLoader";
+import { useState } from "react";
 
 const CourseAccordion = ({
   id,
@@ -10,6 +11,7 @@ const CourseAccordion = ({
   id: number;
   module: ModuleData;
 }) => {
+  const [title, setTitle] = useState<string | null>(null);
   return (
     <Accordion
       title={
@@ -22,28 +24,44 @@ const CourseAccordion = ({
       }
       content={
         <>
-          {module?.lessons?.map((_, idx) => (
-            <div key={idx} className="p-4 lg:px-6 flex items-center gap-4">
-              <img src="/pdf.svg" alt="pdf icon" />
-              <small>{_.title}</small>
-              <div className="ml-auto">
-                {/* <img src="/completed.svg" alt="completed icon" /> */}
-                <Button
-                  btnType="outline"
-                  size="sm"
-                  className="text-xs lg:text-sm px-4 !border-grey-50 text-grey-500 hover:!text-white"
-                  onClick={() =>
-                    handleDownload(
-                      _?.file?.url as string,
-                      _?.file?.name as string
-                    )
+          {module?.lessons?.map((_, idx) => {
+            const type =
+              _?.file?.name?.split(".")[_?.file?.name?.split(".").length - 1];
+            return (
+              <div key={idx} className="p-4 lg:px-6 flex items-center gap-4">
+                <img
+                  src={
+                    type === "pdf"
+                      ? "/pdf.svg"
+                      : type === "xls"
+                      ? "/xls.svg"
+                      : "/jpeg.svg"
                   }
-                >
-                  View Lesson
-                </Button>
+                  alt="pdf icon"
+                />
+                <small>{_.title}</small>
+                <div className="ml-auto">
+                  {/* <img src="/completed.svg" alt="completed icon" /> */}
+                  <Button
+                    btnType="outline"
+                    size="sm"
+                    className="text-xs lg:text-sm px-4 !border-grey-50 text-grey-500 hover:!text-white"
+                    onClick={() => {
+                      setTitle(_?.title as string);
+                    }}
+                  >
+                    View Lesson
+                  </Button>
+                  {title === _.title && (
+                    <ResourceLoader
+                      obj={_?.file as any}
+                      onClose={() => setTitle(null)}
+                    />
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </>
       }
     />

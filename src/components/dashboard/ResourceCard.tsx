@@ -41,7 +41,7 @@ const ResourceCard = ({ resource }: { resource: ResourceCardProps }) => {
       <button
         type="button"
         className="ml-auto"
-        onClick={() => handleDownload(url, name)}
+        onClick={() => handleDownload(url, title as string)}
       >
         <img src="/download.svg" alt="download icon" />
       </button>

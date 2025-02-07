@@ -203,7 +203,7 @@ input {
   max-width: calc(100vw - 510px);
 }
 
-.render-body > div {
+.render-body-div {
   height: calc(100vh - 200px);
 }
 

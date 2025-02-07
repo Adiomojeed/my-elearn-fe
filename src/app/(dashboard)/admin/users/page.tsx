@@ -13,7 +13,7 @@ import { useMemo, useState } from "react";
 const Page = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [content, setContent] = useState<UserData | null>(null);
-  const limit = 20;
+  const limit = 50;
   const [page, setPage] = useState<number>(1);
   const { data, isLoading } = useGetUsers({ limit, page });
   const users = (data as any)?.users as UserData[];

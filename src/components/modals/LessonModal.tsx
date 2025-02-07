@@ -11,7 +11,8 @@ import {
 } from "@/api/course";
 import { useParams } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
-import handleDownload, { toBase64 } from "@/utils/downloadFile";
+import { toBase64 } from "@/utils/downloadFile";
+import ResourceLoader from "../dashboard/ResourceLoader";
 
 const LessonModal = ({
   isOpen,
@@ -32,6 +33,25 @@ const LessonModal = ({
   const [file, setFile] = useState<any | null>(null);
   const [fileObj, setFileObj] = useState<File | null>(null);
   const { mutate: editLesson, isPending: editing } = useEditLesson();
+  const [openView, setOpenView] = useState(false);
+  const [shouldRender, setShouldRender] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      setShouldRender(true);
+    }
+  }, [isOpen]);
+
+  const onAnimationEnd = () => {
+    if (!shouldRender) {
+      onClose();
+    }
+  };
+
+  const closeModal = () => {
+    setShouldRender(false);
+    setOpenView(false);
+  };
 
   useEffect(() => {
     setTitle(lesson?.title || "");
@@ -78,28 +98,30 @@ const LessonModal = ({
             moduleId: module,
           },
           {
-            onSuccess: () => invalidateSingleCourse(queryClient, onClose),
+            onSuccess: () => invalidateSingleCourse(queryClient, closeModal),
           }
         );
       }
     }
   };
+
   return (
     <>
       {isOpen && (
         <div
-          onClick={onClose}
+          onClick={closeModal}
           className="absolute left-0 top-0 z-[101] h-screen w-screen bg-black bg-opacity-10"
         ></div>
       )}
       <div
-        className={`absolute z-[101] h-full top-0 ${
-          isOpen ? "right-0" : "-right-[100%] md:-right-[500px]"
-        } bg-[#F9FAFB] w-full md:max-w-[500px] transition-[right] overflow-y-auto easein duration-[750ms]`}
+        className={`absolute z-[101] h-full top-0 transition-[right] overflow-y-auto easein duration-[750ms] ${
+          shouldRender ? "right-0" : "-right-[100%] md:-right-[500px]"
+        } bg-[#F9FAFB] w-full md:max-w-[500px] `}
+        onTransitionEnd={onAnimationEnd}
       >
         <div className="bg-white h-20 lg:h-[108px] border-b border-[#F3F3F3] flex items-center px-5 gap-3 sticky top-0">
           <Button
-            onClick={onClose}
+            onClick={closeModal}
             size="sm"
             btnType="outline"
             className="px-3 !border-[#F3F3F3]"
@@ -162,18 +184,23 @@ const LessonModal = ({
             )}
           </div>
           {isEdit && (
-            <Button
-              onClick={() =>
-                handleDownload(
-                  lesson?.file?.url as string,
-                  lesson?.file?.name as string
-                )
-              }
-              type="button"
-              className="px-3 text-sm mt-2 w-max"
-            >
-              View Current Resource
-            </Button>
+            <>
+              <Button
+                onClick={() => setOpenView(true)}
+                type="button"
+                className="px-3 text-sm mt-2 w-max"
+              >
+                View Current Resource
+              </Button>
+
+              {openView && (
+                <ResourceLoader
+                  obj={lesson?.file as any}
+                  fullFunc={false}
+                  onClose={() => setOpenView(false)}
+                />
+              )}
+            </>
           )}
           <Button
             isLoading={isPending ?? editing}

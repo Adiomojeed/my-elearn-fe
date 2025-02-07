@@ -56,7 +56,10 @@ const SubmissionModal = ({
       )}
       {isOpen && (
         <div className="absolute z-[101] left-0 top-0 bg-white w-full h-screen max-h-screen flex-center render-body border--r[3px]">
-          <ResourceLoader url={submission?.file?.url as string} />
+          <ResourceLoader
+            obj={submission?.file as any}
+            fullFunc={false}
+          />
         </div>
       )}
       <div

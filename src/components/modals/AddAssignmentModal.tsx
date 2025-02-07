@@ -14,6 +14,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import moment from "moment";
 import handleDownload, { toBase64 } from "@/utils/downloadFile";
+import ResourceLoader from "../dashboard/ResourceLoader";
 
 const AddAssignmentModal = ({
   isOpen,
@@ -29,6 +30,7 @@ const AddAssignmentModal = ({
 
   const { id } = useParams();
 
+  const [openView, setOpenView] = useState(false);
   const [status, setStatus] = useState<boolean>(false);
 
   const [state, setState] = useState({
@@ -55,12 +57,17 @@ const AddAssignmentModal = ({
     setStatus(assignment?.isVisible ?? false);
   }, [assignment]);
 
+  const closeModal = () => {
+    onClose();
+    setOpenView(false);
+  };
+
   const { mutate: createAssignment, isPending } = useCreateAssignment();
   const { mutate: updateAssignment, isPending: updating } =
     useUpdateAssignment();
   const queryClient = useQueryClient();
   const onSuccess = () => {
-    onClose();
+    closeModal();
     queryClient.invalidateQueries({
       queryKey: [isEdit ? "getSingleAssignment" : "getAssignments"],
     });
@@ -119,7 +126,7 @@ const AddAssignmentModal = ({
     <>
       {isOpen && (
         <div
-          onClick={onClose}
+          onClick={closeModal}
           className="absolute left-0 top-0 z-[101] h-screen w-screen bg-black bg-opacity-10"
         ></div>
       )}
@@ -132,7 +139,7 @@ const AddAssignmentModal = ({
       >
         <div className="bg-white h-20 lg:h-[108px] border-b border-[#F3F3F3] flex items-center px-5 gap-3 sticky top-0">
           <Button
-            onClick={onClose}
+            onClick={closeModal}
             size="sm"
             btnType="outline"
             className="px-3 !border-[#F3F3F3]"
@@ -208,20 +215,24 @@ const AddAssignmentModal = ({
                   Select a file to continue
                 </small>
               )}
-            {isEdit && (
-              <Button
-                onClick={() =>
-                  handleDownload(
-                    assignment?.file?.url as string,
-                    assignment?.file?.name as string
-                  )
-                }
-                type="button"
-                className="px-3 text-sm mt-2 w-max"
-              >
-                View Current Resource
-              </Button>
-            )}
+              {isEdit && (
+                <>
+                  <Button
+                    onClick={() => setOpenView(true)}
+                    type="button"
+                    className="px-3 text-sm mt-2 w-max"
+                  >
+                    View Current Resource
+                  </Button>
+                  {openView && (
+                    <ResourceLoader
+                      obj={assignment?.file as any}
+                      fullFunc={false}
+                      onClose={() => setOpenView(false)}
+                    />
+                  )}
+                </>
+              )}
             </div>
             <TextArea
               label="Assignment Details"

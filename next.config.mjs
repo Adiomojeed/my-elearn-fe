@@ -6,16 +6,15 @@ const nextConfig = {
   async headers() {
     return [
       {
-        // Match all routes
         source: "/:path*",
         headers: [
           {
             key: "X-Frame-Options",
-            value: "DENY", // Prevent embedding in iframes entirely
+            value: "DENY",
           },
           {
             key: "Content-Security-Policy",
-            value: "frame-ancestors 'none';", // Modern alternative to X-Frame-Options
+            value: "frame-ancestors 'none';",
           },
         ],
       },
